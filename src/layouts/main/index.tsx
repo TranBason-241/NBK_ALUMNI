@@ -38,9 +38,10 @@ export default function MainLayout() {
             </ScrollLink>
 
             <Typography variant="caption" component="p">
-              © All rights reserved
+              © Copyright 2022 - Mạng lưới Cựu sinh viên THPT Chuyên Nguyễn Bỉnh Khiêm - Website
+              đang hoạt động thử nghiệm
               <br /> made by &nbsp;
-              <Link href="https://minimals.cc/">minimals.cc</Link>
+              <Link href="*">Phuong LHK</Link>
             </Typography>
           </Container>
         </Box>
