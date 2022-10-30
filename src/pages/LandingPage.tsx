@@ -11,6 +11,7 @@ import {
   LandingCleanInterfaces,
   LandingHugePackElements
 } from '../components/_external-pages/landing';
+import About from './About';
 
 // ----------------------------------------------------------------------
 
@@ -28,11 +29,13 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function LandingPage() {
   return (
-    <RootStyle title="The starting point for your next project | Minimal-UI" id="move_top">
+    <RootStyle title="PJ School" id="move_top">
       <LandingHero />
       <ContentStyle>
+        <About />
         <LandingHugePackElements />
         <LandingMinimal />
+
         {/* <LandingDarkMode />
         <LandingThemeColor />
         <LandingCleanInterfaces /> */}

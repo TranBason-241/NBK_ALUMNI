@@ -3,7 +3,15 @@ import { Icon } from '@iconify/react';
 import roundArrowRightAlt from '@iconify/icons-ic/round-arrow-right-alt';
 // material
 import { alpha, useTheme, styled } from '@material-ui/core/styles';
-import { Box, Grid, Button, Container, Typography, LinearProgress } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  Button,
+  Container,
+  Typography,
+  LinearProgress,
+  Divider
+} from '@material-ui/core';
 // utils
 import { fPercent } from '../../../utils/formatNumber';
 //
@@ -80,13 +88,13 @@ export default function AboutWhat() {
       <Container maxWidth="lg">
         <Grid container spacing={3}>
           <MHidden width="mdDown">
-            <Grid item xs={12} md={6} lg={7} sx={{ pr: { md: 7 } }}>
+            <Grid item xs={12} md={12} lg={7} sx={{ pr: { md: 7 } }}>
               <Grid container spacing={3} alignItems="flex-end">
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <MotionInView variants={varFadeInUp}>
                     <Box
                       component="img"
-                      src="/static/about/what-1.jpg"
+                      src="/static/about/about_image.jpg"
                       sx={{
                         borderRadius: 2,
                         boxShadow: shadow
@@ -96,7 +104,22 @@ export default function AboutWhat() {
                 </Grid>
                 <Grid item xs={6}>
                   <MotionInView variants={varFadeInUp}>
-                    <Box component="img" src="/static/about/what-2.jpg" sx={{ borderRadius: 2 }} />
+                    <Box
+                      width="maxWidth"
+                      component="img"
+                      src="/static/about/about_image_3.jpg"
+                      sx={{ borderRadius: 2 }}
+                    />
+                  </MotionInView>
+                </Grid>
+                <Grid item xs={6}>
+                  <MotionInView variants={varFadeInUp}>
+                    <Box
+                      width="maxWidth"
+                      component="img"
+                      src="/static/about/about_image_2.jpg"
+                      sx={{ borderRadius: 2 }}
+                    />
                   </MotionInView>
                 </Grid>
               </Grid>
@@ -106,7 +129,7 @@ export default function AboutWhat() {
           <Grid item xs={12} md={6} lg={5}>
             <MotionInView variants={varFadeInRight}>
               <Typography variant="h2" sx={{ mb: 3 }}>
-                What is minimal?
+                THPT Chuyên Nguyễn Bỉnh Khiêm
               </Typography>
             </MotionInView>
 
@@ -117,22 +140,28 @@ export default function AboutWhat() {
                     theme.palette.mode === 'light' ? 'text.secondary' : 'common.white'
                 }}
               >
-                Our theme is the most advanced and user-friendly theme you will find on the market,
-                we have documentation and video to help set your site really easily, pre-installed
-                demos you can import in one click and everything from the theme options to page
-                content can be edited from the front-end. This is the theme you are looking for.
+                Trường THPT Nguyễn Bỉnh Khiêm ngày nay với tên gọi ban đầu là trường PTTH Châu Thành
+                được thành lập vào ngày 15/08/1983, gồm 2 phân hiệu: ở Cần Đăng và ở Quản Cơ Thành,
+                đến năm học 1985-1986 nhập lại thành một điểm tại vị trí hiện nay, cặp quốc lộ 91,
+                ấp Hòa Long 3, thị trấn An Châu, huyện Châu Thành, tỉnh An Giang.
+              </Typography>
+            </MotionInView>
+            <Divider sx={{ my: 2, mx: 'auto', height: 10 }} />
+            <MotionInView variants={varFadeInRight}>
+              <Typography
+                sx={{
+                  color: (theme) =>
+                    theme.palette.mode === 'light' ? 'text.secondary' : 'common.white'
+                }}
+              >
+                Trong suốt thời gian qua, nhà trường đã có bước phát triển mạnh mẽ về nhiều mặt. Cơ
+                sở vật chất, trang thiết bị phục vụ dạy học được tăng cường. Đội ngũ CBQL, GV, NV
+                đảm bảo số lượng và cơ cấu. Tổ chức và hoạt động luôn được quan tâm đổi mới, đã tạo
+                sự chuyển biến đáng kể về chất lượng và hiệu quả giáo dục.
               </Typography>
             </MotionInView>
 
-            <Box sx={{ my: 5 }}>
-              {SKILLS.map((progress) => (
-                <MotionInView key={progress.label} variants={varFadeInRight}>
-                  <ProgressItem progress={progress} />
-                </MotionInView>
-              ))}
-            </Box>
-
-            <MotionInView variants={varFadeInRight}>
+            {/* <MotionInView variants={varFadeInRight}>
               <Button
                 variant="outlined"
                 color="inherit"
@@ -141,7 +170,7 @@ export default function AboutWhat() {
               >
                 Check out our work
               </Button>
-            </MotionInView>
+            </MotionInView> */}
           </Grid>
         </Grid>
       </Container>

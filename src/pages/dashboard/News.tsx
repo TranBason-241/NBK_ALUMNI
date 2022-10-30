@@ -85,7 +85,7 @@ export default function News() {
   };
 
   return (
-    <Page title="Blog: Posts | Minimal-UI">
+    <Page title="Tin tức & sự kiện">
       <RootStyle>
         <Container maxWidth={themeStretch ? false : 'lg'}>
           <HeaderBreadcrumbs heading="Tin tức & sự kiện" links={[]} />
