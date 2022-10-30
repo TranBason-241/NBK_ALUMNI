@@ -14,7 +14,7 @@ import { varFadeIn, varFadeInUp, varWrapEnter, varFadeInRight } from '../../anim
 
 const RootStyle = styled(motion.div)(({ theme }) => ({
   position: 'relative',
-  backgroundColor: theme.palette.grey[400],
+  backgroundColor: '#FFF169',
   [theme.breakpoints.up('md')]: {
     top: 0,
     left: 0,
@@ -56,13 +56,14 @@ const HeroImgStyle = styled(motion.img)(({ theme }) => ({
   bottom: 0,
   zIndex: 8,
   width: '100%',
+  height: '100%',
   margin: 'auto',
-  position: 'absolute',
-  [theme.breakpoints.up('lg')]: {
-    right: '8%',
-    width: 'auto',
-    height: '48vh'
-  }
+  position: 'absolute'
+  // [theme.breakpoints.up('lg')]: {
+  //   right: '8%',
+  //   width: 'auto',
+  //   height: '48vh'
+  // }
 }));
 
 // ----------------------------------------------------------------------
@@ -73,11 +74,7 @@ export default function LandingHero() {
       <RootStyle initial="initial" animate="animate">
         <HeroOverlayStyle alt="overlay" src="/static/overlay.svg" variants={varFadeIn} />
 
-        <HeroImgStyle
-          alt="hero"
-          src="/static/home/background_langding.png"
-          variants={varFadeInUp}
-        />
+        <HeroImgStyle alt="hero" src="/static/home/THPT_VL_background.jpg" variants={varFadeInUp} />
 
         <Container maxWidth="md">
           <ContentStyle>

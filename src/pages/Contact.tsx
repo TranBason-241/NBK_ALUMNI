@@ -18,9 +18,8 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function Contact() {
   return (
-    <RootStyle title="Contact us | Minimal-UI">
+    <RootStyle title="Contact | Minimal-UI">
       <ContactHero />
-
       <Container sx={{ my: 10 }}>
         <Grid container spacing={10}>
           <Grid item xs={12} md={6}>

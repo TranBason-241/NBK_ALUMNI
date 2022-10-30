@@ -11,12 +11,15 @@ import { varFadeInUp, MotionInView } from '../../animate';
 
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(24, 0),
-  backgroundImage:
-    theme.palette.mode === 'light'
-      ? `linear-gradient(180deg, ${alpha(theme.palette.grey[300], 0)} 0%, ${
-          theme.palette.grey[300]
-        } 100%)`
-      : 'none'
+  backgroundColor: '#FFFDE1'
+  // backgroundColor: 'F6FFF6'
+  // border: '0.1px solid black'
+  // backgroundImage:
+  //   theme.palette.mode === 'light'
+  //     ? `linear-gradient(180deg, ${alpha(theme.palette.grey[300], 0)} 0%, ${
+  //         theme.palette.grey[300]
+  //       } 100%)`
+  //     : 'none'
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
@@ -94,12 +97,12 @@ export default function LandingHugePackElements() {
                   variant="overline"
                   sx={{ mb: 2, color: 'text.secondary' }}
                 >
-                  Kết nối với người bạn cùng lớp - những thầy cô
+                  Mãi mãi tuổi 18
                 </Typography>
               </MotionInView>
 
               <MotionInView variants={varFadeInUp}>
-                <Typography variant="h2" sx={{ mb: 3 }}>
+                <Typography color="primary.main" variant="h2" sx={{ mb: 3 }}>
                   Lớp của tôi
                 </Typography>
               </MotionInView>
@@ -111,19 +114,34 @@ export default function LandingHugePackElements() {
                     color: isLight ? 'text.secondary' : 'common.white'
                   }}
                 >
-                  s
+                  Tạo kết nối với người bạn cùng lớp, thầy cô
+                </Typography>
+                <Typography
+                  sx={{
+                    mb: 5,
+                    color: isLight ? 'text.secondary' : 'common.white'
+                  }}
+                >
+                  Tìm kiếm và thẽo dõi hoạt động của bạn bè
                 </Typography>
               </MotionInView>
 
               <MotionInView variants={varFadeInUp}>
-                <Button
+                {/* <Button
                   size="large"
-                  color="inherit"
+                  color="warning"
                   variant="outlined"
                   component={RouterLink}
                   to={PATH_PAGE.components}
                 >
-                  View All Components
+                  TÌM LỚP CỦA BẠN
+                </Button> */}
+                <Button
+                  variant="contained"
+                  target="_blank"
+                  href="https://material-ui.com/store/items/minimal-dashboard/"
+                >
+                  Tìm lớp của bạn
                 </Button>
               </MotionInView>
             </ContentStyle>
@@ -167,7 +185,7 @@ export default function LandingHugePackElements() {
                 >
                   <img
                     alt={`screen ${index + 1}`}
-                    src={`/static/home/screen_${isLight ? 'light' : 'dark'}_${index + 1}.png`}
+                    src={`/static/home/my_screen_${isLight ? 'light' : 'dark'}_${index + 1}.png`}
                   />
                 </ScreenStyle>
               ))}

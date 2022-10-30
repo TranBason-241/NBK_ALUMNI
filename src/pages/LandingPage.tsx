@@ -31,11 +31,11 @@ export default function LandingPage() {
     <RootStyle title="The starting point for your next project | Minimal-UI" id="move_top">
       <LandingHero />
       <ContentStyle>
-        <LandingMinimal />
         <LandingHugePackElements />
-        {/* <LandingDarkMode /> */}
-        {/* <LandingThemeColor /> */}
-        {/* <LandingCleanInterfaces /> */}
+        <LandingMinimal />
+        {/* <LandingDarkMode />
+        <LandingThemeColor />
+        <LandingCleanInterfaces /> */}
         <LandingAdvertisement />
       </ContentStyle>
     </RootStyle>

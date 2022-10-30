@@ -91,9 +91,9 @@ export default function MainNavbar() {
           <RouterLink to="/">
             <Logo />
           </RouterLink>
-          <Label color="info" sx={{ ml: 1 }}>
+          {/* <Label color="info" sx={{ ml: 1 }}>
             Ts v2.3.0
-          </Label>
+          </Label> */}
           <Box sx={{ flexGrow: 1 }} />
 
           <MHidden width="mdDown">
@@ -105,7 +105,7 @@ export default function MainNavbar() {
             target="_blank"
             href="https://material-ui.com/store/items/minimal-dashboard/"
           >
-            Đăng nhập ngay
+            Đăng nhập
           </Button>
 
           <MHidden width="mdUp">

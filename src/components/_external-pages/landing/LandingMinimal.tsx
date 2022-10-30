@@ -175,14 +175,14 @@ export default function LandingMinimalHelps() {
   return (
     <RootStyle>
       <Container maxWidth="lg">
-        <Box sx={{ mb: { xs: 10, md: 25 } }}>
+        <Box sx={{ mb: { xs: 5, md: 5 } }}>
           <MotionInView variants={varFadeInUp}>
             <Typography
               component="p"
               variant="overline"
               sx={{ mb: 2, color: 'primary.main', textAlign: 'center' }}
             >
-              N B K
+              THPT Nguyễn Bỉnh Khiêm
             </Typography>
           </MotionInView>
           <MotionInView variants={varFadeInDown}>
@@ -192,36 +192,6 @@ export default function LandingMinimalHelps() {
           </MotionInView>
         </Box>
 
-        {/* <Grid container spacing={isDesktop ? 10 : 5}>
-          <Grid key="title" item xs={12} md={4}>
-            <MotionInView variants={varFadeInUp}>
-              <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image="/static/images/cards/contemplative-reptile.jpg"
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Lizard
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Lizards are a widespread group of squamate reptiles, with over 6,000 species,
-                      ranging across all continents except Antarctica
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    Share
-                  </Button>
-                </CardActions>
-              </Card>
-            </MotionInView>
-          </Grid>
-        </Grid> */}
         <Container maxWidth={themeStretch ? false : 'lg'}>
           <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
             <Button
@@ -234,19 +204,19 @@ export default function LandingMinimalHelps() {
             </Button>
           </Stack>
 
-          <InfiniteScroll
+          {/* <InfiniteScroll
             next={onScroll}
             hasMore={hasMore}
             loader={SkeletonLoad}
             dataLength={posts.length}
             style={{ overflow: 'inherit' }}
-          >
-            <Grid container spacing={3}>
-              {sortedPosts.map((post, index) => (
-                <BlogPostCard key={post.id} post={post} index={index} />
-              ))}
-            </Grid>
-          </InfiniteScroll>
+          > */}
+          <Grid container spacing={3}>
+            {sortedPosts.map((post, index) => (
+              <BlogPostCard key={post.id} post={post} index={index} />
+            ))}
+          </Grid>
+          {/* </InfiniteScroll> */}
         </Container>
       </Container>
     </RootStyle>
