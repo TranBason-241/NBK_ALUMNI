@@ -25,12 +25,12 @@ const RootStyle = styled(Page)(({ theme }) => ({
 export default function About() {
   return (
     <RootStyle title="About us | Minimal-UI">
-      <AboutHero />
+      {/* <AboutHero /> */}
       <AboutWhat />
       <AboutVision />
       <Divider orientation="vertical" sx={{ my: 10, mx: 'auto', width: 2, height: 40 }} />
-      <AboutTeam />
-      <AboutTestimonials />
+      {/* <AboutTeam /> */}
+      {/* <AboutTestimonials /> */}
     </RootStyle>
   );
 }

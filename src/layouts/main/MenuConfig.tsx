@@ -69,6 +69,11 @@ const menuConfig = [
     title: 'Đăng ký',
     icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
     path: PATH_DOCS
+  },
+  {
+    title: 'Liên hệ',
+    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
+    path: PATH_DOCS
   }
 ];
 
