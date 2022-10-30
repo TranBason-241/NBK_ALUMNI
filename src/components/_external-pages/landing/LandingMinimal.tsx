@@ -22,7 +22,7 @@ import {
 
 import useSettings from 'hooks/useSettings';
 import HeaderBreadcrumbs from 'components/HeaderBreadcrumbs';
-import { PATH_DASHBOARD } from 'routes/paths';
+import { PATH_AUTH, PATH_DASHBOARD, PATH_NEW } from 'routes/paths';
 import { Link as RouterLink } from 'react-router-dom';
 import { BlogPostCard, BlogPostsSearch, BlogPostsSort } from 'components/_dashboard/blog';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -197,7 +197,7 @@ export default function LandingMinimalHelps() {
             <Button
               variant="outlined"
               component={RouterLink}
-              to={PATH_DASHBOARD.blog.newPost}
+              to={PATH_NEW.list}
               // startIcon={<Icon icon={plusFill} />}
             >
               Xem tất cả

@@ -8,7 +8,7 @@ import messageCircleFill from '@iconify/icons-eva/message-circle-fill';
 import { alpha, styled } from '@material-ui/core/styles';
 import { Box, Card, Grid, Avatar, Typography, CardContent } from '@material-ui/core';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD, PATH_NEW } from '../../../routes/paths';
 // utils
 import { fDate } from '../../../utils/formatTime';
 import { fShortenNumber } from '../../../utils/formatNumber';
@@ -52,7 +52,12 @@ const InfoStyle = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(3),
   color: theme.palette.text.disabled
 }));
-
+const RootStyle = styled('div')(({ theme }) => ({
+  paddingTop: theme.spacing(15),
+  [theme.breakpoints.up('md')]: {
+    paddingBottom: theme.spacing(15)
+  }
+}));
 const CoverImgStyle = styled('img')(({ theme }) => ({
   top: 0,
   width: '100%',
@@ -70,7 +75,8 @@ type BlogPostCardProps = {
 
 export default function BlogPostCard({ post, index }: BlogPostCardProps) {
   const { cover, title, view, comment, share, author, createdAt } = post;
-  const linkTo = `${PATH_DASHBOARD.blog.root}/post/${paramCase(title)}`;
+  // const linkTo = `${PATH_DASHBOARD.blog.root}/post/${paramCase(title)}`;
+  const linkTo = `${PATH_NEW.root}/${paramCase(title)}`;
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
 

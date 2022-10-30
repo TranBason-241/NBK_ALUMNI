@@ -2,6 +2,7 @@ import { NavLink as RouterLink, useLocation, NavLinkProps } from 'react-router-d
 // material
 import { styled } from '@material-ui/core/styles';
 import { Box, Button, AppBar, Toolbar, Container } from '@material-ui/core';
+import { PATH_AUTH } from 'routes/paths';
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop';
 // components
@@ -100,11 +101,7 @@ export default function MainNavbar() {
             <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
           </MHidden>
 
-          <Button
-            variant="contained"
-            target="_blank"
-            href="https://material-ui.com/store/items/minimal-dashboard/"
-          >
+          <Button variant="contained" component={RouterLink} target="_blank" to={PATH_AUTH.login}>
             Đăng nhập
           </Button>
 

@@ -64,6 +64,15 @@ export default function Router() {
         { path: 'register-unprotected', element: <Register /> },
         { path: 'reset-password', element: <ResetPassword /> },
         { path: 'verify', element: <VerifyCode /> }
+        // {
+        //   path: 'new',
+        //   children: [
+        //     { path: '/', element: <Navigate to="/dashboard/new/list" replace /> },
+        //     { path: 'list', element: <News /> },
+        //     { path: 'post/:title', element: <BlogPost /> },
+        //     { path: 'new-post', element: <BlogNewPost /> }
+        //   ]
+        // }
       ]
     },
 
@@ -117,6 +126,7 @@ export default function Router() {
             { path: 'new-post', element: <BlogNewPost /> }
           ]
         },
+
         {
           path: 'mail',
           children: [
@@ -162,6 +172,13 @@ export default function Router() {
         { path: 'about-us', element: <About /> },
         { path: 'contact-us', element: <Contact /> },
         { path: 'faqs', element: <Faqs /> },
+        {
+          path: 'new',
+          children: [
+            { path: 'list', element: <News /> },
+            { path: '/:title', element: <BlogPost /> }
+          ]
+        },
         {
           path: 'components',
           children: [
@@ -246,6 +263,7 @@ const EcommerceProductCreate = Loadable(
 const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
 const EcommerceInvoice = Loadable(lazy(() => import('../pages/dashboard/EcommerceInvoice')));
 const BlogPosts = Loadable(lazy(() => import('../pages/dashboard/BlogPosts')));
+const News = Loadable(lazy(() => import('../pages/dashboard/News')));
 const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));

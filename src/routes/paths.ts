@@ -6,8 +6,14 @@ function path(root: string, sublink: string) {
 
 const ROOTS_AUTH = '/auth';
 const ROOTS_DASHBOARD = '/dashboard';
+const ROOTS_NEWS = '/new';
 
 // ----------------------------------------------------------------------
+export const PATH_NEW = {
+  root: ROOTS_NEWS,
+  list: path(ROOTS_NEWS, '/list'),
+  newById: path(ROOTS_NEWS, '/:title')
+};
 
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
@@ -16,7 +22,14 @@ export const PATH_AUTH = {
   register: path(ROOTS_AUTH, '/register'),
   registerUnprotected: path(ROOTS_AUTH, '/register-unprotected'),
   resetPassword: path(ROOTS_AUTH, '/reset-password'),
-  verify: path(ROOTS_AUTH, '/verify')
+  verify: path(ROOTS_AUTH, '/verify'),
+  new: {
+    root: path(ROOTS_AUTH, '/new'),
+    list: path(ROOTS_AUTH, '/new/list'),
+    post: path(ROOTS_AUTH, '/blog/post/:title'),
+    postById: path(ROOTS_AUTH, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
+    newPost: path(ROOTS_AUTH, '/blog/new-post')
+  }
 };
 
 export const PATH_PAGE = {
