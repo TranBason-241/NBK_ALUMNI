@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { sentenceCase } from 'change-case';
 import { useParams } from 'react-router-dom';
+import { alpha, useTheme, styled } from '@material-ui/core/styles';
 // material
 import { Box, Card, Divider, Skeleton, Container, Typography, Pagination } from '@material-ui/core';
 // redux
@@ -39,7 +40,12 @@ const SkeletonLoad = (
     </Box>
   </>
 );
-
+const RootStyle = styled('div')(({ theme }) => ({
+  paddingTop: theme.spacing(15),
+  [theme.breakpoints.up('md')]: {
+    paddingBottom: theme.spacing(15)
+  }
+}));
 export default function BlogPost() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
@@ -53,57 +59,59 @@ export default function BlogPost() {
 
   return (
     <Page title="Blog: Post Details | Minimal-UI">
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading="Post Details"
-          links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Blog', href: PATH_DASHBOARD.blog.root },
-            { name: sentenceCase(title) }
-          ]}
-        />
+      <RootStyle>
+        <Container maxWidth={themeStretch ? false : 'lg'}>
+          <HeaderBreadcrumbs
+            heading="Post Details"
+            links={[
+              { name: 'Dashboard', href: PATH_DASHBOARD.root },
+              { name: 'Blog', href: PATH_DASHBOARD.blog.root },
+              { name: sentenceCase(title) }
+            ]}
+          />
 
-        {post && (
-          <Card>
-            <BlogPostHero post={post} />
+          {post && (
+            <Card>
+              <BlogPostHero post={post} />
 
-            <Box sx={{ p: { xs: 3, md: 5 } }}>
-              <Typography variant="h6" sx={{ mb: 5 }}>
-                {post.description}
-              </Typography>
-
-              <Markdown children={post.body} />
-
-              <Box sx={{ my: 5 }}>
-                <Divider />
-                <BlogPostTags post={post} />
-                <Divider />
-              </Box>
-
-              <Box sx={{ display: 'flex', mb: 2 }}>
-                <Typography variant="h4">Comments</Typography>
-                <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
-                  ({post.comments.length})
+              <Box sx={{ p: { xs: 3, md: 5 } }}>
+                <Typography variant="h6" sx={{ mb: 5 }}>
+                  {post.description}
                 </Typography>
+
+                <Markdown children={post.body} />
+
+                <Box sx={{ my: 5 }}>
+                  <Divider />
+                  <BlogPostTags post={post} />
+                  <Divider />
+                </Box>
+
+                <Box sx={{ display: 'flex', mb: 2 }}>
+                  <Typography variant="h4">Comments</Typography>
+                  <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
+                    ({post.comments.length})
+                  </Typography>
+                </Box>
+
+                <BlogPostCommentList post={post} />
+
+                <Box sx={{ mb: 5, mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+                  <Pagination count={8} color="primary" />
+                </Box>
+
+                <BlogPostCommentForm />
               </Box>
+            </Card>
+          )}
 
-              <BlogPostCommentList post={post} />
+          {!post && SkeletonLoad}
 
-              <Box sx={{ mb: 5, mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                <Pagination count={8} color="primary" />
-              </Box>
+          {error && <Typography variant="h6">404 Post not found</Typography>}
 
-              <BlogPostCommentForm />
-            </Box>
-          </Card>
-        )}
-
-        {!post && SkeletonLoad}
-
-        {error && <Typography variant="h6">404 Post not found</Typography>}
-
-        {recentPosts.length > 0 && <BlogPostRecent posts={recentPosts} />}
-      </Container>
+          {recentPosts.length > 0 && <BlogPostRecent posts={recentPosts} />}
+        </Container>
+      </RootStyle>
     </Page>
   );
 }
