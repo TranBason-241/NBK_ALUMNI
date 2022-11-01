@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export class NewManager {
   // get list new
-  getListNew = () =>
+  getListNew = (catetoryId: string) =>
     axios
       .get('api/v1/news?SchoolId=1')
       .then((res) => res)

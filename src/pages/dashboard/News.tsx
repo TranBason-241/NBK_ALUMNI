@@ -27,9 +27,8 @@ import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../../components/_
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
-  { value: 'latest', label: 'Latest' },
-  { value: 'popular', label: 'Popular' },
-  { value: 'oldest', label: 'Oldest' }
+  { value: '1', label: 'Tin tức' },
+  { value: '2', label: 'Sự kiện' }
 ];
 
 // ----------------------------------------------------------------------
@@ -64,7 +63,7 @@ const SkeletonLoad = (
 export default function News() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
-  const [filters, setFilters] = useState('latest');
+  const [filters, setFilters] = useState('1');
   const { posts, hasMore, index, step } = useSelector((state: { blog: BlogState }) => state.blog);
   const newList = useSelector((state: RootState) => state.new.newList);
   const sortedPosts = applySort(posts, filters);
@@ -79,8 +78,8 @@ export default function News() {
 
   useEffect(() => {
     dispatch(getPostsInitial(index, step));
-    dispatch(getListNew());
-  }, [dispatch, index, step]);
+    dispatch(getListNew(filters));
+  }, [dispatch, index, step, filters]);
 
   const handleChangeSort = (value?: string) => {
     if (value) {

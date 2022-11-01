@@ -53,12 +53,12 @@ export default slice.reducer;
 // ----------------------------------------------------------------------
 
 // get new
-export function getListNew() {
+export function getListNew(categoryId: string) {
   return async () => {
     dispatch(slice.actions.startLoading());
 
     try {
-      manageNew.getListNew().then((response) => {
+      manageNew.getListNew(categoryId).then((response) => {
         // console.log(response);
         if (response.status == 200) {
           dispatch(slice.actions.getListNew(response.data.items));
