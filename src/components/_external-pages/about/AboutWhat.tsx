@@ -87,10 +87,10 @@ export default function AboutWhat() {
     <RootStyle>
       <Container maxWidth="lg">
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={5}>
+          <Grid item xs={12} md={6} lg={6}>
             <MotionInView variants={varFadeInRight}>
               <Typography variant="h2" sx={{ mb: 3 }}>
-                THPT Chuyên Nguyễn Bỉnh Khiêm
+                THPT CHUYÊN NGUYỄN BỈNH KHIÊM
               </Typography>
             </MotionInView>
 
@@ -134,7 +134,7 @@ export default function AboutWhat() {
             </MotionInView> */}
           </Grid>
           <MHidden width="mdDown">
-            <Grid item xs={12} md={12} lg={7} sx={{ pr: { md: 7 } }}>
+            <Grid item xs={12} md={6} lg={6} sx={{ pr: { md: 7 } }}>
               <Grid container spacing={3} alignItems="flex-end">
                 <Grid item xs={12}>
                   <MotionInView variants={varFadeInUp}>

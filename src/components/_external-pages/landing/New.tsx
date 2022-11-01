@@ -29,6 +29,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMorePosts, getPostsInitial } from 'redux/slices/blog';
 import { orderBy } from 'lodash';
+import { getListNew } from 'redux/slices/new';
 import { varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
 import { BlogState, Post } from '../../../@types/blog';
 
@@ -155,7 +156,6 @@ export default function LandingMinimalHelps() {
   const dispatch = useDispatch();
   const [filters, setFilters] = useState('latest');
   const { posts, hasMore, index, step } = useSelector((state: { blog: BlogState }) => state.blog);
-
   const sortedPosts = applySort(posts, filters);
   const onScroll = useCallback(() => dispatch(getMorePosts()), [dispatch]);
   const theme = useTheme();
@@ -187,7 +187,7 @@ export default function LandingMinimalHelps() {
           </MotionInView>
           <MotionInView variants={varFadeInDown}>
             <Typography variant="h2" sx={{ textAlign: 'center', color: 'primary.main' }}>
-              Tin Tức & Sự kiện
+              Tin Tức
             </Typography>
           </MotionInView>
         </Box>
@@ -203,8 +203,8 @@ export default function LandingMinimalHelps() {
               Xem tất cả
             </Button>
           </Stack>
-
-          {/* <InfiniteScroll
+          {/* 
+          <InfiniteScroll
             next={onScroll}
             hasMore={hasMore}
             loader={SkeletonLoad}

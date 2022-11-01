@@ -8,14 +8,25 @@ import facebookFill from '@iconify/icons-eva/facebook-fill';
 import roundArrowRightAlt from '@iconify/icons-ic/round-arrow-right-alt';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 // material
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, styled } from '@material-ui/core/styles';
 import { Box, Card, Button, Container, Typography, IconButton } from '@material-ui/core';
 //
 import { varFadeIn, varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
 import { CarouselControlsArrowsBasic2 } from '../../carousel';
 
 // ----------------------------------------------------------------------
-
+const RootStyle = styled('div')(({ theme }) => ({
+  padding: theme.spacing(5, 0),
+  backgroundColor: '#EFFFEE '
+  // backgroundColor: 'F6FFF6'
+  // border: '0.1px solid black'
+  // backgroundImage:
+  //   theme.palette.mode === 'light'
+  //     ? `linear-gradient(180deg, ${alpha(theme.palette.grey[300], 0)} 0%, ${
+  //         theme.palette.grey[300]
+  //       } 100%)`
+  //     : 'none'
+}));
 const MEMBERS = [
   {
     name: faker.name.findName(),
@@ -116,56 +127,130 @@ export default function AboutTeam() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ pb: 10, textAlign: 'center' }}>
-      <MotionInView variants={varFadeInDown}>
+    <RootStyle>
+      {' '}
+      <Container maxWidth="lg" sx={{ pb: 10, textAlign: 'center' }}>
+        {/* <MotionInView variants={varFadeInDown}>
         <Typography component="p" variant="overline" sx={{ mb: 2, color: 'text.secondary' }}>
           Dream team
         </Typography>
-      </MotionInView>
+      </MotionInView> */}
 
-      <MotionInView variants={varFadeInUp}>
-        <Typography variant="h2" sx={{ mb: 3 }}>
-          Great team is the key
-        </Typography>
-      </MotionInView>
+        <MotionInView variants={varFadeInUp}>
+          <Typography variant="h2" sx={{ mb: 3, color: 'primary.main' }}>
+            Con người
+          </Typography>
+        </MotionInView>
 
-      <MotionInView variants={varFadeInUp}>
-        <Typography
-          sx={{
-            mb: 10,
-            mx: 'auto',
-            maxWidth: 630,
-            color: (theme) => (theme.palette.mode === 'light' ? 'text.secondary' : 'common.white')
-          }}
+        <MotionInView variants={varFadeInUp}>
+          <Typography
+            sx={{
+              mb: 10,
+              mx: 'auto',
+              maxWidth: 630,
+              color: (theme) => (theme.palette.mode === 'light' ? 'text.secondary' : 'common.white')
+            }}
+          >
+            Mỗi con người mỗi cá nhân là một thành viên trong gia đình THPT Chuyên Nguyễn Bỉnh Khiêm
+          </Typography>
+        </MotionInView>
+        <MotionInView variants={varFadeInDown}>
+          <Typography
+            component="p"
+            variant="h4"
+            sx={{
+              mb: 3,
+              color: 'primary.main',
+              // textAlign: 'left',
+              ml: 1,
+              textDecoration: 'underline'
+            }}
+          >
+            Ban giám hiệu
+          </Typography>
+        </MotionInView>
+        <Box sx={{ position: 'relative' }}>
+          <Slider ref={carouselRef} {...settings}>
+            {MEMBERS.map((member) => (
+              <MotionInView key={member.name} variants={varFadeIn}>
+                <MemberCard key={member.name} member={member} />
+              </MotionInView>
+            ))}
+          </Slider>
+          <CarouselControlsArrowsBasic2
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+            sx={{ transform: 'translateY(-64px)' }}
+          />
+        </Box>
+        <MotionInView variants={varFadeInDown}>
+          <Typography
+            component="p"
+            variant="h4"
+            sx={{
+              mb: 3,
+              color: 'primary.main',
+              // textAlign: 'left',
+              ml: 1,
+              textDecoration: 'underline'
+            }}
+          >
+            Giáo viên
+          </Typography>
+        </MotionInView>
+        <Box sx={{ position: 'relative' }}>
+          <Slider ref={carouselRef} {...settings}>
+            {MEMBERS.map((member) => (
+              <MotionInView key={member.name} variants={varFadeIn}>
+                <MemberCard key={member.name} member={member} />
+              </MotionInView>
+            ))}
+          </Slider>
+          <CarouselControlsArrowsBasic2
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+            sx={{ transform: 'translateY(-64px)' }}
+          />
+        </Box>
+        <MotionInView variants={varFadeInDown}>
+          <Typography
+            component="p"
+            variant="h4"
+            sx={{
+              mb: 3,
+              color: 'primary.main',
+              // textAlign: 'left',
+              ml: 1,
+              textDecoration: 'underline'
+            }}
+          >
+            Cựu sinh viên tiêu biểu
+          </Typography>
+        </MotionInView>
+        <Box sx={{ position: 'relative' }}>
+          <Slider ref={carouselRef} {...settings}>
+            {MEMBERS.map((member) => (
+              <MotionInView key={member.name} variants={varFadeIn}>
+                <MemberCard key={member.name} member={member} />
+              </MotionInView>
+            ))}
+          </Slider>
+          <CarouselControlsArrowsBasic2
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+            sx={{ transform: 'translateY(-64px)' }}
+          />
+        </Box>
+        <Button
+          variant="outlined"
+          color="inherit"
+          size="large"
+          endIcon={<Icon icon={roundArrowRightAlt} width={24} height={24} />}
+          sx={{ mx: 'auto' }}
         >
-          Minimal will provide you support if you have any problems, our support team will reply
-          within a day and we also have detailed documentation.
-        </Typography>
-      </MotionInView>
-
-      <Box sx={{ position: 'relative' }}>
-        <Slider ref={carouselRef} {...settings}>
-          {MEMBERS.map((member) => (
-            <MotionInView key={member.name} variants={varFadeIn}>
-              <MemberCard key={member.name} member={member} />
-            </MotionInView>
-          ))}
-        </Slider>
-        <CarouselControlsArrowsBasic2
-          onNext={handleNext}
-          onPrevious={handlePrevious}
-          sx={{ transform: 'translateY(-64px)' }}
-        />
-      </Box>
-      <Button
-        variant="outlined"
-        color="inherit"
-        size="large"
-        endIcon={<Icon icon={roundArrowRightAlt} width={24} height={24} />}
-        sx={{ mx: 'auto' }}
-      >
-        View all team members
-      </Button>
-    </Container>
+          Xem tất cả
+        </Button>
+      </Container>
+    </RootStyle>
   );
 }

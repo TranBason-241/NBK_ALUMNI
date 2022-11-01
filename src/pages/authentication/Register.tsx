@@ -49,16 +49,16 @@ export default function Register() {
   return (
     <RootStyle title="Register | Minimal-UI">
       <AuthLayout>
-        Already have an account? &nbsp;
+        Bạn đã có tài khoản? &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to={PATH_AUTH.login}>
-          Login
+          Đăng nhập
         </Link>
       </AuthLayout>
 
       <MHidden width="mdDown">
         <SectionStyle>
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Manage the job more effectively with Minimal
+            Đăng ký để truy cập vào hệ thống
           </Typography>
           <img alt="register" src="/static/illustrations/illustration_register.png" />
         </SectionStyle>
@@ -69,11 +69,11 @@ export default function Register() {
           <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
             <Box sx={{ flexGrow: 1 }}>
               <Typography variant="h4" gutterBottom>
-                Get started absolutely free.
+                Đăng ký
               </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>
+              {/* <Typography sx={{ color: 'text.secondary' }}>
                 Free forever. No credit card needed.
-              </Typography>
+              </Typography> */}
             </Box>
             <Tooltip title={capitalCase(method)}>
               <Box
@@ -86,7 +86,7 @@ export default function Register() {
 
           <RegisterForm />
 
-          <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
+          {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;
             <Link underline="always" color="text.primary" href="#">
               Terms of Service
@@ -96,11 +96,11 @@ export default function Register() {
               Privacy Policy
             </Link>
             .
-          </Typography>
+          </Typography> */}
 
           <MHidden width="smUp">
             <Typography variant="subtitle2" sx={{ mt: 3, textAlign: 'center' }}>
-              Already have an account?&nbsp;
+              Bạn đã có tài khoản?&nbsp;
               <Link to={PATH_AUTH.login} component={RouterLink}>
                 Login
               </Link>

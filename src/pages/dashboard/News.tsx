@@ -7,10 +7,13 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useCallback, useState } from 'react';
 // material
 import { Box, Grid, Button, Skeleton, Container, Stack } from '@material-ui/core';
+import { getListNew } from 'redux/slices/new';
+import NewCard from 'components/_dashboard/blog/NewCard';
 // redux
-import { useDispatch, useSelector } from '../../redux/store';
+import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getPostsInitial, getMorePosts } from '../../redux/slices/blog';
 // hooks
+
 import useSettings from '../../hooks/useSettings';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -63,7 +66,7 @@ export default function News() {
   const dispatch = useDispatch();
   const [filters, setFilters] = useState('latest');
   const { posts, hasMore, index, step } = useSelector((state: { blog: BlogState }) => state.blog);
-
+  const newList = useSelector((state: RootState) => state.new.newList);
   const sortedPosts = applySort(posts, filters);
   const onScroll = useCallback(() => dispatch(getMorePosts()), [dispatch]);
 
@@ -76,6 +79,7 @@ export default function News() {
 
   useEffect(() => {
     dispatch(getPostsInitial(index, step));
+    dispatch(getListNew());
   }, [dispatch, index, step]);
 
   const handleChangeSort = (value?: string) => {
@@ -94,20 +98,21 @@ export default function News() {
             <BlogPostsSearch />
             <BlogPostsSort query={filters} options={SORT_OPTIONS} onSort={handleChangeSort} />
           </Stack>
-
+          {/* 
           <InfiniteScroll
             next={onScroll}
             hasMore={hasMore}
             loader={SkeletonLoad}
             dataLength={posts.length}
             style={{ overflow: 'inherit' }}
-          >
-            <Grid container spacing={3}>
-              {sortedPosts.map((post, index) => (
-                <BlogPostCard key={post.id} post={post} index={index} />
-              ))}
-            </Grid>
-          </InfiniteScroll>
+          > */}
+          <Grid container spacing={3}>
+            {newList!.map((newPost, index) => (
+              <NewCard key={newPost.id} newPost={newPost} index={index} />
+              // <p key={index}>{newPost.title}</p>
+            ))}
+          </Grid>
+          {/* </InfiniteScroll> */}
         </Container>
       </RootStyle>
     </Page>

@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// ----------------------------------------------------------------------
 axios.defaults.baseURL = process.env.REACT_APP_HOST_API_KEY;
 
 const axiosInstance = axios.create();
