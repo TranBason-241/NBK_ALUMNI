@@ -60,7 +60,7 @@ export default function Register() {
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
             Đăng ký để truy cập vào hệ thống
           </Typography>
-          <img alt="register" src="/static/illustrations/illustration_register.png" />
+          <img alt="register" src="/static/illustrations/register_image.png" />
         </SectionStyle>
       </MHidden>
 
