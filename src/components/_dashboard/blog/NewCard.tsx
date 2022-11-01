@@ -85,7 +85,7 @@ export default function NewCard({ newPost, index }: newPostCardProps) {
     thumbnail
   } = newPost;
   // const linkTo = `${PATH_DASHBOARD.blog.root}/post/${paramCase(title)}`;
-  //   const linkTo = `${PATH_NEW.root}/${paramCase(id)}`;
+  const linkTo = `${PATH_NEW.root}/${newPost.id}`;
   //   console.log(paramCase(id));
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
@@ -155,7 +155,7 @@ export default function NewCard({ newPost, index }: newPostCardProps) {
           </Typography>
 
           <TitleStyle
-            to="linkTo"
+            to={linkTo}
             // color="inherit"
             // variant="subtitle2"
             // component={RouterLink}
