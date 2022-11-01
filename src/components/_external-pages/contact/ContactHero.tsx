@@ -57,30 +57,37 @@ export default function ContactHero() {
     <RootStyle initial="initial" animate="animate" variants={varWrapEnter}>
       <Container maxWidth="lg" sx={{ position: 'relative', height: '100%' }}>
         <ContentStyle>
-          <TextAnimate text="Where" sx={{ color: 'primary.main' }} variants={varFadeInRight} />
+          <TextAnimate text="Liên hệ" sx={{ color: 'primary.main' }} variants={varFadeInRight} />
           <br />
           <Box sx={{ display: 'inline-flex', color: 'common.white' }}>
-            <TextAnimate text="to" sx={{ mr: 2 }} />
-            <TextAnimate text="find" sx={{ mr: 2 }} />
-            <TextAnimate text="us?" />
+            <TextAnimate text="Với" sx={{ mr: 2 }} />
+            <TextAnimate text="chúng" sx={{ mr: 2 }} />
+            <TextAnimate text="tôi" />
           </Box>
 
           <Grid container spacing={5} sx={{ mt: 5, color: 'common.white' }}>
-            {CONTACTS.map((contact) => (
-              <Grid key={contact.country} item xs={12} sm={6} md={3} lg={2} sx={{ pr: { md: 5 } }}>
-                <motion.div variants={varFadeIn}>
-                  <Typography variant="h6" paragraph>
-                    {contact.country}
-                  </Typography>
-                </motion.div>
-                <motion.div variants={varFadeInRight}>
-                  <Typography variant="body2">
-                    {contact.address}
-                    <br /> {contact.phoneNumber}
-                  </Typography>
-                </motion.div>
-              </Grid>
-            ))}
+            <Grid item xs={12} sm={12} md={12} lg={12} sx={{ pr: { md: 5 } }}>
+              <motion.div variants={varFadeIn}>
+                <Typography variant="h3" paragraph>
+                  Thông tin liên hệ
+                </Typography>
+              </motion.div>
+              <motion.div variants={varFadeInRight}>
+                <Typography variant="h6">
+                  Trường THPT Chuyên Nguyễn Bỉnh Khiêm - Thành phố Vĩnh Long
+                </Typography>
+              </motion.div>
+              <motion.div variants={varFadeInRight}>
+                <Typography variant="body2">
+                  ĐỊA CHỈ: 157 PHẠM THÁI BƯỜNG - PHƯỜNG 4 - TP VĨNH LONG - VĨNH LONG
+                </Typography>
+              </motion.div>
+              <motion.div variants={varFadeInRight}>
+                <Typography variant="body2">
+                  Phone: 02703822734 | Fax: Đang cập nhật | Email: c3nguyenbinhkhiem@vinhlong.edu.vn
+                </Typography>
+              </motion.div>
+            </Grid>
           </Grid>
         </ContentStyle>
       </Container>

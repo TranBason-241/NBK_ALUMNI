@@ -12,6 +12,7 @@ import {
   LandingHugePackElements
 } from '../components/_external-pages/landing';
 import About from './About';
+import Contact from './Contact';
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +40,7 @@ export default function LandingPage() {
         {/* <LandingDarkMode />
         <LandingThemeColor />
         <LandingCleanInterfaces /> */}
+        <Contact />
         <LandingAdvertisement />
       </ContentStyle>
     </RootStyle>

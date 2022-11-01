@@ -87,45 +87,6 @@ export default function AboutWhat() {
     <RootStyle>
       <Container maxWidth="lg">
         <Grid container spacing={3}>
-          <MHidden width="mdDown">
-            <Grid item xs={12} md={12} lg={7} sx={{ pr: { md: 7 } }}>
-              <Grid container spacing={3} alignItems="flex-end">
-                <Grid item xs={12}>
-                  <MotionInView variants={varFadeInUp}>
-                    <Box
-                      component="img"
-                      src="/static/about/about_image.jpg"
-                      sx={{
-                        borderRadius: 2,
-                        boxShadow: shadow
-                      }}
-                    />
-                  </MotionInView>
-                </Grid>
-                <Grid item xs={6}>
-                  <MotionInView variants={varFadeInUp}>
-                    <Box
-                      width="maxWidth"
-                      component="img"
-                      src="/static/about/about_image_3.jpg"
-                      sx={{ borderRadius: 2 }}
-                    />
-                  </MotionInView>
-                </Grid>
-                <Grid item xs={6}>
-                  <MotionInView variants={varFadeInUp}>
-                    <Box
-                      width="maxWidth"
-                      component="img"
-                      src="/static/about/about_image_2.jpg"
-                      sx={{ borderRadius: 2 }}
-                    />
-                  </MotionInView>
-                </Grid>
-              </Grid>
-            </Grid>
-          </MHidden>
-
           <Grid item xs={12} md={6} lg={5}>
             <MotionInView variants={varFadeInRight}>
               <Typography variant="h2" sx={{ mb: 3 }}>
@@ -172,6 +133,44 @@ export default function AboutWhat() {
               </Button>
             </MotionInView> */}
           </Grid>
+          <MHidden width="mdDown">
+            <Grid item xs={12} md={12} lg={7} sx={{ pr: { md: 7 } }}>
+              <Grid container spacing={3} alignItems="flex-end">
+                <Grid item xs={12}>
+                  <MotionInView variants={varFadeInUp}>
+                    <Box
+                      component="img"
+                      src="/static/about/about_image.jpg"
+                      sx={{
+                        borderRadius: 2,
+                        boxShadow: shadow
+                      }}
+                    />
+                  </MotionInView>
+                </Grid>
+                <Grid item xs={6}>
+                  <MotionInView variants={varFadeInUp}>
+                    <Box
+                      width="maxWidth"
+                      component="img"
+                      src="/static/about/about_image_3.jpg"
+                      sx={{ borderRadius: 2 }}
+                    />
+                  </MotionInView>
+                </Grid>
+                <Grid item xs={6}>
+                  <MotionInView variants={varFadeInUp}>
+                    <Box
+                      width="maxWidth"
+                      component="img"
+                      src="/static/about/about_image_2.jpg"
+                      sx={{ borderRadius: 2 }}
+                    />
+                  </MotionInView>
+                </Grid>
+              </Grid>
+            </Grid>
+          </MHidden>
         </Grid>
       </Container>
     </RootStyle>

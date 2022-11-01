@@ -13,12 +13,19 @@ export default function AboutVision() {
           mb: 10,
           position: 'relative',
           borderRadius: 2,
+          // boxShadow: shadow,
           overflow: 'hidden'
         }}
       >
-        <img src="/static/about/vision.jpg" alt="about-vision" />
-
         <Box
+          component="img"
+          src="/static/about/about_image.jpg"
+          sx={{
+            borderRadius: 2
+          }}
+        />
+
+        {/* <Box
           sx={{
             bottom: { xs: 24, md: 80 },
             width: '100%',
@@ -40,15 +47,14 @@ export default function AboutVision() {
               </MotionInView>
             )
           )}
-        </Box>
+        </Box> */}
       </Box>
 
       <Grid container justifyContent="center">
         <Grid item xs={12} sm={8}>
           <MotionInView variants={varFadeInUp}>
             <Typography variant="h3" sx={{ textAlign: 'center' }}>
-              Our vision offering the best product nulla vehicula tortor scelerisque ultrices
-              malesuada.
+              Thêm vài cái gì đó ở đây
             </Typography>
           </MotionInView>
         </Grid>
