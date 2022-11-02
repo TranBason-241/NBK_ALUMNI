@@ -14,6 +14,7 @@ import {
   ListItemAvatar,
   ListItemButton
 } from '@material-ui/core';
+import { width } from '@material-ui/system';
 
 // ----------------------------------------------------------------------
 
