@@ -29,8 +29,12 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMorePosts, getPostsInitial } from 'redux/slices/blog';
 import { orderBy } from 'lodash';
-import { varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
+import { getListNew } from 'redux/slices/new';
+import NewCard from 'components/_dashboard/blog/NewCard';
+import { RootState } from 'redux/store';
 import { BlogState, Post } from '../../../@types/blog';
+
+import { varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
 
 // ----------------------------------------------------------------------
 
@@ -153,9 +157,9 @@ const SkeletonLoad = (
 export default function LandingMinimalHelps() {
   // Tin tức & sự kiện
   const dispatch = useDispatch();
-  const [filters, setFilters] = useState('latest');
+  const [filters, setFilters] = useState('');
   const { posts, hasMore, index, step } = useSelector((state: { blog: BlogState }) => state.blog);
-
+  const newList = useSelector((state: RootState) => state.new.newList);
   const sortedPosts = applySort(posts, filters);
   const onScroll = useCallback(() => dispatch(getMorePosts()), [dispatch]);
   const theme = useTheme();
@@ -170,7 +174,8 @@ export default function LandingMinimalHelps() {
 
   useEffect(() => {
     dispatch(getPostsInitial(index, step));
-  }, [dispatch, index, step]);
+    dispatch(getListNew(filters));
+  }, [dispatch, index, step, filters]);
 
   return (
     <RootStyle>
@@ -187,7 +192,7 @@ export default function LandingMinimalHelps() {
           </MotionInView>
           <MotionInView variants={varFadeInDown}>
             <Typography variant="h2" sx={{ textAlign: 'center', color: 'primary.main' }}>
-              Tin Tức & Sự kiện
+              Tin Tức
             </Typography>
           </MotionInView>
         </Box>
@@ -203,8 +208,8 @@ export default function LandingMinimalHelps() {
               Xem tất cả
             </Button>
           </Stack>
-
-          {/* <InfiniteScroll
+          {/* 
+          <InfiniteScroll
             next={onScroll}
             hasMore={hasMore}
             loader={SkeletonLoad}
@@ -212,8 +217,9 @@ export default function LandingMinimalHelps() {
             style={{ overflow: 'inherit' }}
           > */}
           <Grid container spacing={3}>
-            {sortedPosts.map((post, index) => (
-              <BlogPostCard key={post.id} post={post} index={index} />
+            {newList!.map((newPost, index) => (
+              <NewCard key={newPost.id} newPost={newPost} index={index} />
+              // <p key={index}>{newPost.title}</p>
             ))}
           </Grid>
           {/* </InfiniteScroll> */}

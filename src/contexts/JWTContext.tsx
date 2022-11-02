@@ -78,13 +78,16 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const initialize = async () => {
       try {
         const accessToken = window.localStorage.getItem('accessToken');
-
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
-
+          // set bearer token
+          axios.defaults.headers.common = {
+            Authorization: `Bearer ${accessToken}`
+          };
+          const response = await axios.get('/api/v1/account-info', {
+            params: { token: accessToken }
+          });
+          const user = response.data;
           dispatch({
             type: Types.Initial,
             payload: {
@@ -116,20 +119,31 @@ function AuthProvider({ children }: { children: ReactNode }) {
     initialize();
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const response = await axios.post('/api/account/login', {
-      email,
-      password
-    });
-    const { accessToken, user } = response.data;
+  const login = async (id: string, pass: string) => {
+    await axios
+      .post('/api/v1/login', {
+        username: id,
+        password: pass
+      })
+      .then(async (res: any) => {
+        localStorage.setItem('accessToken', res.data.token);
+        setSession(res.data.token);
+        // set bearer token
+        axios.defaults.headers.common = {
+          Authorization: `Bearer ${res.data.token}`
+        };
+        const response = await axios.get('/api/v1/account-info', {
+          params: { token: res.data.token }
+        });
+        const user = response.data;
 
-    setSession(accessToken);
-    dispatch({
-      type: Types.Login,
-      payload: {
-        user
-      }
-    });
+        dispatch({
+          type: Types.Login,
+          payload: {
+            user
+          }
+        });
+      });
   };
 
   const register = async (email: string, password: string, firstName: string, lastName: string) => {

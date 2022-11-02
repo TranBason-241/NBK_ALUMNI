@@ -80,9 +80,9 @@ export default function Router() {
     {
       path: 'dashboard',
       element: (
-        <AuthGuard>
-          <DashboardLayout />
-        </AuthGuard>
+        // <AuthGuard>
+        <DashboardLayout />
+        // </AuthGuard>
       ),
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" replace /> },
@@ -176,7 +176,7 @@ export default function Router() {
           path: 'new',
           children: [
             { path: 'list', element: <News /> },
-            { path: '/:title', element: <BlogPost /> }
+            { path: '/:newId', element: <NewDetail /> }
           ]
         },
         {
@@ -264,6 +264,7 @@ const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/Ecommer
 const EcommerceInvoice = Loadable(lazy(() => import('../pages/dashboard/EcommerceInvoice')));
 const BlogPosts = Loadable(lazy(() => import('../pages/dashboard/BlogPosts')));
 const News = Loadable(lazy(() => import('../pages/dashboard/News')));
+const NewDetail = Loadable(lazy(() => import('../pages/dashboard/NewDetail')));
 const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));

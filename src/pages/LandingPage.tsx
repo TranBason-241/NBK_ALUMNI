@@ -1,5 +1,7 @@
 // material
 import { styled } from '@material-ui/core/styles';
+import { AboutTeam } from 'components/_external-pages/about';
+import AboutPerson from 'components/_external-pages/about/AboutPerson';
 // components
 import Page from '../components/Page';
 import {
@@ -12,6 +14,7 @@ import {
   LandingHugePackElements
 } from '../components/_external-pages/landing';
 import About from './About';
+import Contact from './Contact';
 
 // ----------------------------------------------------------------------
 
@@ -35,10 +38,11 @@ export default function LandingPage() {
         <About />
         <LandingHugePackElements />
         <LandingMinimal />
-
+        <AboutPerson />
         {/* <LandingDarkMode />
         <LandingThemeColor />
         <LandingCleanInterfaces /> */}
+        <Contact />
         <LandingAdvertisement />
       </ContentStyle>
     </RootStyle>

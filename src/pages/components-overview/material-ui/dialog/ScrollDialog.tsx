@@ -45,7 +45,7 @@ export default function ScrollDialog() {
         scroll=body
       </Button>
 
-      <Dialog open={open} onClose={handleClose} scroll={scroll}>
+      <Dialog maxWidth="md" open={open} onClose={handleClose} scroll={scroll}>
         <DialogTitle sx={{ pb: 2 }}>Subscribe</DialogTitle>
         <DialogContent dividers={scroll === 'paper'}>
           <DialogContentText

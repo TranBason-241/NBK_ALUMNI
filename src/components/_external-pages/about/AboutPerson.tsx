@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import { Icon } from '@iconify/react';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
@@ -7,9 +7,22 @@ import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import roundArrowRightAlt from '@iconify/icons-ic/round-arrow-right-alt';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
+import { DialogProps } from '@material-ui/core/Dialog';
 // material
 import { useTheme, styled } from '@material-ui/core/styles';
-import { Box, Card, Button, Container, Typography, IconButton } from '@material-ui/core';
+import {
+  Box,
+  Card,
+  Container,
+  Typography,
+  IconButton,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText
+} from '@material-ui/core';
 //
 import { varFadeIn, varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
 import { CarouselControlsArrowsBasic2 } from '../../carousel';
@@ -62,7 +75,8 @@ const MEMBERS = [
 
 // ----------------------------------------------------------------------
 
-type MemberCardProps = {
+type PersonCardProps = {
+  handleOpen: () => void;
   member: {
     name: string;
     role: string;
@@ -70,31 +84,94 @@ type MemberCardProps = {
   };
 };
 
-function MemberCard({ member }: MemberCardProps) {
+function PersonCard({ member, handleOpen }: PersonCardProps) {
   const { name, role, avatar } = member;
   return (
-    <Card key={name} sx={{ p: 1, mx: 1.5 }}>
-      <Typography variant="subtitle1" sx={{ mt: 2, mb: 0.5 }}>
-        {name}
-      </Typography>
-      <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-        {role}
-      </Typography>
-      <Box component="img" src={avatar} sx={{ width: '100%', borderRadius: 1.5 }} />
-      <Box sx={{ mt: 2, mb: 1 }}>
-        {[facebookFill, instagramFilled, linkedinFill, twitterFill].map((social, index) => (
-          <IconButton key={index}>
-            <Icon icon={social} width={20} height={20} />
-          </IconButton>
-        ))}
-      </Box>
-    </Card>
+    <Box onClick={handleOpen}>
+      <Card key={name} sx={{ p: 1, mx: 1.5 }}>
+        <Typography variant="subtitle1" sx={{ mt: 2, mb: 0.5 }}>
+          {name}
+        </Typography>
+
+        <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
+          {role}
+        </Typography>
+        <Box component="img" src={avatar} sx={{ width: '100%', borderRadius: 1.5 }} />
+        <Box sx={{ mt: 2, mb: 1 }}>
+          {[facebookFill, instagramFilled, linkedinFill, twitterFill].map((social, index) => (
+            <IconButton key={index}>
+              <Icon icon={social} width={20} height={20} />
+            </IconButton>
+          ))}
+        </Box>
+      </Card>
+    </Box>
   );
 }
 
-export default function AboutTeam() {
+type DiverListHeadProps = {
+  handleClose: () => void;
+  open: boolean;
+  //   item?: Item;
+};
+
+function InfoDialog({ handleClose, open }: DiverListHeadProps) {
+  const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
+
+  const descriptionElementRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [open]);
+
+  return (
+    <div>
+      <Dialog maxWidth="md" open={open} onClose={handleClose} scroll={scroll}>
+        <DialogTitle sx={{ pb: 2 }}>Tên nhân vật</DialogTitle>
+        <DialogContent dividers={scroll === 'paper'}>
+          <DialogContentText
+            id="scroll-dialog-description"
+            ref={descriptionElementRef}
+            tabIndex={-1}
+          >
+            {[...new Array(50)]
+              .map(
+                () => `Cras mattis consectetur purus sit amet fermentum.
+  Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+  Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+  Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
+              )
+              .join('\n')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+
+          <Button variant="contained" onClick={handleClose}>
+            Subscribe
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
+export default function AboutPerson() {
   const carouselRef = useRef<Slider>(null);
   const theme = useTheme();
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   const settings = {
     speed: 500,
@@ -135,7 +212,7 @@ export default function AboutTeam() {
           Dream team
         </Typography>
       </MotionInView> */}
-
+        <InfoDialog open={open} handleClose={handleClose} />
         <MotionInView variants={varFadeInUp}>
           <Typography variant="h2" sx={{ mb: 3, color: 'primary.main' }}>
             Con người
@@ -173,7 +250,7 @@ export default function AboutTeam() {
           <Slider ref={carouselRef} {...settings}>
             {MEMBERS.map((member) => (
               <MotionInView key={member.name} variants={varFadeIn}>
-                <MemberCard key={member.name} member={member} />
+                <PersonCard handleOpen={handleOpen} key={member.name} member={member} />
               </MotionInView>
             ))}
           </Slider>
@@ -202,7 +279,7 @@ export default function AboutTeam() {
           <Slider ref={carouselRef} {...settings}>
             {MEMBERS.map((member) => (
               <MotionInView key={member.name} variants={varFadeIn}>
-                <MemberCard key={member.name} member={member} />
+                <PersonCard handleOpen={handleOpen} key={member.name} member={member} />
               </MotionInView>
             ))}
           </Slider>
@@ -231,7 +308,7 @@ export default function AboutTeam() {
           <Slider ref={carouselRef} {...settings}>
             {MEMBERS.map((member) => (
               <MotionInView key={member.name} variants={varFadeIn}>
-                <MemberCard key={member.name} member={member} />
+                <PersonCard handleOpen={handleOpen} key={member.name} member={member} />
               </MotionInView>
             ))}
           </Slider>

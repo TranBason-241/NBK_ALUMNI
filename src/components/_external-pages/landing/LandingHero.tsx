@@ -128,8 +128,7 @@ export default function LandingHero() {
                 to={PATH_DASHBOARD.root}
                 startIcon={<Icon icon={flashFill} width={20} height={20} />}
               >
-                {/* Live Preview */}
-                Liên hệ
+                Live preview
               </Button>
             </motion.div>
 

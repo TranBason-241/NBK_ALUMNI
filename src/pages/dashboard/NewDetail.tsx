@@ -4,8 +4,10 @@ import { useParams } from 'react-router-dom';
 import { alpha, useTheme, styled } from '@material-ui/core/styles';
 // material
 import { Box, Card, Divider, Skeleton, Container, Typography, Pagination } from '@material-ui/core';
+import { getNewDetail } from 'redux/slices/new';
+import NewDetailHero from 'components/_dashboard/blog/NewDetailHero';
 // redux
-import { useDispatch, useSelector } from '../../redux/store';
+import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { getPost, getRecentPosts } from '../../redux/slices/blog';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
@@ -46,67 +48,66 @@ const RootStyle = styled('div')(({ theme }) => ({
     paddingBottom: theme.spacing(15)
   }
 }));
-export default function BlogPost() {
+export default function NewDetail() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
-  const { title } = useParams();
+  const { newId } = useParams();
   const { post, error, recentPosts } = useSelector((state: { blog: BlogState }) => state.blog);
-
+  const newDetail = useSelector((state: RootState) => state.new.newDetail);
   useEffect(() => {
-    dispatch(getPost(title));
+    dispatch(getNewDetail(newId));
     // dispatch(getRecentPosts(title));
-    console.log(title);
-  }, [dispatch, title]);
+  }, [dispatch, newId]);
 
   return (
-    <Page title="Blog: Post Details | Minimal-UI">
+    <Page title=" Tin tức | PJ School">
       <RootStyle>
         <Container maxWidth={themeStretch ? false : 'lg'}>
-          <HeaderBreadcrumbs
-            heading="Post Details"
+          {/* <HeaderBreadcrumbs
+            heading=""
             links={[
               { name: 'Dashboard', href: PATH_DASHBOARD.root },
               { name: 'Blog', href: PATH_DASHBOARD.blog.root },
-              { name: sentenceCase(title) }
+              { name: sentenceCase(newId) }
             ]}
-          />
+          /> */}
 
-          {post && (
+          {newDetail && (
             <Card>
-              <BlogPostHero post={post} />
+              <NewDetailHero newDetail={newDetail} />
 
               <Box sx={{ p: { xs: 3, md: 5 } }}>
                 <Typography variant="h6" sx={{ mb: 5 }}>
-                  {post.description}
+                  {newDetail.title}
                 </Typography>
 
-                <Markdown children={post.body} />
+                <Markdown children={newDetail.body} />
 
-                <Box sx={{ my: 5 }}>
+                {/* <Box sx={{ my: 5 }}>
                   <Divider />
                   <BlogPostTags post={post} />
                   <Divider />
-                </Box>
+                </Box> */}
 
-                <Box sx={{ display: 'flex', mb: 2 }}>
+                {/* <Box sx={{ display: 'flex', mb: 2 }}>
                   <Typography variant="h4">Comments</Typography>
                   <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
-                    ({post.comments.length})
+                    ({newDetail.comments.length})
                   </Typography>
-                </Box>
+                </Box> */}
 
-                <BlogPostCommentList post={post} />
+                {/* <BlogPostCommentList post={post} /> */}
 
-                <Box sx={{ mb: 5, mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+                {/* <Box sx={{ mb: 5, mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <Pagination count={8} color="primary" />
-                </Box>
+                </Box> */}
 
-                <BlogPostCommentForm />
+                {/* <BlogPostCommentForm /> */}
               </Box>
             </Card>
           )}
 
-          {!post && SkeletonLoad}
+          {/* {!post && SkeletonLoad} */}
 
           {error && <Typography variant="h6">404 Post not found</Typography>}
 
