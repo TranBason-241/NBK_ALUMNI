@@ -32,11 +32,12 @@ import { fontStyle } from '@material-ui/system';
 
 //
 import { Teacher } from '../../@types/teacher';
+import { Student } from '../../@types/student';
 import { varFadeIn, varFadeInUp, MotionInView, varFadeInDown } from '../animate';
 import { CarouselControlsArrowsBasic2 } from '../carousel';
 
-type teacherCardProps = {
-  teacher: Teacher;
+type studentCardProps = {
+  student: Student;
 };
 
 type Member = {
@@ -50,9 +51,9 @@ type Member = {
   email: string;
   phone: string;
 };
-function TeacherCard({ teacher }: teacherCardProps) {
+function StudentCard({ student }: studentCardProps) {
   const { id, name, dateOfBirth, cityId, imageUrl, email, phone, startTime, endTime, isAlive } =
-    teacher;
+    student;
   return (
     <Box>
       <Card key={name} sx={{ p: 1, mx: 1.5, mt: 2 }}>
@@ -61,42 +62,13 @@ function TeacherCard({ teacher }: teacherCardProps) {
         </Typography>
 
         <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-          Dạy môn gì
+          Khóa: 2015-2018
         </Typography>
         <Box
           component="img"
           src={imageUrl}
           sx={{ width: '100%', borderRadius: 1.5, height: 250 }}
         />
-        <Box sx={{ mt: 2, mb: 1 }}>
-          {[facebookFill, instagramFilled].map((social, index) => (
-            <IconButton key={index}>
-              <Icon icon={social} width={20} height={20} />
-            </IconButton>
-          ))}
-        </Box>
-      </Card>
-    </Box>
-  );
-}
-
-type PersonCardProps = {
-  member: Member;
-};
-
-function PersonCard({ member }: PersonCardProps) {
-  const { name, imageUrl, dateOfBirth } = member;
-  return (
-    <Box onClick={() => alert('sss')}>
-      <Card key={name} sx={{ p: 1, mx: 1.5 }}>
-        <Typography variant="subtitle1" sx={{ mt: 2, mb: 0.5 }}>
-          {name}
-        </Typography>
-
-        <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-          {dateOfBirth}
-        </Typography>
-        <Box component="img" src={imageUrl} sx={{ width: '100%', borderRadius: 1.5 }} />
         <Box sx={{ mt: 2, mb: 1 }}>
           {[facebookFill, instagramFilled, linkedinFill, twitterFill].map((social, index) => (
             <IconButton key={index}>
@@ -109,18 +81,14 @@ function PersonCard({ member }: PersonCardProps) {
   );
 }
 
-type teacherSliderProps = {
-  teacherList: Teacher[];
-};
-
 type InfoDialogProps = {
-  teacher: Teacher;
+  student: Student;
   handleClose: () => void;
   open: boolean;
   //   item?: Item;
 };
 
-function InfoDialog({ handleClose, open, teacher }: InfoDialogProps) {
+function InfoDialog({ handleClose, open, student }: InfoDialogProps) {
   const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
   // const { id, name, dateOfBirth, cityId, imageUrl, email, phone, startTime, endTime, isAlive } =
   //   teacher!;
@@ -150,8 +118,8 @@ function InfoDialog({ handleClose, open, teacher }: InfoDialogProps) {
               <Grid item md={4}>
                 <Box
                   component="img"
-                  src={teacher?.imageUrl}
-                  sx={{ width: 400, height: 300, borderRadius: 3 }}
+                  src={student?.imageUrl}
+                  sx={{ width: 400, height: 350, borderRadius: 3 }}
                   display="center"
                 />
                 <Grid sx={{ mt: 2 }} container justifyContent="center">
@@ -163,36 +131,36 @@ function InfoDialog({ handleClose, open, teacher }: InfoDialogProps) {
               <Grid item md={8}>
                 <Box>
                   <Typography variant="h2" sx={{ color: 'black', mb: 5 }}>
-                    {teacher?.name}
+                    {student?.name}
                   </Typography>
 
                   <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
                     Ngày sinh: &nbsp;
                     <Typography component="span" variant="subtitle1">
-                      {teacher?.dateOfBirth}
+                      {student?.dateOfBirth}
                     </Typography>
                   </Typography>
 
                   <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
                     Email: &nbsp;
                     <Typography component="span" variant="subtitle1">
-                      {teacher?.email}
+                      {student?.email}
                     </Typography>
                   </Typography>
 
                   <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
                     Phone: &nbsp;
                     <Typography component="span" variant="subtitle1">
-                      {teacher?.phone}
+                      {student?.phone}
                     </Typography>
                   </Typography>
-
+                  {/* 
                   <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
                     Phụ trách môn học: &nbsp;
                     <Typography component="span" variant="subtitle1">
                       Toán, Lý, Hóa
                     </Typography>
-                  </Typography>
+                  </Typography> */}
                 </Box>
               </Grid>
             </Grid>
@@ -209,11 +177,14 @@ function InfoDialog({ handleClose, open, teacher }: InfoDialogProps) {
     </Box>
   );
 }
+type studentSliderProps = {
+  studentList: Student[];
+};
 
-export default function TeacherSlider({ teacherList }: teacherSliderProps) {
+export default function StudentSlider({ studentList }: studentSliderProps) {
   const theme = useTheme();
   const carouselRef = useRef<Slider>(null);
-  const [currentTeacher, setCurrentTeacher] = useState<Teacher>();
+  const [currentStudent, setCurrentStudent] = useState<Student>();
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -224,7 +195,7 @@ export default function TeacherSlider({ teacherList }: teacherSliderProps) {
 
   const settings = {
     speed: 500,
-    slidesToShow: teacherList.length > 3 ? 3 : 2,
+    slidesToShow: studentList.length > 3 ? 3 : 2,
     centerMode: true,
     centerPadding: '0 80px',
     rtl: Boolean(theme.direction === 'rtl'),
@@ -254,17 +225,17 @@ export default function TeacherSlider({ teacherList }: teacherSliderProps) {
 
   return (
     <Box sx={{ position: 'relative', mt: 3, backgroundColor: 'grey', borderRadius: 1.5 }}>
-      <InfoDialog open={open} teacher={currentTeacher!} handleClose={handleClose} />
+      <InfoDialog open={open} student={currentStudent!} handleClose={handleClose} />
       <Slider ref={carouselRef} {...settings}>
-        {teacherList.map((teacher: Teacher) => (
-          <MotionInView key={teacher.id} variants={varFadeIn}>
+        {studentList.map((student: Student) => (
+          <MotionInView key={student.id} variants={varFadeIn}>
             <Box
               onClick={() => {
-                setCurrentTeacher(teacher);
+                setCurrentStudent(student);
                 handleOpen();
               }}
             >
-              <TeacherCard teacher={teacher} />
+              <StudentCard student={student} />
             </Box>
           </MotionInView>
         ))}
