@@ -92,9 +92,9 @@ export default function MainNavbar() {
           <RouterLink to="/">
             <Logo />
           </RouterLink>
-          {/* <Label color="info" sx={{ ml: 1 }}>
-            Ts v2.3.0
-          </Label> */}
+          <Label color="primary" sx={{ ml: 1 }}>
+            THPT NBK
+          </Label>
           <Box sx={{ flexGrow: 1 }} />
 
           <MHidden width="mdDown">

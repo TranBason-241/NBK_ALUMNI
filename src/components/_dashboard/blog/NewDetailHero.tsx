@@ -4,6 +4,7 @@ import twitterFill from '@iconify/icons-eva/twitter-fill';
 import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
+import { format, formatDistanceToNow } from 'date-fns';
 import { useEffect, useCallback, useState } from 'react';
 // material
 import { alpha, useTheme, styled } from '@material-ui/core/styles';
@@ -16,7 +17,7 @@ import {
   SpeedDialAction
 } from '@material-ui/core';
 // utils
-import { fDate } from '../../../utils/formatTime';
+import { fDate, fDateTime } from '../../../utils/formatTime';
 // @types
 import { Post } from '../../../@types/blog';
 import { New } from '../../../@types/new';
@@ -114,7 +115,10 @@ export default function NewDetailHero({ newDetail }: NewDetailProps) {
   const { id, title, body, orderView, newsCategoryId, writingDate, thumbnail } = newDetail;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
+  function convertUTCDateToLocalDate(date: any) {
+    const newDate = new Date(date);
+    return newDate.toLocaleDateString();
+  }
   return (
     <RootStyle>
       <CoverImgStyle alt="post cover" src={thumbnail} />
@@ -128,14 +132,15 @@ export default function NewDetailHero({ newDetail }: NewDetailProps) {
             {/* <Typography variant="subtitle1" sx={{ color: 'common.white' }}>
               name
             </Typography> */}
-            <Typography variant="body2" sx={{ color: 'grey.500' }}>
-              {/* {fDate(`${writingDate}`)} */}
-              {writingDate}
+            <Typography variant="h4" sx={{ color: 'grey.500' }}>
+              {/* {fDateTime(writingDate)} */}
+              Ngày: {convertUTCDateToLocalDate(writingDate)}
+              {/* {writingDate} */}
             </Typography>
           </Box>
         </Box>
 
-        <SpeedDial
+        {/* <SpeedDial
           direction={isMobile ? 'up' : 'left'}
           ariaLabel="Share post"
           icon={<Icon icon={shareFill} />}
@@ -150,7 +155,7 @@ export default function NewDetailHero({ newDetail }: NewDetailProps) {
               FabProps={{ color: 'default' }}
             />
           ))}
-        </SpeedDial>
+        </SpeedDial> */}
       </FooterStyle>
     </RootStyle>
   );
