@@ -1,9 +1,11 @@
 import { Link as RouterLink } from 'react-router-dom';
+import flashFill from '@iconify/icons-eva/flash-fill';
+import { Icon } from '@iconify/react';
 // material
 import { alpha, useTheme, styled } from '@material-ui/core/styles';
 import { Box, Grid, Button, Container, Typography } from '@material-ui/core';
 // routes
-import { PATH_PAGE } from '../../../routes/paths';
+import { PATH_DASHBOARD, PATH_PAGE } from '../../../routes/paths';
 //
 import { varFadeInUp, MotionInView } from '../../animate';
 
@@ -138,8 +140,10 @@ export default function LandingHugePackElements() {
                 </Button> */}
                 <Button
                   variant="contained"
-                  target="_blank"
-                  href="https://material-ui.com/store/items/minimal-dashboard/"
+                  size="large"
+                  component={RouterLink}
+                  to={PATH_DASHBOARD.class.myClass}
+                  startIcon={<Icon icon={flashFill} width={20} height={20} />}
                 >
                   Tìm lớp của bạn
                 </Button>

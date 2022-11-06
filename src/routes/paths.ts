@@ -72,6 +72,13 @@ export const PATH_DASHBOARD = {
     editById: path(ROOTS_DASHBOARD, '/user/ada-lindgren/edit'),
     account: path(ROOTS_DASHBOARD, '/user/account')
   },
+  class: {
+    root: path(ROOTS_DASHBOARD, '/class'),
+    myClass: path(ROOTS_DASHBOARD, '/class/my-class')
+    // post: path(ROOTS_DASHBOARD, '/blog/post/:title'),
+    // postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
+    // newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
+  },
   eCommerce: {
     root: path(ROOTS_DASHBOARD, '/e-commerce'),
     shop: path(ROOTS_DASHBOARD, '/e-commerce/shop'),

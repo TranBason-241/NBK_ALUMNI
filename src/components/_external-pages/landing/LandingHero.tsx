@@ -120,18 +120,6 @@ export default function LandingHero() {
               </Link>
             </Stack>
 
-            <motion.div variants={varFadeInRight}>
-              <Button
-                size="large"
-                variant="contained"
-                component={RouterLink}
-                to={PATH_DASHBOARD.root}
-                startIcon={<Icon icon={flashFill} width={20} height={20} />}
-              >
-                Live preview
-              </Button>
-            </motion.div>
-
             <Stack
               direction="row"
               spacing={1.5}

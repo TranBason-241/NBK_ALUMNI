@@ -21,7 +21,7 @@ const menuConfig = [
   },
 
   {
-    title: 'Tin tức & sự kiện',
+    title: 'Tin tức',
     // page
     path: '/pages',
     icon: <Icon icon={fileFill} {...ICON_SIZE} />,
@@ -61,10 +61,15 @@ const menuConfig = [
     ]
   },
   {
-    title: 'Lớp của tôi',
+    title: 'Component',
     icon: <Icon icon={roundGrain} {...ICON_SIZE} />,
     path: PATH_PAGE.components
   },
+  // {
+  //   title: 'hâha',
+  //   icon: <Icon icon={roundGrain} {...ICON_SIZE} />,
+  //   path: PATH_DASHBOARD.root
+  // },
   {
     title: 'Đăng ký',
     icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,

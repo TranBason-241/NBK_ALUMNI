@@ -42,8 +42,15 @@ const sidebarConfig = [
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
-    subheader: 'management',
+    subheader: 'Lớp của tôi',
     items: [
+      // MANAGEMENT : MY Class
+      {
+        title: 'Lớp của tôi',
+        path: PATH_DASHBOARD.root,
+        icon: ICONS.user
+      },
+
       // MANAGEMENT : USER
       {
         title: 'user',
