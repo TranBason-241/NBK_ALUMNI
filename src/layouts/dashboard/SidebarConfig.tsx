@@ -20,7 +20,9 @@ const ICONS = {
   ecommerce: getIcon('ic_ecommerce'),
   analytics: getIcon('ic_analytics'),
   dashboard: getIcon('ic_dashboard'),
-  kanban: getIcon('ic_kanban')
+  kanban: getIcon('ic_kanban'),
+  teacher: getIcon('teacher-with-stick-svgrepo-com'),
+  class: getIcon('university-classroom-svgrepo-com')
 };
 
 const sidebarConfig = [
@@ -47,7 +49,17 @@ const sidebarConfig = [
       // MANAGEMENT : MY Class
       {
         title: 'Lớp của tôi',
-        path: PATH_DASHBOARD.root,
+        path: PATH_DASHBOARD.class.myClass,
+        icon: ICONS.class
+      },
+      {
+        title: 'Giáo viên',
+        path: PATH_DASHBOARD.teacher.teacherList,
+        icon: ICONS.teacher
+      },
+      {
+        title: 'Thông tin cá nhân',
+        path: PATH_DASHBOARD.blog.post,
         icon: ICONS.user
       },
 

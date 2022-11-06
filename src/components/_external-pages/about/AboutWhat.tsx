@@ -89,7 +89,7 @@ export default function AboutWhat() {
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={6}>
             <MotionInView variants={varFadeInRight}>
-              <Typography variant="h2" sx={{ mb: 3 }}>
+              <Typography color="primary.main" variant="h2" sx={{ mb: 3 }}>
                 THPT CHUYÊN NGUYỄN BỈNH KHIÊM
               </Typography>
             </MotionInView>
@@ -101,13 +101,17 @@ export default function AboutWhat() {
                     theme.palette.mode === 'light' ? 'text.secondary' : 'common.white'
                 }}
               >
-                Trường THPT Nguyễn Bỉnh Khiêm ngày nay với tên gọi ban đầu là trường PTTH Châu Thành
-                được thành lập vào ngày 15/08/1983, gồm 2 phân hiệu: ở Cần Đăng và ở Quản Cơ Thành,
-                đến năm học 1985-1986 nhập lại thành một điểm tại vị trí hiện nay, cặp quốc lộ 91,
-                ấp Hòa Long 3, thị trấn An Châu, huyện Châu Thành, tỉnh An Giang.
+                Trường THPT chuyên Nguyễn Bỉnh Khiêm (Nguyen Binh Khiem High School for the Gifted),
+                là trường chuyên của tỉnh Vĩnh Long được thành lập ngày 8/01/1992 theo Quyết định số
+                31/QĐ.TCCB của Giám đốc Sở Giáo dục Đào tạo Vĩnh Long. Tuyển chọn và đào tạo học
+                sinh năng khiếu cấp Trung học phổ thông các môn văn hóa, ngoại ngữ trên địa bàn toàn
+                tỉnh Vĩnh Long.Từ năm học 1992 – 1993 trường được đổi tên thành trường THPT chuyên
+                Nguyễn Bỉnh Khiêm theo Quyết định số 246/UBT ngày 29 tháng 7 năm 1992 của Chủ tịch
+                UBND tỉnh Vĩnh Long.
               </Typography>
             </MotionInView>
-            <Divider sx={{ my: 2, mx: 'auto', height: 10 }} />
+            {/* <Divider sx={{ my: 2, mx: 'auto', height: 10 }} /> */}
+            <br />
             <MotionInView variants={varFadeInRight}>
               <Typography
                 sx={{
@@ -115,10 +119,17 @@ export default function AboutWhat() {
                     theme.palette.mode === 'light' ? 'text.secondary' : 'common.white'
                 }}
               >
-                Trong suốt thời gian qua, nhà trường đã có bước phát triển mạnh mẽ về nhiều mặt. Cơ
-                sở vật chất, trang thiết bị phục vụ dạy học được tăng cường. Đội ngũ CBQL, GV, NV
-                đảm bảo số lượng và cơ cấu. Tổ chức và hoạt động luôn được quan tâm đổi mới, đã tạo
-                sự chuyển biến đáng kể về chất lượng và hiệu quả giáo dục.
+                Năm học đầu tiên 1991 – 1992, trường chỉ có 60 học sinh của 3 lớp 10 chuyên và 08
+                cán bộ, giáo viên, công nhân viên, cơ sở vật chất tạm bợ được ghép chung với Trung
+                tâm hướng nghiệp dạy nghề của tỉnh. Năm học 1992 – 1993 được chuyển sang dùng chung
+                cơ sở với trường Bổ túc văn hóa tại chức tỉnh, năm học này trường đã phát triển được
+                13 lớp (có cả hệ THCS). Từ năm học 1996 – 1997, trường được tách riêng ra và chuyển
+                về cơ sở mới (do trường Cao đẳng sư phạm Vĩnh Long để lại), bấy giờ chỉ có 1 khu học
+                tập gồm 18 phòng học, chung quanh toàn là đất ruộng, nền thấp, luôn chịu ảnh hưởng
+                của triều cường. Sau 25 năm thành lập, cơ sở vật chất được nâng cấp, nhà trường đã
+                có đội ngũ 116 cán bộ, giáo viên, nhân viên và tập thể 27 lớp với 894 học sinh.
+                Trường đã đạt được các tiêu chuẩn quy định đối với một trường THPT đạt chuẩn quốc
+                gia.
               </Typography>
             </MotionInView>
 

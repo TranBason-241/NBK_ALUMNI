@@ -79,6 +79,13 @@ export const PATH_DASHBOARD = {
     // postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
     // newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
   },
+  teacher: {
+    root: path(ROOTS_DASHBOARD, '/teacher'),
+    teacherList: path(ROOTS_DASHBOARD, '/teacher/teacher_list')
+    // post: path(ROOTS_DASHBOARD, '/blog/post/:title'),
+    // postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
+    // newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
+  },
   eCommerce: {
     root: path(ROOTS_DASHBOARD, '/e-commerce'),
     shop: path(ROOTS_DASHBOARD, '/e-commerce/shop'),

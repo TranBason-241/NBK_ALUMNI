@@ -50,7 +50,7 @@ export default function AppWelcome({ displayName }: AppWelcomeProps) {
           - Giáo viên đã dạy bạn
         </Typography>
         <Typography variant="body2" sx={{ pb: { xs: 1, xl: 1 }, maxWidth: 480, mx: 'auto' }}>
-          - ...
+          ...
         </Typography>
       </CardContent>
 

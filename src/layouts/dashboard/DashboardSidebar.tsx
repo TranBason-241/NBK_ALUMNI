@@ -181,7 +181,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
 
       {!isCollapse && (
         <Box sx={{ px: 2.5, pb: 3, mt: 10, width: 1 }}>
-          <MegaMenuMobile navConfig={MenuConfig} />
+          {/* <MegaMenuMobile navConfig={MenuConfig} /> */}
           {/* <DocStyle>
             <DocIcon sx={{ width: 36, height: 36, mb: 2 }} />
             <Typography gutterBottom variant="subtitle1" sx={{ color: 'grey.800' }}>

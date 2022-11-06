@@ -7,7 +7,7 @@ import { varFadeInUp, varFadeIn, MotionInView } from '../../animate';
 
 export default function AboutVision() {
   return (
-    <Container maxWidth="lg" sx={{ mt: 10 }}>
+    <Container maxWidth="lg" sx={{ mt: 0 }}>
       <Box
         sx={{
           mb: 10,
