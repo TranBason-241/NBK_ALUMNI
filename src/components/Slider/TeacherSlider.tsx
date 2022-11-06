@@ -224,7 +224,7 @@ export default function TeacherSlider({ teacherList }: teacherSliderProps) {
 
   const settings = {
     speed: 500,
-    slidesToShow: teacherList.length > 3 ? 3 : 2,
+    slidesToShow: teacherList?.length > 3 ? 3 : 2,
     centerMode: true,
     centerPadding: '0 80px',
     rtl: Boolean(theme.direction === 'rtl'),
