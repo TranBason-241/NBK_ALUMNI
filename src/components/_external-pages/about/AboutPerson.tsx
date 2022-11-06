@@ -8,6 +8,9 @@ import facebookFill from '@iconify/icons-eva/facebook-fill';
 import roundArrowRightAlt from '@iconify/icons-ic/round-arrow-right-alt';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 import { DialogProps } from '@material-ui/core/Dialog';
+import { dispatch, RootState } from 'redux/store';
+import { getListNew } from 'redux/slices/new';
+import { getListHeadMaster, getListTeacher } from 'redux/slices/teacher';
 // material
 import { useTheme, styled } from '@material-ui/core/styles';
 import {
@@ -23,9 +26,14 @@ import {
   DialogActions,
   DialogContentText
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import TeacherSlider from 'components/Slider/TeacherSlider';
+import { getListStudent } from 'redux/slices/student';
+import StudentSlider from 'components/Slider/StudentSlider';
 //
 import { varFadeIn, varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
 import { CarouselControlsArrowsBasic2 } from '../../carousel';
+import { Teacher } from '../../../@types/teacher';
 
 // ----------------------------------------------------------------------
 const RootStyle = styled('div')(({ theme }) => ({
@@ -65,11 +73,6 @@ const MEMBERS = [
     name: faker.name.findName(),
     role: 'Leader',
     avatar: '/static/about/avatar-5.jpg'
-  },
-  {
-    name: faker.name.findName(),
-    role: 'Leader',
-    avatar: '/static/about/avatar-6.jpg'
   }
 ];
 
@@ -84,94 +87,26 @@ type PersonCardProps = {
   };
 };
 
-function PersonCard({ member, handleOpen }: PersonCardProps) {
-  const { name, role, avatar } = member;
-  return (
-    <Box onClick={handleOpen}>
-      <Card key={name} sx={{ p: 1, mx: 1.5 }}>
-        <Typography variant="subtitle1" sx={{ mt: 2, mb: 0.5 }}>
-          {name}
-        </Typography>
-
-        <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-          {role}
-        </Typography>
-        <Box component="img" src={avatar} sx={{ width: '100%', borderRadius: 1.5 }} />
-        <Box sx={{ mt: 2, mb: 1 }}>
-          {[facebookFill, instagramFilled, linkedinFill, twitterFill].map((social, index) => (
-            <IconButton key={index}>
-              <Icon icon={social} width={20} height={20} />
-            </IconButton>
-          ))}
-        </Box>
-      </Card>
-    </Box>
-  );
-}
+type teacherCardProps = {
+  handleOpen: () => void;
+  teacher: Teacher;
+};
 
 type DiverListHeadProps = {
+  userName: string;
   handleClose: () => void;
   open: boolean;
   //   item?: Item;
 };
-
-function InfoDialog({ handleClose, open }: DiverListHeadProps) {
-  const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
-
-  const descriptionElementRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
-      }
-    }
-  }, [open]);
-
-  return (
-    <div>
-      <Dialog maxWidth="md" open={open} onClose={handleClose} scroll={scroll}>
-        <DialogTitle sx={{ pb: 2 }}>Tên nhân vật</DialogTitle>
-        <DialogContent dividers={scroll === 'paper'}>
-          <DialogContentText
-            id="scroll-dialog-description"
-            ref={descriptionElementRef}
-            tabIndex={-1}
-          >
-            {[...new Array(50)]
-              .map(
-                () => `Cras mattis consectetur purus sit amet fermentum.
-  Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-  Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-  Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
-              )
-              .join('\n')}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-
-          <Button variant="contained" onClick={handleClose}>
-            Subscribe
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
-}
 
 export default function AboutPerson() {
   const carouselRef = useRef<Slider>(null);
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const teacherList = useSelector((state: RootState) => state.teacher.teacherList);
+  const headMasterList = useSelector((state: RootState) => state.teacher.headMasterList);
+  const studentList = useSelector((state: RootState) => state.student.studentList);
 
   const settings = {
     speed: 500,
@@ -203,6 +138,11 @@ export default function AboutPerson() {
     carouselRef.current?.slickNext();
   };
 
+  useEffect(() => {
+    dispatch(getListTeacher());
+    dispatch(getListHeadMaster());
+    dispatch(getListStudent());
+  }, []);
   return (
     <RootStyle>
       {' '}
@@ -212,13 +152,11 @@ export default function AboutPerson() {
           Dream team
         </Typography>
       </MotionInView> */}
-        <InfoDialog open={open} handleClose={handleClose} />
         <MotionInView variants={varFadeInUp}>
           <Typography variant="h2" sx={{ mb: 3, color: 'primary.main' }}>
             Con người
           </Typography>
         </MotionInView>
-
         <MotionInView variants={varFadeInUp}>
           <Typography
             sx={{
@@ -243,29 +181,27 @@ export default function AboutPerson() {
               textDecoration: 'underline'
             }}
           >
-            Ban giám hiệu
+            Hiệu trưởng qua các nhiệm kỳ
           </Typography>
+          <TeacherSlider teacherList={headMasterList} />
         </MotionInView>
-        <Box sx={{ position: 'relative' }}>
-          <Slider ref={carouselRef} {...settings}>
-            {MEMBERS.map((member) => (
-              <MotionInView key={member.name} variants={varFadeIn}>
-                <PersonCard handleOpen={handleOpen} key={member.name} member={member} />
-              </MotionInView>
-            ))}
-          </Slider>
-          <CarouselControlsArrowsBasic2
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            sx={{ transform: 'translateY(-64px)' }}
-          />
-        </Box>
+        <Button
+          variant="outlined"
+          color="inherit"
+          size="large"
+          endIcon={<Icon icon={roundArrowRightAlt} width={24} height={24} />}
+          sx={{ mb: 2, mt: 2 }}
+        >
+          Xem tất cả
+        </Button>
+
         <MotionInView variants={varFadeInDown}>
           <Typography
             component="p"
             variant="h4"
             sx={{
               mb: 3,
+              mt: 5,
               color: 'primary.main',
               // textAlign: 'left',
               ml: 1,
@@ -274,50 +210,35 @@ export default function AboutPerson() {
           >
             Giáo viên
           </Typography>
+          <TeacherSlider teacherList={teacherList} />
         </MotionInView>
-        <Box sx={{ position: 'relative' }}>
-          <Slider ref={carouselRef} {...settings}>
-            {MEMBERS.map((member) => (
-              <MotionInView key={member.name} variants={varFadeIn}>
-                <PersonCard handleOpen={handleOpen} key={member.name} member={member} />
-              </MotionInView>
-            ))}
-          </Slider>
-          <CarouselControlsArrowsBasic2
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            sx={{ transform: 'translateY(-64px)' }}
-          />
-        </Box>
+        <Button
+          variant="outlined"
+          color="inherit"
+          size="large"
+          endIcon={<Icon icon={roundArrowRightAlt} width={24} height={24} />}
+          sx={{ mb: 2, mt: 2 }}
+        >
+          Xem tất cả
+        </Button>
+
         <MotionInView variants={varFadeInDown}>
           <Typography
             component="p"
             variant="h4"
             sx={{
               mb: 3,
+              mt: 5,
               color: 'primary.main',
               // textAlign: 'left',
               ml: 1,
               textDecoration: 'underline'
             }}
           >
-            Cựu sinh viên tiêu biểu
+            Cựu học sinh
           </Typography>
         </MotionInView>
-        <Box sx={{ position: 'relative' }}>
-          <Slider ref={carouselRef} {...settings}>
-            {MEMBERS.map((member) => (
-              <MotionInView key={member.name} variants={varFadeIn}>
-                <PersonCard handleOpen={handleOpen} key={member.name} member={member} />
-              </MotionInView>
-            ))}
-          </Slider>
-          <CarouselControlsArrowsBasic2
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-            sx={{ transform: 'translateY(-64px)' }}
-          />
-        </Box>
+        <StudentSlider studentList={studentList} />
         <Button
           variant="outlined"
           color="inherit"

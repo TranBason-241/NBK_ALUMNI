@@ -7,7 +7,7 @@ import { varFadeInUp, varFadeIn, MotionInView } from '../../animate';
 
 export default function AboutVision() {
   return (
-    <Container maxWidth="lg" sx={{ mt: 10 }}>
+    <Container maxWidth="lg" sx={{ mt: 0 }}>
       <Box
         sx={{
           mb: 10,
@@ -50,7 +50,7 @@ export default function AboutVision() {
         </Box> */}
       </Box>
 
-      <Grid container justifyContent="center">
+      {/* <Grid container justifyContent="center">
         <Grid item xs={12} sm={8}>
           <MotionInView variants={varFadeInUp}>
             <Typography variant="h3" sx={{ textAlign: 'center' }}>
@@ -58,7 +58,7 @@ export default function AboutVision() {
             </Typography>
           </MotionInView>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Container>
   );
 }

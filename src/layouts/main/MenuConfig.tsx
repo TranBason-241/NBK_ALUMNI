@@ -20,8 +20,23 @@ const menuConfig = [
     path: '/'
   },
 
+  // {
+  //   title: 'hâha',
+  //   icon: <Icon icon={roundGrain} {...ICON_SIZE} />,
+  //   path: PATH_DASHBOARD.root
+  // },
   {
-    title: 'Tin tức & sự kiện',
+    title: 'Đăng ký',
+    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
+    path: PATH_AUTH.registerUnprotected
+  },
+  {
+    title: 'Liên hệ',
+    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
+    path: PATH_DOCS
+  },
+  {
+    title: 'Page',
     // page
     path: '/pages',
     icon: <Icon icon={fileFill} {...ICON_SIZE} />,
@@ -61,19 +76,9 @@ const menuConfig = [
     ]
   },
   {
-    title: 'Lớp của tôi',
+    title: 'Component',
     icon: <Icon icon={roundGrain} {...ICON_SIZE} />,
     path: PATH_PAGE.components
-  },
-  {
-    title: 'Đăng ký',
-    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
-    path: PATH_AUTH.registerUnprotected
-  },
-  {
-    title: 'Liên hệ',
-    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
-    path: PATH_DOCS
   }
 ];
 

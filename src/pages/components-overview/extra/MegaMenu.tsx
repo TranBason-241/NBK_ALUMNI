@@ -58,7 +58,7 @@ export default function MegaMenu() {
       </AppBar>
 
       <Container sx={{ mt: 10 }}>
-        <MegaMenuMobile navConfig={MenuConfig} />
+        {/* <MegaMenuMobile navConfig={MenuConfig} /> */}
 
         <Stack direction="row" spacing={3} mt={5}>
           <Card sx={{ width: 280, flexShrink: 0, overflow: 'unset' }}>

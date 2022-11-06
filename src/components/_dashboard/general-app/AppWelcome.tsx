@@ -35,18 +35,23 @@ export default function AppWelcome({ displayName }: AppWelcomeProps) {
           color: 'grey.800'
         }}
       >
-        <Typography gutterBottom variant="h4">
-          Welcome back,
-          <br /> {!displayName ? '...' : displayName}!
+        <Typography gutterBottom variant="h3">
+          LỚP CỦA TÔI
+          {/* <br /> {!displayName ? '...' : displayName}! */}
         </Typography>
 
-        <Typography variant="body2" sx={{ pb: { xs: 3, xl: 5 }, maxWidth: 480, mx: 'auto' }}>
-          If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything
+        <Typography variant="body1" sx={{ pb: { xs: 1, xl: 1 }, maxWidth: 480, mx: 'auto' }}>
+          Bạn có thể tìm kiếm tất cả thông tin về lớp học của mình:
         </Typography>
-
-        <Button variant="contained" to="#" component={RouterLink}>
-          Go Now
-        </Button>
+        <Typography variant="body2" sx={{ pb: { xs: 1, xl: 1 }, maxWidth: 480, mx: 'auto' }}>
+          - Bạn học cùng lớp
+        </Typography>
+        <Typography variant="body2" sx={{ pb: { xs: 1, xl: 1 }, maxWidth: 480, mx: 'auto' }}>
+          - Giáo viên đã dạy bạn
+        </Typography>
+        <Typography variant="body2" sx={{ pb: { xs: 1, xl: 1 }, maxWidth: 480, mx: 'auto' }}>
+          ...
+        </Typography>
       </CardContent>
 
       <SeoIllustration

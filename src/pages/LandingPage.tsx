@@ -39,6 +39,7 @@ export default function LandingPage() {
         <LandingHugePackElements />
         <LandingMinimal />
         <AboutPerson />
+
         {/* <LandingDarkMode />
         <LandingThemeColor />
         <LandingCleanInterfaces /> */}

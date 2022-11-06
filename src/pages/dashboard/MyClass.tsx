@@ -1,5 +1,6 @@
 // material
 import { Container, Grid } from '@material-ui/core';
+import ClassCard from 'components/_dashboard/general-app/ClassCard';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useSettings from '../../hooks/useSettings';
@@ -23,35 +24,43 @@ import {
 
 // ----------------------------------------------------------------------
 
-export default function GeneralApp() {
+export default function MyClass() {
   const { themeStretch } = useSettings();
   const { user } = useAuth();
 
   return (
-    <Page title="Dashboard | PJ School">
+    <Page title="Lớp của tôi | PJ School">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={9}>
             <AppWelcome displayName={user?.displayName} />
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <AppFeatured />
+          <Grid item xs={12} md={3}>
+            <></>
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <AppTotalActiveUsers />
+            <ClassCard color="rgba(225,239,240,255)" />
           </Grid>
 
+          <Grid item xs={12} md={4}>
+            <ClassCard color="rgba(255,237,188,255)" />
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <ClassCard color="#FFCCCC" />
+          </Grid>
+          {/* 
           <Grid item xs={12} md={4}>
             <AppTotalInstalled />
           </Grid>
 
           <Grid item xs={12} md={4}>
             <AppTotalDownloads />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <AppCurrentDownload />
           </Grid>
 
@@ -69,12 +78,12 @@ export default function GeneralApp() {
 
           <Grid item xs={12} md={6} lg={4}>
             <AppTopInstalledCountries />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <AppTopAuthors />
-          </Grid>
-
+          </Grid> */}
+          {/* 
           <Grid item xs={12} md={6} lg={4}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -84,7 +93,7 @@ export default function GeneralApp() {
                 <AppWidgets2 />
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Page>
