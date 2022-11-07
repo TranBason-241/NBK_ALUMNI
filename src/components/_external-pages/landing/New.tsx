@@ -217,10 +217,12 @@ export default function LandingMinimalHelps() {
             style={{ overflow: 'inherit' }}
           > */}
           <Grid container spacing={3}>
-            {newList!.map((newPost, index) => (
-              <NewCard key={newPost.id} newPost={newPost} index={index} />
-              // <p key={index}>{newPost.title}</p>
-            ))}
+            {
+              !newList.map((newPost, index) => (
+                <NewCard key={newPost.id} newPost={newPost} index={index} />
+                // <p key={index}>{newPost.title}</p>
+              ))
+            }
           </Grid>
           {/* </InfiniteScroll> */}
         </Container>

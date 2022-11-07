@@ -80,6 +80,8 @@ export function getListNew(categoryId: string) {
         if (response.status == 200) {
           dispatch(slice.actions.getListNew(response.data.items));
           console.log(response.data.items);
+        } else {
+          dispatch(slice.actions.getListNew([]));
         }
       });
     } catch (error) {
