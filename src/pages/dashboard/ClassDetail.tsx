@@ -3,9 +3,9 @@ import { filter } from 'lodash';
 import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
+import { useParams, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Link as RouterLink } from 'react-router-dom';
 // material
 import { useTheme } from '@material-ui/core/styles';
 import {
@@ -34,6 +34,7 @@ import TeacherListHead from 'components/_dashboard/teacher/list/TeacherListHead'
 import TeacherMoreMenu from 'components/_dashboard/teacher/list/TeacherMoreMenu';
 import { getListTeacherAll } from 'redux/slices/teacher';
 import TeacherDialog from 'components/_dashboard/teacher/dialog/TeacherDialog';
+import { getClassDetail } from 'redux/slices/class';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 
@@ -88,8 +89,8 @@ function applySortFilter(array: Teacher[], comparator: (a: any, b: any) => numbe
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function TeacherList() {
-  const { translate } = useLocales();
+export default function ClassDetail() {
+  const { classId } = useParams();
   const { user } = useAuth();
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
@@ -166,8 +167,8 @@ export default function TeacherList() {
   };
 
   useEffect(() => {
-    // dispatch(getListTeacherAll(user?.siteid, rowsPerPage, page));
     dispatch(getListTeacherAll(rowsPerPage, page));
+    // dispatch(getClassDetail(classId));
   }, [dispatch, rowsPerPage, page]);
 
   const emptyRows = !isLoading && !teacherList;
@@ -186,16 +187,47 @@ export default function TeacherList() {
   // }
 
   return (
-    <Page title="Danh sách giáo viên | PJ School">
+    <Page title="Chi tiết lớp học | PJ School">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Danh sách giáo viên"
+          heading="Chi tiết lớp học"
           links={[
             { name: 'Trang chủ', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách giáo viên', href: PATH_DASHBOARD.root }
+            { name: 'Danh sách Lớp học', href: PATH_DASHBOARD.root },
+            { name: 'Lớp', href: PATH_DASHBOARD.root }
           ]}
         />
         <Card>
+          <Stack spacing={6}>
+            <Card color="green" sx={{ p: 3 }}>
+              <Stack spacing={3}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant="h6">Lớp 10a3</Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography>Năm học: </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        display: 'inline'
+                      }}
+                    >
+                      Sĩ số: Chưa có data
+                    </Typography>
+                  </Grid>
+
+                  <Grid item xs={4}>
+                    <Typography>Giáo viên chủ nhiệm</Typography>
+                  </Grid>
+                  {/* <Grid item xs={6}>
+                    <Typography>sssss</Typography>
+                  </Grid> */}
+                </Grid>
+              </Stack>
+            </Card>
+          </Stack>
           <TeacherListToolbar
             numSelected={selected.length}
             filterName={filterName}

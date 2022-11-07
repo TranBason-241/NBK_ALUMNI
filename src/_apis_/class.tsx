@@ -13,11 +13,12 @@ export class ClassManger {
       })
       .then((res) => res)
       .catch((err) => err);
-  // get new by id
 
-  getNewById = (newID: string) =>
+  // get class by id
+
+  getClassById = (classId: string) =>
     axios
-      .get(`/api/v1/news/${newID}`)
+      .get(`/api/v1/news/${classId}`)
       .then((res) => res)
       .catch((err) => err);
 }

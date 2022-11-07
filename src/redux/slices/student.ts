@@ -13,12 +13,16 @@ type StudentState = {
   isLoading: boolean;
   error: boolean;
   studentList: Student[];
+  ClassStudentList: Student[];
+  totalCount: number;
 };
 
 const initialState: StudentState = {
   isLoading: false,
   error: false,
-  studentList: []
+  studentList: [],
+  ClassStudentList: [],
+  totalCount: 0
 };
 
 const slice = createSlice({
@@ -41,6 +45,19 @@ const slice = createSlice({
     getListStudent(state, action) {
       state.isLoading = false;
       state.studentList = action.payload;
+    },
+
+    // GET TOTAL COUNT OF LIST ALL S
+    getTotalCount(state, action) {
+      state.isLoading = false;
+      state.totalCount = action.payload;
+    },
+
+    // GET LIST Teacher all
+
+    getListStudentByClassId(state, action) {
+      state.isLoading = false;
+      state.ClassStudentList = action.payload;
     }
   }
 });
@@ -66,6 +83,26 @@ export function getListStudent() {
       });
     } catch (error) {
       dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// get list student of class
+export function getListStudentByClassId(classId: string, p_size: number, p_number: number) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      manageStudent.getListStudentByClassId(classId, p_size, p_number).then((response) => {
+        if (response.status == 200) {
+          dispatch(slice.actions.getListStudentByClassId(response.data.items));
+          dispatch(slice.actions.getTotalCount(response.data.metaData.totalCount));
+        } else {
+          dispatch(slice.actions.getListStudentByClassId([]));
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+      dispatch(slice.actions.getListStudentByClassId([]));
     }
   };
 }
