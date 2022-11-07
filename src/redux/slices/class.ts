@@ -1,11 +1,11 @@
 import { map, filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
-import { manageNew } from '_apis_/new';
+
+import { manaClass } from '_apis_/class';
 import { dispatch } from '../store';
 // utils
-import axios from '../../utils/axios';
+
 import { Class } from '../../@types/class';
-import { manaClass } from '_apis_/class';
 
 // ----------------------------------------------------------------------
 
@@ -54,12 +54,11 @@ export default slice.reducer;
 // ----------------------------------------------------------------------
 
 // get list new
-export function getListNew(categoryId: string) {
+export function getListClass(studentId: string) {
   return async () => {
     dispatch(slice.actions.startLoading());
-
     try {
-      manaClass.getListClass(categoryId).then((response) => {
+      manaClass.getListClass(studentId).then((response) => {
         if (response.status == 200) {
           dispatch(slice.actions.getListClass(response.data.items));
           console.log(response.data.items);

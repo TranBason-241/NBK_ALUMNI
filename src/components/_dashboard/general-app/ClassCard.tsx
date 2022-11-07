@@ -8,6 +8,7 @@ import { alpha, useTheme, styled } from '@material-ui/core/styles';
 import { Box, Card, Typography, Stack, Button, Grid } from '@material-ui/core';
 // utils
 import { fNumber, fPercent } from '../../../utils/formatNumber';
+import { Class } from '../../../@types/class';
 
 // ----------------------------------------------------------------------
 
@@ -29,10 +30,11 @@ const TOTAL_INSTALLED = 4876;
 const CHART_DATA = [{ data: [25, 66, 41, 89, 63, 25, 44, 12, 36, 9, 54] }];
 
 type classCardProps = {
-  color: string;
+  studentClass: Class;
+  index: number;
 };
 
-export default function ClassCard({ color }: classCardProps) {
+export default function ClassCard({ studentClass, index }: classCardProps) {
   const theme = useTheme();
 
   const chartOptions = {
@@ -54,32 +56,28 @@ export default function ClassCard({ color }: classCardProps) {
     }
   };
 
+  const bgColor = ['rgba(225,239,240,255)', 'rgba(255,237,188,255)', '#FFCCCC'];
+
   return (
-    <Card sx={{ display: 'flex', alignItems: 'center', p: 3, backgroundColor: color }}>
+    <Card sx={{ display: 'flex', alignItems: 'center', p: 3, backgroundColor: bgColor[index] }}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="h3">Lớp 10</Typography>
+        <Typography variant="h3">Lớp {studentClass?.grade}</Typography>
 
         <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 2, mb: 1 }}>
           <Typography component="span" variant="subtitle2">
-            Năm học: 2017 - 2018
+            Năm học: {studentClass?.year}
           </Typography>
         </Stack>
 
         <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 2, mb: 1 }}>
           <Typography component="span" variant="subtitle2">
-            Sĩ số: 45 (học sinh)
+            Sĩ số: 45 (học sinh) (Chưa có data)
           </Typography>
         </Stack>
 
         <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 2, mb: 1 }}>
           <Typography component="span" variant="subtitle2">
-            Giáo viên chủ nhiệm: Trần Bá Đạt
-          </Typography>
-        </Stack>
-
-        <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 2, mb: 1 }}>
-          <Typography component="span" variant="subtitle2">
-            Năm học: 2017 - 2018
+            Giáo viên chủ nhiệm: Trần Bá Đạt (chưa có data)
           </Typography>
         </Stack>
 

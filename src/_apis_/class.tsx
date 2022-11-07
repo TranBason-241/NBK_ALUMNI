@@ -2,13 +2,13 @@ import axios from 'axios';
 
 export class ClassManger {
   // get list class
-  getListClass = (catetoryId = '') =>
+  getListClass = (studentId = '') =>
     axios
       .get(`api/v1/classes/get-class-students?`, {
         params: {
           // page_size: p_size,
           // page_number: p_number
-          StudentId: 1
+          StudentId: studentId
         }
       })
       .then((res) => res)
