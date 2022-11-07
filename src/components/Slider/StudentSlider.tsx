@@ -137,7 +137,7 @@ function InfoDialog({ handleClose, open, student }: InfoDialogProps) {
                   <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
                     Ngày sinh: &nbsp;
                     <Typography component="span" variant="subtitle1">
-                      {student?.dateOfBirth}
+                      {convertUTCDateToLocalDate(student?.dateOfBirth)}
                     </Typography>
                   </Typography>
 
@@ -176,6 +176,11 @@ function InfoDialog({ handleClose, open, student }: InfoDialogProps) {
       </Dialog>
     </Box>
   );
+}
+
+function convertUTCDateToLocalDate(date: any) {
+  const newDate = new Date(date);
+  return newDate.toLocaleDateString();
 }
 type studentSliderProps = {
   studentList: Student[];
