@@ -121,7 +121,8 @@ export default function Router() {
           path: 'class',
           children: [
             { path: '/', element: <Navigate to="/dashboard/class/my-class" replace /> },
-            { path: 'my-class', element: <MyClass /> }
+            { path: 'my-class', element: <MyClass /> },
+            { path: 'my-class/:classId', element: <ClassDetail /> }
             // { path: 'cards', element: <UserCards /> },
             // { path: 'list', element: <UserList /> },
             // { path: 'new', element: <UserCreate /> },
@@ -293,6 +294,7 @@ const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const MyClass = Loadable(lazy(() => import('../pages/dashboard/MyClass')));
+const ClassDetail = Loadable(lazy(() => import('../pages/dashboard/ClassDetail')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const TeacherList = Loadable(lazy(() => import('../pages/dashboard/TeacherList')));

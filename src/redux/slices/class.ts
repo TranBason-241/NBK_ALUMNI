@@ -13,12 +13,14 @@ type NewState = {
   isLoading: boolean;
   error: boolean;
   classList: Class[];
+  class: Class;
 };
 
 const initialState: NewState = {
   isLoading: false,
   error: false,
-  classList: []
+  classList: [],
+  class: { id: '', name: '', classGroupId: 'String', grade: '', year: '' }
 };
 
 const slice = createSlice({
@@ -41,6 +43,13 @@ const slice = createSlice({
     getListClass(state, action) {
       state.isLoading = false;
       state.classList = action.payload;
+    },
+
+    // GET ClASS BY ID
+
+    getClassById(state, action) {
+      state.isLoading = false;
+      state.class = action.payload;
     }
   }
 });
@@ -72,21 +81,19 @@ export function getListClass(studentId: string) {
   };
 }
 
-// // get list new
-// export function getNewDetail(newId: string) {
-//   return async () => {
-//     dispatch(slice.actions.startLoading());
-//     try {
-//       manageNew.getNewById(newId).then((response) => {
-//         // console.log(response);
-//         if (response.status == 200) {
-//           dispatch(slice.actions.getNewDetail(response.data));
-//           console.log(response.data);
-//         }
-//       });
-//     } catch (error) {
-//       dispatch(slice.actions.hasError(error));
-//       console.log(error);
-//     }
-//   };
-// }
+// get list new
+export function getClassDetail(classId: string) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      manaClass.getClassById(classId).then((response) => {
+        // console.log(response);
+        if (response.status == 200) {
+          dispatch(slice.actions.getClassById(response.data));
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}

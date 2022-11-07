@@ -3,6 +3,7 @@ import ReactApexChart from 'react-apexcharts';
 import { Link as RouterLink } from 'react-router-dom';
 import trendingUpFill from '@iconify/icons-eva/trending-up-fill';
 import trendingDownFill from '@iconify/icons-eva/trending-down-fill';
+import { PATH_AUTH, PATH_DASHBOARD } from 'routes/paths';
 // material
 import { alpha, useTheme, styled } from '@material-ui/core/styles';
 import { Box, Card, Typography, Stack, Button, Grid } from '@material-ui/core';
@@ -83,7 +84,11 @@ export default function ClassCard({ studentClass, index }: classCardProps) {
 
         <Grid container justifyContent="right">
           <Grid item sx={{ mt: 2, mb: 1 }} spacing={1}>
-            <Button variant="contained" to="#" component={RouterLink}>
+            <Button
+              variant="contained"
+              to={`${PATH_DASHBOARD.class.myClass}/${studentClass.id}`}
+              component={RouterLink}
+            >
               Xem chi tiết
             </Button>
           </Grid>

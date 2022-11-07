@@ -30,11 +30,7 @@ const menuConfig = [
     icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
     path: PATH_DOCS
   },
-  {
-    title: 'Đăng ký',
-    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
-    path: PATH_AUTH.registerUnprotected
-  },
+
   {
     title: 'Tin tức',
     icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
@@ -85,6 +81,11 @@ const menuConfig = [
     title: 'Component',
     icon: <Icon icon={roundGrain} {...ICON_SIZE} />,
     path: PATH_PAGE.components
+  },
+  {
+    title: 'Đăng ký',
+    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
+    path: PATH_AUTH.registerUnprotected
   }
 ];
 

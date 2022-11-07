@@ -74,7 +74,8 @@ export const PATH_DASHBOARD = {
   },
   class: {
     root: path(ROOTS_DASHBOARD, '/class'),
-    myClass: path(ROOTS_DASHBOARD, '/class/my-class')
+    myClass: path(ROOTS_DASHBOARD, '/class/my-class'),
+    classDetail: path(ROOTS_DASHBOARD, '/my-class/:classId')
     // post: path(ROOTS_DASHBOARD, '/blog/post/:title'),
     // postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
     // newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
