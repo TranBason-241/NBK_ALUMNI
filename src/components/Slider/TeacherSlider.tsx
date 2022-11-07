@@ -29,8 +29,10 @@ import {
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { fontStyle } from '@material-ui/system';
+import TeacherList from 'pages/dashboard/TeacherList';
 
 //
+import { fDate } from '../../utils/formatTime';
 import { Teacher } from '../../@types/teacher';
 import { varFadeIn, varFadeInUp, MotionInView, varFadeInDown } from '../animate';
 import { CarouselControlsArrowsBasic2 } from '../carousel';
@@ -51,18 +53,29 @@ type Member = {
   phone: string;
 };
 function TeacherCard({ teacher }: teacherCardProps) {
-  const { id, name, dateOfBirth, cityId, imageUrl, email, phone, startTime, endTime, isAlive } =
-    teacher;
+  const {
+    id,
+    name,
+    dateOfBirth,
+    cityId,
+    imageUrl,
+    email,
+    phone,
+    startTime,
+    endTime,
+    isAlive,
+    subjects
+  } = teacher;
   return (
     <Box>
       <Card key={name} sx={{ p: 1, mx: 1.5, mt: 2 }}>
         <Typography variant="subtitle1" sx={{ mt: 2, mb: 0.5 }}>
           {name}
         </Typography>
-
+        {/* 
         <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-          Dạy môn gì
-        </Typography>
+          Phụ trách môn
+        </Typography> */}
         <Box
           component="img"
           src={imageUrl}
@@ -84,31 +97,6 @@ type PersonCardProps = {
   member: Member;
 };
 
-function PersonCard({ member }: PersonCardProps) {
-  const { name, imageUrl, dateOfBirth } = member;
-  return (
-    <Box onClick={() => alert('sss')}>
-      <Card key={name} sx={{ p: 1, mx: 1.5 }}>
-        <Typography variant="subtitle1" sx={{ mt: 2, mb: 0.5 }}>
-          {name}
-        </Typography>
-
-        <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-          {dateOfBirth}
-        </Typography>
-        <Box component="img" src={imageUrl} sx={{ width: '100%', borderRadius: 1.5 }} />
-        <Box sx={{ mt: 2, mb: 1 }}>
-          {[facebookFill, instagramFilled, linkedinFill, twitterFill].map((social, index) => (
-            <IconButton key={index}>
-              <Icon icon={social} width={20} height={20} />
-            </IconButton>
-          ))}
-        </Box>
-      </Card>
-    </Box>
-  );
-}
-
 type teacherSliderProps = {
   teacherList: Teacher[];
 };
@@ -120,6 +108,10 @@ type InfoDialogProps = {
   //   item?: Item;
 };
 
+function convertUTCDateToLocalDate(date: any) {
+  const newDate = new Date(date);
+  return newDate.toLocaleDateString();
+}
 function InfoDialog({ handleClose, open, teacher }: InfoDialogProps) {
   const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
   // const { id, name, dateOfBirth, cityId, imageUrl, email, phone, startTime, endTime, isAlive } =
@@ -169,7 +161,14 @@ function InfoDialog({ handleClose, open, teacher }: InfoDialogProps) {
                   <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
                     Ngày sinh: &nbsp;
                     <Typography component="span" variant="subtitle1">
-                      {teacher?.dateOfBirth}
+                      {convertUTCDateToLocalDate(teacher?.dateOfBirth)}
+                    </Typography>
+                  </Typography>
+
+                  <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
+                    Địa chỉ: &nbsp;
+                    <Typography component="span" variant="subtitle1">
+                      {teacher?.cityName}
                     </Typography>
                   </Typography>
 
@@ -187,12 +186,18 @@ function InfoDialog({ handleClose, open, teacher }: InfoDialogProps) {
                     </Typography>
                   </Typography>
 
-                  <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
-                    Phụ trách môn học: &nbsp;
-                    <Typography component="span" variant="subtitle1">
-                      Toán, Lý, Hóa
+                  {teacher?.subjects.length > 0 ? (
+                    <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
+                      Phụ trách môn học: &nbsp;
+                      {teacher?.subjects.map((subject, index) => (
+                        <Typography key={index} component="span" variant="subtitle1">
+                          {subject}&nbsp;
+                        </Typography>
+                      ))}
                     </Typography>
-                  </Typography>
+                  ) : (
+                    <></>
+                  )}
                 </Box>
               </Grid>
             </Grid>

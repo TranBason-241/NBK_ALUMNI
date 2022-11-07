@@ -9,4 +9,7 @@ export type Teacher = {
   startTime: string;
   endTime: string;
   isAlive: number;
+  term: string;
+  cityName: string;
+  subjects: any[];
 };
