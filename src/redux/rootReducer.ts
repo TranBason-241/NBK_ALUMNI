@@ -12,6 +12,7 @@ import kanbanReducer from './slices/kanban';
 import newReducer from './slices/new';
 import teacherReducer from './slices/teacher';
 import studentReducer from './slices/student';
+import classReducer from './slices/class';
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   new: newReducer,
   teacher: teacherReducer,
   student: studentReducer,
+  class: classReducer,
   product: persistReducer(productPersistConfig, productReducer)
 });
 

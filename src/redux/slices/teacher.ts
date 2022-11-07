@@ -15,13 +15,17 @@ type TeacherState = {
   error: boolean;
   teacherList: Teacher[];
   headMasterList: Teacher[];
+  teacherListAll: Teacher[];
+  totalCount: number;
 };
 
 const initialState: TeacherState = {
   isLoading: false,
   error: false,
   teacherList: [],
-  headMasterList: []
+  headMasterList: [],
+  teacherListAll: [],
+  totalCount: 0
 };
 
 const slice = createSlice({
@@ -51,6 +55,19 @@ const slice = createSlice({
     getListHeadMaster(state, action) {
       state.isLoading = false;
       state.headMasterList = action.payload;
+    },
+
+    // GET TOTAL COUNT OF LIST ALL TEACHER
+    getTotalCount(state, action) {
+      state.isLoading = false;
+      state.totalCount = action.payload;
+    },
+
+    // GET LIST Teacher all
+
+    getListTeacherAll(state, action) {
+      state.isLoading = false;
+      state.teacherListAll = action.payload;
     }
   }
 });
@@ -63,7 +80,7 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
-// get list new
+// get list teacher
 export function getListTeacher() {
   return async () => {
     dispatch(slice.actions.startLoading());
@@ -91,6 +108,26 @@ export function getListHeadMaster() {
       });
     } catch (error) {
       dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// get list all teacher
+export function getListTeacherAll(p_size: number, p_number: number) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      manageTeacher.getListTeacherAll(p_size, p_number).then((response) => {
+        if (response.status == 200) {
+          dispatch(slice.actions.getListTeacherAll(response.data.items));
+          dispatch(slice.actions.getTotalCount(response.data.metaData.totalCount));
+        } else {
+          dispatch(slice.actions.getListTeacherAll([]));
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+      dispatch(slice.actions.getListTeacherAll([]));
     }
   };
 }

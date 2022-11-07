@@ -1,4 +1,6 @@
+import axios from 'axios';
 import { filter } from 'lodash';
+import { useSnackbar } from 'notistack5';
 import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import { useState, useEffect } from 'react';
@@ -19,35 +21,35 @@ import {
   Container,
   Typography,
   TableContainer,
-  TablePagination
+  TablePagination,
+  CircularProgress
 } from '@material-ui/core';
+
+import useAuth from 'hooks/useAuth';
+// lang
+import useLocales from 'hooks/useLocales';
+import TeacherListToolbar from 'components/_dashboard/teacher/list/TeacherToolBar';
+import TeacherListHead from 'components/_dashboard/teacher/list/TeacherListHead';
+import TeacherMoreMenu from 'components/_dashboard/teacher/list/TeacherMoreMenu';
+import { getListTeacherAll } from 'redux/slices/teacher';
+import TeacherDialog from 'components/_dashboard/teacher/dialog/TeacherDialog';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getUserList, deleteUser } from '../../redux/slices/user';
+
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // @types
-import { UserManager } from '../../@types/user';
+
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../../components/_dashboard/user/list';
 
-// ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' }
-];
+import { Teacher } from '../../@types/teacher';
 
 // ----------------------------------------------------------------------
 
@@ -69,11 +71,7 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(
-  array: UserManager[],
-  comparator: (a: any, b: any) => number,
-  query: string
-) {
+function applySortFilter(array: Teacher[], comparator: (a: any, b: any) => number, query: string) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -81,27 +79,41 @@ function applySortFilter(
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(
+      array,
+      (_partner) => _partner.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function TeacherList() {
+export default function UserList() {
+  const { translate } = useLocales();
+  const { user } = useAuth();
   const { themeStretch } = useSettings();
+  const { enqueueSnackbar } = useSnackbar();
   const theme = useTheme();
   const dispatch = useDispatch();
-
-  const { userList } = useSelector((state: RootState) => state.user);
+  // const diverList = useSelector((state: RootState) => state.diver.diverList);
+  const teacherList = useSelector((state: RootState) => state.teacher.teacherListAll);
+  const totalCount = useSelector((state: RootState) => state.teacher.totalCount);
+  const isLoading = useSelector((state: RootState) => state.teacher.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  useEffect(() => {
-    dispatch(getUserList());
-  }, [dispatch]);
+  const [currentTeacher, setCurrentTeacher] = useState<Teacher>();
+  const [open, setOpen] = useState(false);
+  const TABLE_HEAD = [
+    { id: 'name', label: 'Tên', alignRight: false },
+    { id: 'address', label: 'Địa chỉ', alignRight: false },
+    { id: 'position', label: 'Chức vụ', alignRight: false },
+    { id: 'Subject', label: 'Dạy môn học', alignRight: false }
+    // { id: 'Status', label: 'Trạng thái', alignRight: false },
+    // { id: '' }
+  ];
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -111,11 +123,18 @@ export default function TeacherList() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = userList.map((n) => n.name);
+      const newSelecteds = teacherList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   const handleClick = (name: string) => {
@@ -145,15 +164,25 @@ export default function TeacherList() {
     setFilterName(filterName);
   };
 
-  const handleDeleteUser = (userId: string) => {
-    dispatch(deleteUser(userId));
-  };
+  useEffect(() => {
+    // dispatch(getListTeacherAll(user?.siteid, rowsPerPage, page));
+    dispatch(getListTeacherAll(rowsPerPage, page));
+  }, [dispatch, rowsPerPage, page]);
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
+  const emptyRows = !isLoading && !teacherList;
 
-  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
+  const filteredDiver = applySortFilter(teacherList, getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const isDiverNotFound = teacherList.length === 0 && isLoading;
+  // if (companiesList !== null) {
+  //   companiesList.map((item, index) => {
+  //     return (
+  //       <div key={index}>
+  //         <h1>{item[index]}</h1>
+  //       </div>
+  //     );
+  //   });
+  // }
 
   return (
     <Page title="Danh sách giáo viên | PJ School">
@@ -162,38 +191,40 @@ export default function TeacherList() {
           heading="Danh sách giáo viên"
           links={[
             { name: 'Trang chủ', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách giáo viên', href: PATH_DASHBOARD.user.root }
+            { name: 'Danh sách giáo viên', href: PATH_DASHBOARD.root }
           ]}
         />
-
         <Card>
-          <UserListToolbar
+          <TeacherListToolbar
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
           />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={userList.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, role, status, company, avatarUrl, isVerified } = row;
+            <TeacherDialog open={open} teacher={currentTeacher!} handleClose={handleClose} />
+            {!isLoading ? (
+              <TableContainer sx={{ minWidth: 800 }}>
+                <Table>
+                  <TeacherListHead
+                    order={order}
+                    orderBy={orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={teacherList.length}
+                    numSelected={selected.length}
+                    onRequestSort={handleRequestSort}
+                    onSelectAllClick={handleSelectAllClick}
+                  />
+                  <TableBody>
+                    {filteredDiver.map((row) => {
+                      const { id, name, phone, email, cityName } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-
                       return (
                         <TableRow
+                          onClick={() => {
+                            handleOpen();
+                            setCurrentTeacher(row);
+                          }}
                           hover
                           key={id}
                           tabIndex={-1}
@@ -202,61 +233,90 @@ export default function TeacherList() {
                           aria-checked={isItemSelected}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} />
+                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
                           </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
+                          {/* <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={avatarUrl} />
+                              <Avatar alt={name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
                             </Stack>
-                          </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                          </TableCell> */}
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">{cityName}</TableCell>
+                          <TableCell align="left">Chức vụ</TableCell>
                           <TableCell align="left">
+                            {row?.subjects.length > 0 ? (
+                              <>
+                                {row?.subjects.map((subject, index) => (
+                                  <Typography key={index} component="span">
+                                    {/* {subject}&nbsp; */}
+
+                                    {index + 1 == row?.subjects.length ? (
+                                      <>{subject}</>
+                                    ) : (
+                                      <>{subject},</>
+                                    )}
+                                  </Typography>
+                                ))}
+                              </>
+                            ) : (
+                              <></>
+                            )}
+                          </TableCell>
+                          {/* <TableCell align="left">
+                            <Label variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}>
+                              Status
+                            </Label>
+                          </TableCell> */}
+                          {/* <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status === 'banned' && 'error') || 'success'}
+                              color={(status == 0 && 'error') || 'success'}
                             >
-                              {sentenceCase(status)}
+                              {status == 1 ? 'Available' : 'deleted'}
                             </Label>
-                          </TableCell>
+                          </TableCell> */}
 
-                          <TableCell align="right">
-                            <UserMoreMenu onDelete={() => handleDeleteUser(id)} userName={name} />
-                          </TableCell>
+                          {/* <TableCell align="right">
+                            <TeacherMoreMenu diverID={id.toString()} status="1" />
+                          </TableCell> */}
                         </TableRow>
                       );
                     })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                {isUserNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
+                    {/* {emptyRows && (
+                      <TableRow style={{ height: 53 * emptyRows }}>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )} */}
                   </TableBody>
-                )}
-              </Table>
-            </TableContainer>
+                  {isDiverNotFound && (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <SearchNotFound searchQuery={filterName} />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+                </Table>
+              </TableContainer>
+            ) : (
+              <Stack sx={{ mt: 3 }} alignItems="center">
+                <CircularProgress />
+              </Stack>
+            )}
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
             component="div"
-            count={userList.length}
+            count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
-            onPageChange={(e, page) => setPage(page)}
-            onRowsPerPageChange={(e) => handleChangeRowsPerPage}
+            onPageChange={(e, value) => setPage(value)}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
       </Container>

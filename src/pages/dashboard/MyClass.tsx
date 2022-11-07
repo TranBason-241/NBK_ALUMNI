@@ -1,11 +1,13 @@
 // material
 import { Container, Grid } from '@material-ui/core';
-import ClassCard from 'components/_dashboard/general-app/ClassCard';
+
 // hooks
-import useAuth from '../../hooks/useAuth';
-import useSettings from '../../hooks/useSettings';
-// components
-import Page from '../../components/Page';
+import { useEffect, useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
+
+import { dispatch, RootState } from 'redux/store';
+import { getListClass } from 'redux/slices/class';
+import ClassCard from 'components/_dashboard/general-app/ClassCard';
 import {
   AppWelcome,
   AppWidgets1,
@@ -21,12 +23,22 @@ import {
   AppTotalActiveUsers,
   AppTopInstalledCountries
 } from '../../components/_dashboard/general-app';
+import { Class } from '../../@types/class';
+import useAuth from '../../hooks/useAuth';
+import useSettings from '../../hooks/useSettings';
+// components
+import Page from '../../components/Page';
 
 // ----------------------------------------------------------------------
 
 export default function MyClass() {
   const { themeStretch } = useSettings();
   const { user } = useAuth();
+  const classList = useSelector((state: RootState) => state.class.classList);
+
+  useEffect(() => {
+    dispatch(getListClass('1'));
+  }, [dispatch]);
 
   return (
     <Page title="Lớp của tôi | PJ School">
@@ -40,7 +52,12 @@ export default function MyClass() {
             <></>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          {classList?.map((studentClass: Class, index) => (
+            <Grid key={index} item xs={12} md={4}>
+              <ClassCard index={index} studentClass={studentClass} />
+            </Grid>
+          ))}
+          {/* <Grid item xs={12} md={4}>
             <ClassCard color="rgba(225,239,240,255)" />
           </Grid>
 
@@ -50,7 +67,7 @@ export default function MyClass() {
 
           <Grid item xs={12} md={4}>
             <ClassCard color="#FFCCCC" />
-          </Grid>
+          </Grid> */}
           {/* 
           <Grid item xs={12} md={4}>
             <AppTotalInstalled />
