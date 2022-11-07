@@ -79,6 +79,7 @@ export default function News() {
   useEffect(() => {
     dispatch(getPostsInitial(index, step));
     dispatch(getListNew(filters));
+    console.log('reaste');
   }, [dispatch, index, step, filters]);
 
   const handleChangeSort = (value?: string) => {
