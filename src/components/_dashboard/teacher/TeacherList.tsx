@@ -34,23 +34,24 @@ import TeacherListHead from 'components/_dashboard/teacher/list/TeacherListHead'
 import TeacherMoreMenu from 'components/_dashboard/teacher/list/TeacherMoreMenu';
 import { getListTeacherAll } from 'redux/slices/teacher';
 import TeacherDialog from 'components/_dashboard/teacher/dialog/TeacherDialog';
+import { getClassDetail } from 'redux/slices/class';
 // redux
-import { RootState, useDispatch, useSelector } from '../../redux/store';
+import { RootState, useDispatch, useSelector } from '../../../redux/store';
 
 // routes
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from '../../../hooks/useSettings';
 // @types
 
 // components
-import Page from '../../components/Page';
-import Label from '../../components/Label';
-import Scrollbar from '../../components/Scrollbar';
-import SearchNotFound from '../../components/SearchNotFound';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
+import Page from '../../Page';
+import Label from '../../Label';
+import Scrollbar from '../../Scrollbar';
+import SearchNotFound from '../../SearchNotFound';
+import HeaderBreadcrumbs from '../../HeaderBreadcrumbs';
 
-import { Teacher } from '../../@types/teacher';
+import { Teacher } from '../../../@types/teacher';
 
 // ----------------------------------------------------------------------
 
@@ -88,7 +89,10 @@ function applySortFilter(array: Teacher[], comparator: (a: any, b: any) => numbe
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function TeacherList() {
+type TeacherListProps = {
+  classId: string;
+};
+export default function TeacherList({ classId }: TeacherListProps) {
   const { translate } = useLocales();
   const { user } = useAuth();
   const { themeStretch } = useSettings();
@@ -99,6 +103,7 @@ export default function TeacherList() {
   const teacherList = useSelector((state: RootState) => state.teacher.teacherListAll);
   const totalCount = useSelector((state: RootState) => state.teacher.totalCount);
   const isLoading = useSelector((state: RootState) => state.teacher.isLoading);
+  const classDetail = useSelector((state: RootState) => state.class.class);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
@@ -168,6 +173,7 @@ export default function TeacherList() {
   useEffect(() => {
     // dispatch(getListTeacherAll(user?.siteid, rowsPerPage, page));
     dispatch(getListTeacherAll(rowsPerPage, page));
+    dispatch(getClassDetail(classId));
   }, [dispatch, rowsPerPage, page]);
 
   const emptyRows = !isLoading && !teacherList;
@@ -188,20 +194,37 @@ export default function TeacherList() {
   return (
     <Page title="Danh sách giáo viên | PJ School">
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs
-          heading="Danh sách giáo viên trong trường"
-          links={[
-            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách giáo viên', href: PATH_DASHBOARD.root }
-          ]}
-        />
         <Card>
-          <TeacherListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+          <Stack spacing={6}>
+            <Card color="green" sx={{ p: 3 }}>
+              <Stack spacing={3}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant="h6">Lớp {classDetail.name}</Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography>Năm học: {classDetail.year}</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography
+                      sx={{
+                        display: 'inline'
+                      }}
+                    >
+                      Sĩ số: {classDetail.quantity}
+                    </Typography>
+                  </Grid>
 
+                  <Grid item xs={4}>
+                    <Typography>Giáo viên chủ nhiệm: {classDetail.teacherName}</Typography>
+                  </Grid>
+                  {/* <Grid item xs={6}>
+                    <Typography>sssss</Typography>
+                  </Grid> */}
+                </Grid>
+              </Stack>
+            </Card>
+          </Stack>
           <Scrollbar>
             <TeacherDialog open={open} teacher={currentTeacher!} handleClose={handleClose} />
             {!isLoading ? (

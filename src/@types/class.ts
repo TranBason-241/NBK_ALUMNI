@@ -4,4 +4,7 @@ export type Class = {
   classGroupId: String;
   grade: String;
   year: String;
+  positionName: String;
+  teacherName: String;
+  quantity: number;
 };

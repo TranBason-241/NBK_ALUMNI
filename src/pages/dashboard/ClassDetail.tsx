@@ -23,18 +23,24 @@ import {
   TableContainer,
   TablePagination,
   CircularProgress,
-  Grid
+  Grid,
+  Box,
+  Tab,
+  Tabs
 } from '@material-ui/core';
 
 import useAuth from 'hooks/useAuth';
 // lang
 import useLocales from 'hooks/useLocales';
-import TeacherListToolbar from 'components/_dashboard/teacher/list/TeacherToolBar';
-import TeacherListHead from 'components/_dashboard/teacher/list/TeacherListHead';
-import TeacherMoreMenu from 'components/_dashboard/teacher/list/TeacherMoreMenu';
+import StudentListToolbar from 'components/_dashboard/student/list/StudentToolBar';
+import StudentListHead from 'components/_dashboard/student/list/StudentListHead';
 import { getListTeacherAll } from 'redux/slices/teacher';
 import TeacherDialog from 'components/_dashboard/teacher/dialog/TeacherDialog';
+import StudentDialog from 'components/_dashboard/teacher/dialog/StudentDialog';
 import { getClassDetail } from 'redux/slices/class';
+import { getListStudentByClassId } from 'redux/slices/student';
+import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import TeacherList from 'components/_dashboard/teacher/TeacherList';
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 
@@ -52,6 +58,7 @@ import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 
 import { Teacher } from '../../@types/teacher';
+import { Student } from '../../@types/student';
 
 // ----------------------------------------------------------------------
 
@@ -73,7 +80,7 @@ function getComparator(order: string, orderBy: string) {
     : (a: Anonymous, b: Anonymous) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array: Teacher[], comparator: (a: any, b: any) => number, query: string) {
+function applySortFilter(array: Student[], comparator: (a: any, b: any) => number, query: string) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -97,22 +104,24 @@ export default function ClassDetail() {
   const theme = useTheme();
   const dispatch = useDispatch();
   // const diverList = useSelector((state: RootState) => state.diver.diverList);
-  const teacherList = useSelector((state: RootState) => state.teacher.teacherListAll);
-  const totalCount = useSelector((state: RootState) => state.teacher.totalCount);
-  const isLoading = useSelector((state: RootState) => state.teacher.isLoading);
+  const classDetail = useSelector((state: RootState) => state.class.class);
+  // Student
+  const studentList = useSelector((state: RootState) => state.student.ClassStudentList);
+  const totalCount = useSelector((state: RootState) => state.student.totalCount);
+  const isLoading = useSelector((state: RootState) => state.student.isLoading);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [currentTeacher, setCurrentTeacher] = useState<Teacher>();
+  const [currentStudent, setCurrentStudent] = useState<Student>();
   const [open, setOpen] = useState(false);
   const TABLE_HEAD = [
     { id: 'name', label: 'Tên', alignRight: false },
     { id: 'address', label: 'Địa chỉ', alignRight: false },
-    { id: 'position', label: 'Chức vụ', alignRight: false },
-    { id: 'Subject', label: 'Dạy môn học', alignRight: false }
+    { id: 'number', label: 'Số điện thoại', alignRight: false },
+    { id: 'email', label: 'Email', alignRight: false }
     // { id: 'Status', label: 'Trạng thái', alignRight: false },
     // { id: '' }
   ];
@@ -125,7 +134,7 @@ export default function ClassDetail() {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = teacherList.map((n) => n.name);
+      const newSelecteds = studentList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -139,24 +148,6 @@ export default function ClassDetail() {
     setOpen(true);
   };
 
-  const handleClick = (name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: string[] = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -168,24 +159,20 @@ export default function ClassDetail() {
 
   useEffect(() => {
     dispatch(getListTeacherAll(rowsPerPage, page));
-    // dispatch(getClassDetail(classId));
+    dispatch(getListStudentByClassId(classId, rowsPerPage, page));
+    dispatch(getClassDetail(classId));
   }, [dispatch, rowsPerPage, page]);
 
-  const emptyRows = !isLoading && !teacherList;
+  const emptyRows = !isLoading && !studentList;
 
-  const filteredDiver = applySortFilter(teacherList, getComparator(order, orderBy), filterName);
+  const filteredDiver = applySortFilter(studentList, getComparator(order, orderBy), filterName);
 
-  const isDiverNotFound = teacherList.length === 0 && isLoading;
-  // if (companiesList !== null) {
-  //   companiesList.map((item, index) => {
-  //     return (
-  //       <div key={index}>
-  //         <h1>{item[index]}</h1>
-  //       </div>
-  //     );
-  //   });
-  // }
+  const isStudentNotFound = studentList.length === 0 && isLoading;
 
+  const [valueTab, setValueTab] = useState('student');
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
+    setValueTab(newValue);
+  };
   return (
     <Page title="Chi tiết lớp học | PJ School">
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -197,78 +184,88 @@ export default function ClassDetail() {
             { name: 'Lớp', href: PATH_DASHBOARD.root }
           ]}
         />
-        <Card>
-          <Stack spacing={6}>
-            <Card color="green" sx={{ p: 3 }}>
-              <Stack spacing={3}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Typography variant="h6">Lớp 10a3</Typography>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Typography>Năm học: </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      sx={{
-                        display: 'inline'
-                      }}
-                    >
-                      Sĩ số: Chưa có data
-                    </Typography>
-                  </Grid>
 
-                  <Grid item xs={4}>
-                    <Typography>Giáo viên chủ nhiệm</Typography>
-                  </Grid>
-                  {/* <Grid item xs={6}>
+        <TabContext value={valueTab}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
+              <Tab label="Danh sách học sinh" value="student" />
+              <Tab label="Danh sách giáo viên" value="teacher" />
+            </TabList>
+          </Box>
+          {/* Student tab */}
+          <TabPanel value="student">
+            <Card>
+              <Stack spacing={6}>
+                <Card color="green" sx={{ p: 3 }}>
+                  <Stack spacing={3}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <Typography variant="h6">Lớp {classDetail.name}</Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography>Năm học: {classDetail.year}</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography
+                          sx={{
+                            display: 'inline'
+                          }}
+                        >
+                          Sĩ số: {classDetail.quantity}
+                        </Typography>
+                      </Grid>
+
+                      <Grid item xs={4}>
+                        <Typography>Giáo viên chủ nhiệm: {classDetail.teacherName}</Typography>
+                      </Grid>
+                      {/* <Grid item xs={6}>
                     <Typography>sssss</Typography>
                   </Grid> */}
-                </Grid>
+                    </Grid>
+                  </Stack>
+                </Card>
               </Stack>
-            </Card>
-          </Stack>
-          <TeacherListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+              <StudentListToolbar
+                numSelected={selected.length}
+                filterName={filterName}
+                onFilterName={handleFilterByName}
+              />
 
-          <Scrollbar>
-            <TeacherDialog open={open} teacher={currentTeacher!} handleClose={handleClose} />
-            {!isLoading ? (
-              <TableContainer sx={{ minWidth: 800 }}>
-                <Table>
-                  <TeacherListHead
-                    order={order}
-                    orderBy={orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={teacherList.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllClick={handleSelectAllClick}
-                  />
-                  <TableBody>
-                    {filteredDiver.map((row) => {
-                      const { id, name, phone, email, cityName } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
-                      return (
-                        <TableRow
-                          onClick={() => {
-                            handleOpen();
-                            setCurrentTeacher(row);
-                          }}
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
-                          </TableCell>
-                          {/* <TableCell component="th" scope="row" padding="none">
+              <Scrollbar>
+                <StudentDialog open={open} student={currentStudent!} handleClose={handleClose} />
+                {!isLoading ? (
+                  <TableContainer sx={{ minWidth: 800 }}>
+                    <Table>
+                      <StudentListHead
+                        order={order}
+                        orderBy={orderBy}
+                        headLabel={TABLE_HEAD}
+                        rowCount={studentList.length}
+                        numSelected={selected.length}
+                        onRequestSort={handleRequestSort}
+                        onSelectAllClick={handleSelectAllClick}
+                      />
+                      <TableBody>
+                        {filteredDiver.map((row) => {
+                          const { id, name, phone, email, cityName } = row;
+                          const isItemSelected = selected.indexOf(name) !== -1;
+                          return (
+                            <TableRow
+                              onClick={() => {
+                                handleOpen();
+                                setCurrentStudent(row);
+                              }}
+                              hover
+                              key={id}
+                              tabIndex={-1}
+                              role="checkbox"
+                              selected={isItemSelected}
+                              aria-checked={isItemSelected}
+                            >
+                              <TableCell padding="checkbox">
+                                {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
+                              </TableCell>
+                              {/* <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Avatar alt={name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
@@ -276,34 +273,16 @@ export default function ClassDetail() {
                               </Typography>
                             </Stack>
                           </TableCell> */}
-                          <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{cityName}</TableCell>
-                          <TableCell align="left">Chức vụ</TableCell>
-                          <TableCell align="left">
-                            {row?.subjects.length > 0 ? (
-                              <>
-                                {row?.subjects.map((subject, index) => (
-                                  <Typography key={index} component="span">
-                                    {/* {subject}&nbsp; */}
-
-                                    {index + 1 == row?.subjects.length ? (
-                                      <>{subject}</>
-                                    ) : (
-                                      <>{subject},</>
-                                    )}
-                                  </Typography>
-                                ))}
-                              </>
-                            ) : (
-                              <></>
-                            )}
-                          </TableCell>
-                          {/* <TableCell align="left">
+                              <TableCell align="left">{name}</TableCell>
+                              <TableCell align="left">{cityName}</TableCell>
+                              <TableCell align="left">{phone}</TableCell>
+                              <TableCell align="left">{email}</TableCell>
+                              {/* <TableCell align="left">
                             <Label variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}>
                               Status
                             </Label>
                           </TableCell> */}
-                          {/* <TableCell align="left">
+                              {/* <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                               color={(status == 0 && 'error') || 'success'}
@@ -312,46 +291,51 @@ export default function ClassDetail() {
                             </Label>
                           </TableCell> */}
 
-                          {/* <TableCell align="right">
+                              {/* <TableCell align="right">
                             <TeacherMoreMenu diverID={id.toString()} status="1" />
                           </TableCell> */}
-                        </TableRow>
-                      );
-                    })}
-                    {/* {emptyRows && (
+                            </TableRow>
+                          );
+                        })}
+                        {/* {emptyRows && (
                       <TableRow style={{ height: 53 * emptyRows }}>
                         <TableCell colSpan={6} />
                       </TableRow>
                     )} */}
-                  </TableBody>
-                  {isDiverNotFound && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <SearchNotFound searchQuery={filterName} />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
-            ) : (
-              <Stack sx={{ mt: 3 }} alignItems="center">
-                <CircularProgress />
-              </Stack>
-            )}
-          </Scrollbar>
+                      </TableBody>
+                      {isStudentNotFound && (
+                        <TableBody>
+                          <TableRow>
+                            <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                              <SearchNotFound searchQuery={filterName} />
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      )}
+                    </Table>
+                  </TableContainer>
+                ) : (
+                  <Stack sx={{ mt: 3 }} alignItems="center">
+                    <CircularProgress />
+                  </Stack>
+                )}
+              </Scrollbar>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-            component="div"
-            count={totalCount}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={(e, value) => setPage(value)}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                component="div"
+                count={totalCount}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={(e, value) => setPage(value)}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Card>
+          </TabPanel>
+          <TabPanel value="teacher">
+            <TeacherList classId={classId} />
+          </TabPanel>
+        </TabContext>
       </Container>
     </Page>
   );
