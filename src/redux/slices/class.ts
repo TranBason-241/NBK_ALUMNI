@@ -20,7 +20,16 @@ const initialState: NewState = {
   isLoading: false,
   error: false,
   classList: [],
-  class: { id: '', name: '', classGroupId: 'String', grade: '', year: '' }
+  class: {
+    id: '',
+    name: '',
+    classGroupId: 'String',
+    grade: '',
+    year: '',
+    positionName: '',
+    teacherName: '',
+    quantity: 0
+  }
 };
 
 const slice = createSlice({

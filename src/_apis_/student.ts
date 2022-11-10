@@ -11,13 +11,20 @@ export class StudentManager {
   // get list student
   getListStudentByClassId = (classId: string, p_size: number, p_number: number) =>
     axios
-      .get(`api/v1/teachers`, {
+      .get(`/api/v1/students/get-student-class`, {
         params: {
           classId,
           page_size: p_size,
           page_number: p_number
         }
       })
+      .then((res) => res)
+      .catch((err) => err);
+
+  // get list student
+  getStudentById = (studentId: string) =>
+    axios
+      .get(`/api/v1/students/${studentId}`)
       .then((res) => res)
       .catch((err) => err);
 }

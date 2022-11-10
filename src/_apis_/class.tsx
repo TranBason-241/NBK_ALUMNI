@@ -18,7 +18,7 @@ export class ClassManger {
 
   getClassById = (classId: string) =>
     axios
-      .get(`/api/v1/news/${classId}`)
+      .get(`/api/v1/classes/${classId}`)
       .then((res) => res)
       .catch((err) => err);
 }

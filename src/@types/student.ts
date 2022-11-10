@@ -8,5 +8,11 @@ export type Student = {
   phone: string;
   startTime: string;
   endTime: string;
-  isAlive: number;
+  // thêm
+  isAlive: string;
+  classId: string;
+  positionId: string;
+  cityName: string;
+  learningExperiences: any[];
+  workExperiences: any[];
 };

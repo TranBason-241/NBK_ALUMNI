@@ -62,7 +62,7 @@ export default function ClassCard({ studentClass, index }: classCardProps) {
   return (
     <Card sx={{ display: 'flex', alignItems: 'center', p: 3, backgroundColor: bgColor[index] }}>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="h3">Lớp {studentClass?.grade}</Typography>
+        <Typography variant="h3">Lớp {studentClass?.name}</Typography>
 
         <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 2, mb: 1 }}>
           <Typography component="span" variant="subtitle2">
@@ -72,13 +72,13 @@ export default function ClassCard({ studentClass, index }: classCardProps) {
 
         <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 2, mb: 1 }}>
           <Typography component="span" variant="subtitle2">
-            Sĩ số: 45 (học sinh) (Chưa có data)
+            Sĩ số: {studentClass?.quantity} (học sinh)
           </Typography>
         </Stack>
 
         <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 2, mb: 1 }}>
           <Typography component="span" variant="subtitle2">
-            Giáo viên chủ nhiệm: Trần Bá Đạt (chưa có data)
+            Giáo viên chủ nhiệm: {studentClass?.teacherName}
           </Typography>
         </Stack>
 
