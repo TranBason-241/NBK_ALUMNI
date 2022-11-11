@@ -27,5 +27,27 @@ export class StudentManager {
       .get(`/api/v1/students/${studentId}`)
       .then((res) => res)
       .catch((err) => err);
+
+  // update Student
+  updateStudent = (value: any) => {
+    const data = {
+      id: value.id,
+      name: value.Name,
+      dateOfBirth: value.DateOfBirth,
+      imageUrl: value.ImageUrl,
+      email: value.Email,
+      phone: value.Phone,
+      classId: value.ClassId,
+      positionId: value.PositionId,
+      cityName: value.CityName,
+      learningExperiences: value.LearningExperiences,
+      workExperiences: value.WorkExperiences
+    };
+    console.log(value.Name);
+    return axios
+      .put('/api/v1/students', value)
+      .then((response) => response)
+      .catch((err) => err);
+  };
 }
 export const manageStudent = new StudentManager();

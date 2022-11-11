@@ -9,7 +9,7 @@ import useLocales from 'hooks/useLocales';
 
 // material
 import { styled } from '@material-ui/core/styles';
-import { LoadingButton, TabPanel } from '@material-ui/lab';
+import { DatePicker, LoadingButton, TabPanel } from '@material-ui/lab';
 import {
   Card,
   Box,
@@ -34,6 +34,8 @@ import {
 } from '@material-ui/core';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
+import { RootState, useSelector } from 'redux/store';
+import { manageStudent } from '_apis_/student';
 // utils
 
 // import TechInforPassword from './TechInforPassword';
@@ -46,6 +48,7 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import { QuillEditor } from '../../../editor';
 import { UploadAvatar } from '../../../upload';
 import { Student } from '../../../../@types/student';
+import LearningExperiencesList from './LearningExperiencesList';
 
 // ----------------------------------------------------------------------
 
@@ -78,6 +81,7 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
   const navigate = useNavigate();
   const { translate } = useLocales();
   const [valueTab, setValueTab] = useState('General');
+  const countryList = useSelector((state: RootState) => state.country.countryList);
   const { enqueueSnackbar } = useSnackbar();
   const [imageFILE, setImageFILE] = useState('');
   const [selectedTab, setSelectedTab] = useState('');
@@ -109,11 +113,6 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
       .required('Confirm password is required')
   });
 
-  useEffect(() => {
-    // setEnumStatus(statusOptions.find((e) => e.id == currentGroupRole?.status) || null);
-    console.log(currentStudent);
-  }, [currentStudent]);
-
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -124,25 +123,40 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
       phone: currentStudent?.phone || '',
       email: currentStudent?.email || '',
       cityName: currentStudent?.cityName || '',
-      cityId: currentStudent?.cityId || ''
+      cityId: currentStudent?.cityId || '',
+      classId: currentStudent?.classId || '',
+      positionId: currentStudent?.positionId || '',
+      learningExperiences: currentStudent?.learningExperiences || [],
+      workExperiences: currentStudent?.workExperiences || []
     },
-    validationSchema: NewProductSchema,
+    // validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
-      const flag = false;
+      let flag = false;
+      console.log(values);
       try {
+        console.log(values.name);
         const bodyFormData = new FormData();
         bodyFormData.append('Id', values.id);
         bodyFormData.append('Name', values.name);
-        bodyFormData.append('Phone', values.phone);
+        bodyFormData.append('DateOfBirth', values.phone);
+        // bodyFormData.append('imageFile', imageFILE);
+        bodyFormData.append('ImageUrl', values.imageUrl);
         bodyFormData.append('Email', values.email);
-        bodyFormData.append('imageFile', imageFILE);
-        bodyFormData.append('imageUrl', values.imageUrl);
-
-        // await manageTechInfo.updateTechInfo(bodyFormData).then((response) => {
-        //   if (response.status == 200) {
-        //     flag = true;
-        //   }
-        // });
+        bodyFormData.append('Phone', values.phone);
+        bodyFormData.append('ClassId', values.classId);
+        bodyFormData.append('PositionId', values.positionId);
+        bodyFormData.append('CityName', values.cityName);
+        values.learningExperiences.forEach((element) => {
+          bodyFormData.append('learningExperiences', element);
+        });
+        values.workExperiences.forEach((element) => {
+          bodyFormData.append('workExperiences', element);
+        });
+        await manageStudent.updateStudent(bodyFormData).then((response) => {
+          if (response.status == 200) {
+            flag = true;
+          }
+        });
         if (flag) {
           resetForm();
           setSubmitting(false);
@@ -191,13 +205,20 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
     setValueTab(newValue);
   };
+
+  useEffect(() => {
+    // setEnumStatus(statusOptions.find((e) => e.id == currentGroupRole?.status) || null);
+    console.log(countryList);
+    setFieldValue('cityId', countryList.find((e) => e.id == currentStudent?.cityId) || null);
+  }, [currentStudent]);
+
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={valueTab}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
             <Tab label="Thông tin cơ bản" value="General" />
-            <Tab label="Mật khẩu" value="Change Password" disabled={!isEdit} />
+            <Tab label="Bằng cấp & Nghề nghiệp" value="learningExperiences" disabled={!isEdit} />
             {/* <Tab label="Item Three" value="3" /> */}
           </TabList>
         </Box>
@@ -225,7 +246,7 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
                               color: 'text.secondary'
                             }}
                           >
-                            Allowed *.jpeg, *.jpg, *.png, *.gif
+                            Chấp nhận *.jpeg, *.jpg, *.png, *.gif
                           </Typography>
                         }
                       />
@@ -246,25 +267,39 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
                           error={Boolean(touched.name && errors.name)}
                           helperText={touched.name && errors.name}
                         />
-                        <TextField
-                          type="date"
-                          fullWidth
+                        <DatePicker
+                          maxDate={new Date()}
                           label="Ngày sinh"
                           {...getFieldProps('dateOfBirth')}
-                          error={Boolean(touched.dateOfBirth && errors.dateOfBirth)}
-                          helperText={touched.dateOfBirth && errors.dateOfBirth}
+                          onChange={(newValue: any) => {
+                            setFieldValue('dateOfBirth', newValue);
+                          }}
+                          renderInput={(params: any) => <TextField {...params} />}
                         />
                       </Stack>
 
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <TextField
+                        <Autocomplete
                           fullWidth
-                          label="Địa chỉ"
-                          {...getFieldProps('cityName')}
-                          error={Boolean(touched.cityName && errors.cityName)}
-                          helperText={touched.cityName && errors.cityName}
+                          disablePortal
+                          clearIcon
+                          id="cityId"
+                          {...getFieldProps('cityId')}
+                          options={countryList}
+                          getOptionLabel={(option: any) => (option ? option.name : '')}
+                          onChange={(e, value: any) => {
+                            setFieldValue('cityId', value);
+                            console.log(value);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Địa chỉ"
+                              error={Boolean(touched.cityId && errors.cityId)}
+                              helperText={touched.cityId && errors.cityId}
+                            />
+                          )}
                         />
-                        <Button onClick={() => {}}>test</Button>
                       </Stack>
 
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
@@ -298,7 +333,12 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
           </FormikProvider>
         </TabPanel>
         {/* <TechInforPassword /> */}
-        {/* <TabPanel value="3">Item Three</TabPanel> */}
+        <TabPanel value="learningExperiences">
+          <LearningExperiencesList
+            classId="1"
+            learningExperiencesList={currentStudent?.learningExperiences}
+          />
+        </TabPanel>
       </TabContext>
     </Box>
   );

@@ -113,7 +113,7 @@ export default function AccountGeneral() {
                       color: 'text.secondary'
                     }}
                   >
-                    Allowed *.jpeg, *.jpg, *.png, *.gif
+                    Chấp nhận *.jpeg, *.jpg, *.png, *.gif
                     <br /> max size of {fData(3145728)}
                   </Typography>
                 }

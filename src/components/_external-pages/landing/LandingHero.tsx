@@ -14,7 +14,7 @@ import { varFadeIn, varFadeInUp, varWrapEnter, varFadeInRight } from '../../anim
 
 const RootStyle = styled(motion.div)(({ theme }) => ({
   position: 'relative',
-  backgroundColor: '#FFF169',
+  backgroundColor: 'black',
   [theme.breakpoints.up('md')]: {
     top: 0,
     left: 0,
