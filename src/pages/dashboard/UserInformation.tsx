@@ -8,6 +8,7 @@ import { Container } from '@material-ui/core';
 import useLocales from 'hooks/useLocales';
 import { manageStudent } from '_apis_/student';
 import UserForm from 'components/_dashboard/user/account/UserForm';
+import { getCountryList } from 'redux/slices/country';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 
@@ -40,13 +41,15 @@ export default function UserInformation() {
   }, []);
 
   const fetchData = async () => {
+    await dispatch(getCountryList());
     await manageStudent.getStudentById('1').then((response) => {
       if (response.status == 200) {
         const data = {
           id: response.data.id,
           name: response.data.name,
           dateOfBirth: response.data.dateOfBirth,
-          cityId: response.data.cityId,
+          // cityId: response.data.cityId,
+          cityId: 'AG',
           imageUrl: response.data.imageUrl,
           email: response.data.email,
           phone: response.data.phone,
