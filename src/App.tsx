@@ -25,9 +25,9 @@ export default function App() {
         <ThemeLocalization>
           <RtlLayout>
             <NotistackProvider>
-              {/* <Settings /> */}
+              <Settings />
               <ScrollToTop />
-              <GoogleAnalytics />
+              {/* <GoogleAnalytics /> */}
               {isInitialized ? <Router /> : <LoadingScreen />}
             </NotistackProvider>
           </RtlLayout>

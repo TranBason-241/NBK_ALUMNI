@@ -35,7 +35,7 @@ type InitialValues = {
   afterSubmit?: string;
 };
 export default function LoginForm() {
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -139,6 +139,7 @@ export default function LoginForm() {
         >
           Login
         </LoadingButton>
+        <LoadingButton onClick={() => loginWithGoogle()}>Click me </LoadingButton>
       </Form>
     </FormikProvider>
   );
