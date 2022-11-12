@@ -47,7 +47,7 @@ function convertUTCDateToLocalDate(date: any) {
   const newDate = new Date(date);
   return newDate.toLocaleDateString();
 }
-export default function LearningExperienceDialog({
+export default function WorkExperienceDialog({
   handleClose,
   isEdit,
   open,

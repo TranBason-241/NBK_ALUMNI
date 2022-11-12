@@ -49,6 +49,7 @@ import { QuillEditor } from '../../../editor';
 import { UploadAvatar } from '../../../upload';
 import { Student } from '../../../../@types/student';
 import LearningExperiencesList from './LearningExperiencesList';
+import WorkExperiencesList from './WorkExperiencesList';
 
 // ----------------------------------------------------------------------
 
@@ -218,7 +219,8 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
             <Tab label="Thông tin cơ bản" value="General" />
-            <Tab label="Bằng cấp & Nghề nghiệp" value="learningExperiences" disabled={!isEdit} />
+            <Tab label="Bằng cấp" value="learningExperiences" disabled={!isEdit} />
+            <Tab label="Kinh nghiệm làm viêc" value="workExperiences" disabled={!isEdit} />
             {/* <Tab label="Item Three" value="3" /> */}
           </TabList>
         </Box>
@@ -334,10 +336,10 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
         </TabPanel>
         {/* <TechInforPassword /> */}
         <TabPanel value="learningExperiences">
-          <LearningExperiencesList
-            classId="1"
-            learningExperiencesList={currentStudent?.learningExperiences}
-          />
+          <LearningExperiencesList classId="1" />
+        </TabPanel>
+        <TabPanel value="workExperiences">
+          <WorkExperiencesList classId="1" />
         </TabPanel>
       </TabContext>
     </Box>

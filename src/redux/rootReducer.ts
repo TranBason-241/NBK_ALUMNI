@@ -14,6 +14,8 @@ import teacherReducer from './slices/teacher';
 import studentReducer from './slices/student';
 import classReducer from './slices/class';
 import countryReducer from './slices/country';
+import learningExperienceReducer from './slices/learningExperience';
+import workExperienceReducer from './slices/workExperience';
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +45,8 @@ const rootReducer = combineReducers({
   student: studentReducer,
   class: classReducer,
   country: countryReducer,
+  learningExperience: learningExperienceReducer,
+  workExperience: workExperienceReducer,
   product: persistReducer(productPersistConfig, productReducer)
 });
 

@@ -54,6 +54,7 @@ import HeaderBreadcrumbs from '../../../HeaderBreadcrumbs';
 
 import { Teacher } from '../../../../@types/teacher';
 import LearningExperienceDialog from './LearningExperienceDialog';
+import WorkExperienceDialog from './WorkExperienceDialog';
 
 // ----------------------------------------------------------------------
 
@@ -94,7 +95,7 @@ function applySortFilter(array: any[], comparator: (a: any, b: any) => number, q
 type TeacherListProps = {
   classId: string;
 };
-export default function LearningExperiencesList({ classId }: TeacherListProps) {
+export default function WorkExperiencesList({ classId }: TeacherListProps) {
   const { translate } = useLocales();
   const { user } = useAuth();
   const { themeStretch } = useSettings();
@@ -103,8 +104,8 @@ export default function LearningExperiencesList({ classId }: TeacherListProps) {
   const dispatch = useDispatch();
   // const diverList = useSelector((state: RootState) => state.diver.diverList);
   //   const teacherList = useSelector((state: RootState) => state.teacher.teacherListAll);
-  const learningExperienceList = useSelector(
-    (state: RootState) => state.learningExperience.LearningExperienceList
+  const workExperienceList = useSelector(
+    (state: RootState) => state.workExperience.workExperienceList
   );
   const totalCount = useSelector((state: RootState) => state.teacher.totalCount);
   const isLoading = useSelector((state: RootState) => state.teacher.isLoading);
@@ -119,11 +120,11 @@ export default function LearningExperiencesList({ classId }: TeacherListProps) {
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const TABLE_HEAD = [
-    { id: 'degree', label: 'Bằng cấp', alignRight: false },
+    { id: 'degree', label: 'Chuyên ngành', alignRight: false },
     { id: 'nameOfUniversity', label: 'Nới cấp', alignRight: false },
     { id: 'fromTime', label: 'Thời gian bắt đầu', alignRight: false },
-    { id: 'toTime', label: 'Thời gian kết thúc', alignRight: false }
-    // { id: 'Status', label: 'Trạng thái', alignRight: false },
+    { id: 'toTime', label: 'Thời gian kết thúc', alignRight: false },
+    { id: 'Status', label: 'Trạng thái', alignRight: false }
     // { id: '' }
   ];
 
@@ -135,7 +136,7 @@ export default function LearningExperiencesList({ classId }: TeacherListProps) {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = learningExperienceList.map((n: any) => n.name);
+      const newSelecteds = workExperienceList.map((n: any) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -180,15 +181,15 @@ export default function LearningExperiencesList({ classId }: TeacherListProps) {
     dispatch(getClassDetail(classId));
   }, [dispatch, rowsPerPage, page]);
 
-  const emptyRows = !isLoading && !learningExperienceList;
+  const emptyRows = !isLoading && !workExperienceList;
 
   const filteredDiver = applySortFilter(
-    learningExperienceList,
+    workExperienceList,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isDiverNotFound = learningExperienceList.length === 0 && isLoading;
+  const isDiverNotFound = workExperienceList.length === 0 && isLoading;
   // if (companiesList !== null) {
   //   companiesList.map((item, index) => {
   //     return (
@@ -220,7 +221,7 @@ export default function LearningExperiencesList({ classId }: TeacherListProps) {
         </Box>
         <Card>
           <Scrollbar>
-            <LearningExperienceDialog
+            <WorkExperienceDialog
               isEdit={isEdit}
               open={open}
               experience={currentStudent!}
@@ -233,15 +234,24 @@ export default function LearningExperiencesList({ classId }: TeacherListProps) {
                     order={order}
                     orderBy={orderBy}
                     headLabel={TABLE_HEAD}
-                    rowCount={learningExperienceList.length}
+                    rowCount={workExperienceList.length}
                     numSelected={selected.length}
                     onRequestSort={handleRequestSort}
                     onSelectAllClick={handleSelectAllClick}
                   />
                   <TableBody>
                     {filteredDiver.map((row) => {
-                      const { id, degree, nameOfUniversity, fromTime, toTime } = row;
-                      const isItemSelected = selected.indexOf(degree) !== -1;
+                      const {
+                        studentId,
+                        countryId,
+                        majorId,
+                        startTime,
+                        endTime,
+                        workStatus,
+                        name,
+                        id
+                      } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
                           onClick={() => {
@@ -259,23 +269,23 @@ export default function LearningExperiencesList({ classId }: TeacherListProps) {
                           <TableCell padding="checkbox">
                             {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
                           </TableCell>
-                          <TableCell align="left">{degree}</TableCell>
-                          <TableCell align="left">{nameOfUniversity}</TableCell>
-                          <TableCell align="left">{convertUTCDateToLocalDate(fromTime)}</TableCell>
-                          <TableCell align="left">{convertUTCDateToLocalDate(toTime)}</TableCell>
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">Chưa làm data</TableCell>
+                          <TableCell align="left">{convertUTCDateToLocalDate(startTime)}</TableCell>
+                          <TableCell align="left">{convertUTCDateToLocalDate(endTime)}</TableCell>
                           {/* <TableCell align="left">
                             <Label variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}>
                               Status
                             </Label>
                           </TableCell> */}
-                          {/* <TableCell align="left">
+                          <TableCell align="left">
                             <Label
                               variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                              color={(status == 0 && 'error') || 'success'}
+                              color={(workStatus == 0 && 'error') || 'success'}
                             >
-                              {status == 1 ? 'Available' : 'deleted'}
+                              {workStatus == 1 ? 'Đang làm việc' : 'Đã hoàn thành'}
                             </Label>
-                          </TableCell> */}
+                          </TableCell>
 
                           {/* <TableCell align="right">
                             <TeacherMoreMenu diverID={id.toString()} status="1" />

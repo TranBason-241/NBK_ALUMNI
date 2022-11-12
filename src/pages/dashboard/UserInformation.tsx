@@ -8,7 +8,9 @@ import { Container } from '@material-ui/core';
 import useLocales from 'hooks/useLocales';
 import { manageStudent } from '_apis_/student';
 import UserForm from 'components/_dashboard/user/account/UserForm';
+import { getLearningExperience } from 'redux/slices/learningExperience';
 import { getCountryList } from 'redux/slices/country';
+import { getWorkExperience } from 'redux/slices/workExperience';
 // redux
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 
@@ -42,6 +44,8 @@ export default function UserInformation() {
 
   const fetchData = async () => {
     await dispatch(getCountryList());
+    await dispatch(getLearningExperience('1'));
+    await dispatch(getWorkExperience('1'));
     await manageStudent.getStudentById('1').then((response) => {
       if (response.status == 200) {
         const data = {
