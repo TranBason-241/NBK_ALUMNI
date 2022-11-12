@@ -108,7 +108,7 @@ export default function LearningExperienceDialog({
           // reload();
         } else {
           enqueueSnackbar(!isEdit ? 'Cập nhật thành công' : 'Cập nhật thất bại', {
-            variant: 'error'
+            variant: 'error' 
           });
         }
       } catch (error) {
