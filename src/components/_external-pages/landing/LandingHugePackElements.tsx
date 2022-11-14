@@ -143,7 +143,7 @@ export default function LandingHugePackElements() {
                   size="large"
                   component={RouterLink}
                   to={PATH_DASHBOARD.class.myClass}
-                  startIcon={<Icon icon={flashFill} width={20} height={20} />}
+                  // startIcon={<Icon icon={flashFill} width={20} height={20} />}
                 >
                   Tìm lớp của bạn
                 </Button>

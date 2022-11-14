@@ -43,6 +43,12 @@ const slice = createSlice({
     getWorkExperience(state, action) {
       state.isLoading = false;
       state.workExperienceList = action.payload;
+    },
+
+    // GET TOTAL COUNT
+    getTotalCount(state, action) {
+      state.isLoading = false;
+      state.totalCount = action.payload;
     }
   }
 });
@@ -56,14 +62,15 @@ export default slice.reducer;
 // ----------------------------------------------------------------------
 
 // get list work experience
-export function getWorkExperience(studentId: string) {
+export function getWorkExperience(studentId: string, p_size: number, p_number: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      manageWorkExperience.getListWorkExperience(studentId).then((response) => {
+      manageWorkExperience.getListWorkExperience(studentId, p_size, p_number).then((response) => {
         // console.log(response);
         if (response.status == 200) {
           dispatch(slice.actions.getWorkExperience(response.data.items));
+          dispatch(slice.actions.getTotalCount(response.data.metaData.totalCount));
         } else {
           dispatch(slice.actions.getWorkExperience([]));
         }

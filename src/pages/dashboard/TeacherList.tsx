@@ -191,7 +191,7 @@ export default function TeacherList() {
         <HeaderBreadcrumbs
           heading="Danh sách giáo viên trong trường"
           links={[
-            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.class.myClass },
             { name: 'Danh sách giáo viên', href: PATH_DASHBOARD.root }
           ]}
         />

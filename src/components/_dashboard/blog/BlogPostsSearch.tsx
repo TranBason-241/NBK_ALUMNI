@@ -99,7 +99,7 @@ export default function BlogPostsSearch({ sx }: BoxProps) {
         renderInput={(params) => (
           <TextField
             {...params}
-            placeholder="Search post..."
+            placeholder="Tìm kiếm..."
             InputProps={{
               ...params.InputProps,
               startAdornment: (

@@ -35,8 +35,9 @@ import TeacherListHead from 'components/_dashboard/teacher/list/TeacherListHead'
 import TeacherMoreMenu from 'components/_dashboard/teacher/list/TeacherMoreMenu';
 import { getListTeacherAll } from 'redux/slices/teacher';
 import TeacherDialog from 'components/_dashboard/teacher/dialog/TeacherDialog';
-import { getClassDetail } from 'redux/slices/class';
+import { getWorkExperience } from 'redux/slices/workExperience';
 import WorkExperienceDialog from './WorkExperienceDialog';
+
 // redux
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 
@@ -52,9 +53,6 @@ import Label from '../../../Label';
 import Scrollbar from '../../../Scrollbar';
 import SearchNotFound from '../../../SearchNotFound';
 import HeaderBreadcrumbs from '../../../HeaderBreadcrumbs';
-
-import { Teacher } from '../../../../@types/teacher';
-import LearningExperienceDialog from './LearningExperienceDialog';
 
 // ----------------------------------------------------------------------
 
@@ -92,10 +90,7 @@ function applySortFilter(array: any[], comparator: (a: any, b: any) => number, q
   return stabilizedThis.map((el) => el[0]);
 }
 
-type TeacherListProps = {
-  classId: string;
-};
-export default function WorkExperiencesList({ classId }: TeacherListProps) {
+export default function WorkExperiencesList() {
   const { translate } = useLocales();
   const { user } = useAuth();
   const { themeStretch } = useSettings();
@@ -107,8 +102,8 @@ export default function WorkExperiencesList({ classId }: TeacherListProps) {
   const workExperienceList = useSelector(
     (state: RootState) => state.workExperience.workExperienceList
   );
-  const totalCount = useSelector((state: RootState) => state.teacher.totalCount);
-  const isLoading = useSelector((state: RootState) => state.teacher.isLoading);
+  const totalCount = useSelector((state: RootState) => state.workExperience.totalCount);
+  const isLoading = useSelector((state: RootState) => state.workExperience.isLoading);
   const classDetail = useSelector((state: RootState) => state.class.class);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
@@ -179,7 +174,8 @@ export default function WorkExperiencesList({ classId }: TeacherListProps) {
   };
 
   useEffect(() => {
-    dispatch(getClassDetail(classId));
+    // dispatch(getClassDetail(classId));
+    dispatch(getWorkExperience('1', rowsPerPage, page));
   }, [dispatch, rowsPerPage, page]);
 
   const emptyRows = !isLoading && !workExperienceList;

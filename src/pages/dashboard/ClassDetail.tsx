@@ -179,8 +179,8 @@ export default function ClassDetail() {
         <HeaderBreadcrumbs
           heading="Chi tiết lớp học"
           links={[
-            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
-            { name: 'Danh sách Lớp học', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.class.myClass },
+            { name: 'Danh sách Lớp học', href: PATH_DASHBOARD.class.myClass },
             { name: 'Lớp', href: PATH_DASHBOARD.root }
           ]}
         />

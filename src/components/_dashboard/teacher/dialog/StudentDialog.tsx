@@ -113,6 +113,30 @@ export default function StudentDialog({ handleClose, open, student }: StudentDia
                       {student?.phone}
                     </Typography>
                   </Typography>
+                  <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
+                    Bằng cấp: &nbsp;
+                    <Typography component="span" variant="subtitle1">
+                      {student?.learningExperiences?.length > 0
+                        ? student?.learningExperiences?.map((learning, index) => (
+                            <Typography key={index} component="span" variant="subtitle1">
+                              - {learning.degree}&nbsp;
+                            </Typography>
+                          ))
+                        : 'Đang câp nhật'}
+                    </Typography>
+                  </Typography>
+                  <Typography variant="h5" sx={{ color: 'black', fontStyle: 'aria', mb: 1 }}>
+                    Kinh nghiệm làm việc: &nbsp;
+                    <Typography component="span" variant="subtitle1">
+                      {student?.workExperiences?.length > 0
+                        ? student?.workExperiences?.map((work, index) => (
+                            <Typography key={index} component="span" variant="subtitle1">
+                              - {work.majorName}&nbsp;
+                            </Typography>
+                          ))
+                        : 'Đang cập nhật'}
+                    </Typography>
+                  </Typography>
                 </Box>
               </Grid>
             </Grid>
