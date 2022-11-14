@@ -1,3 +1,6 @@
+import { LearningExperience } from './learningExperiencce';
+import { WorkExperience } from './workExperience';
+
 export type Student = {
   id: string;
   name: string;
@@ -13,6 +16,6 @@ export type Student = {
   classId: string;
   positionId: string;
   cityName: string;
-  learningExperiences: any[];
-  workExperiences: any[];
+  learningExperiences: LearningExperience[];
+  workExperiences: WorkExperience[];
 };

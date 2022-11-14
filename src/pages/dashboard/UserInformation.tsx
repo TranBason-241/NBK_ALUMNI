@@ -46,8 +46,8 @@ export default function UserInformation() {
   const fetchData = async () => {
     await dispatch(getCountryList());
     await dispatch(getMajorList());
-    await dispatch(getLearningExperience('1'));
-    await dispatch(getWorkExperience('1'));
+    // await dispatch(getLearningExperience('1'));
+    // await dispatch(getWorkExperience('1'));
     await manageStudent.getStudentById('1').then((response) => {
       if (response.status == 200) {
         const data = {

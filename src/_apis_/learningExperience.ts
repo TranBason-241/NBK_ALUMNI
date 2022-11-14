@@ -2,11 +2,13 @@ import axios from 'axios';
 
 export class LearningExperienceManager {
   // get list learning experience
-  getListLearningExperience = (studentId: string) =>
+  getListLearningExperience = (studentId: string, p_size: number, p_number: number) =>
     axios
       .get(`/api/v1/learning-experiences`, {
         params: {
-          StudentId: studentId
+          StudentId: studentId,
+          page_size: p_size,
+          page_number: p_number
         }
       })
       .then((res) => res)

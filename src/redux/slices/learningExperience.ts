@@ -43,6 +43,12 @@ const slice = createSlice({
     getLearningExperience(state, action) {
       state.isLoading = false;
       state.LearningExperienceList = action.payload;
+    },
+
+    // GET TOTAL COUNT
+    getTotalCount(state, action) {
+      state.isLoading = false;
+      state.totalCount = action.payload;
     }
   }
 });
@@ -56,18 +62,21 @@ export default slice.reducer;
 // ----------------------------------------------------------------------
 
 // get list student
-export function getLearningExperience(studentId: string) {
+export function getLearningExperience(studentId: string, p_size: number, p_number: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      manageLearningExperience.getListLearningExperience(studentId).then((response) => {
-        // console.log(response);
-        if (response.status == 200) {
-          dispatch(slice.actions.getLearningExperience(response.data.items));
-        } else {
-          dispatch(slice.actions.getLearningExperience([]));
-        }
-      });
+      manageLearningExperience
+        .getListLearningExperience(studentId, p_size, p_number)
+        .then((response) => {
+          // console.log(response);
+          if (response.status == 200) {
+            dispatch(slice.actions.getLearningExperience(response.data.items));
+            dispatch(slice.actions.getTotalCount(response.data.metaData.totalCount));
+          } else {
+            dispatch(slice.actions.getLearningExperience([]));
+          }
+        });
     } catch (error) {
       dispatch(slice.actions.getLearningExperience([]));
       dispatch(slice.actions.hasError(error));

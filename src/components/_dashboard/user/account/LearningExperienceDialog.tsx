@@ -99,7 +99,7 @@ export default function LearningExperienceDialog({
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getLearningExperience('1'));
+              dispatch(getLearningExperience('1', -1, 1));
             }
           });
         } else {
@@ -108,7 +108,7 @@ export default function LearningExperienceDialog({
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getLearningExperience('1'));
+              dispatch(getLearningExperience('1', -1, 1));
             }
           });
         }

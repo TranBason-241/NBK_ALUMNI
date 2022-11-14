@@ -147,12 +147,12 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
         bodyFormData.append('ClassId', values.classId);
         bodyFormData.append('PositionId', values.positionId);
         bodyFormData.append('CityName', values.cityName);
-        values.learningExperiences.forEach((element) => {
-          bodyFormData.append('learningExperiences', element);
-        });
-        values.workExperiences.forEach((element) => {
-          bodyFormData.append('workExperiences', element);
-        });
+        // values.learningExperiences.forEach((element) => {
+        //   bodyFormData.append('learningExperiences', element);
+        // });
+        // values.workExperiences.forEach((element) => {
+        //   bodyFormData.append('workExperiences', element);
+        // });
         await manageStudent.updateStudent(bodyFormData).then((response) => {
           if (response.status == 200) {
             flag = true;
@@ -335,10 +335,10 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
         </TabPanel>
         {/* <TechInforPassword /> */}
         <TabPanel value="learningExperiences">
-          <LearningExperiencesList classId="1" />
+          <LearningExperiencesList />
         </TabPanel>
         <TabPanel value="workExperiences">
-          <WorkExperiencesList classId="1" />
+          <WorkExperiencesList />
         </TabPanel>
       </TabContext>
     </Box>

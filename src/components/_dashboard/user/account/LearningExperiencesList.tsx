@@ -36,6 +36,7 @@ import TeacherMoreMenu from 'components/_dashboard/teacher/list/TeacherMoreMenu'
 import { getListTeacherAll } from 'redux/slices/teacher';
 import TeacherDialog from 'components/_dashboard/teacher/dialog/TeacherDialog';
 import { getClassDetail } from 'redux/slices/class';
+import { getLearningExperience } from 'redux/slices/learningExperience';
 // redux
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 
@@ -91,10 +92,7 @@ function applySortFilter(array: any[], comparator: (a: any, b: any) => number, q
   return stabilizedThis.map((el) => el[0]);
 }
 
-type TeacherListProps = {
-  classId: string;
-};
-export default function LearningExperiencesList({ classId }: TeacherListProps) {
+export default function LearningExperiencesList() {
   const { translate } = useLocales();
   const { user } = useAuth();
   const { themeStretch } = useSettings();
@@ -106,8 +104,8 @@ export default function LearningExperiencesList({ classId }: TeacherListProps) {
   const learningExperienceList = useSelector(
     (state: RootState) => state.learningExperience.LearningExperienceList
   );
-  const totalCount = useSelector((state: RootState) => state.teacher.totalCount);
-  const isLoading = useSelector((state: RootState) => state.teacher.isLoading);
+  const totalCount = useSelector((state: RootState) => state.learningExperience.totalCount);
+  const isLoading = useSelector((state: RootState) => state.learningExperience.isLoading);
   const classDetail = useSelector((state: RootState) => state.class.class);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
@@ -177,7 +175,8 @@ export default function LearningExperiencesList({ classId }: TeacherListProps) {
   };
 
   useEffect(() => {
-    dispatch(getClassDetail(classId));
+    // dispatch(getClassDetail(classId));
+    dispatch(getLearningExperience('1', rowsPerPage, page));
   }, [dispatch, rowsPerPage, page]);
 
   const emptyRows = !isLoading && !learningExperienceList;

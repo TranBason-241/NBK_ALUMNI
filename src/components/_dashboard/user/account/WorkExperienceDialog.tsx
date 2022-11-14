@@ -119,7 +119,7 @@ export default function WorkExperienceDialog({
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getWorkExperience('1'));
+              dispatch(getWorkExperience('1', -1, 1));
             }
           });
         } else {
@@ -141,7 +141,7 @@ export default function WorkExperienceDialog({
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getWorkExperience('1'));
+              dispatch(getWorkExperience('1', -1, 1));
             }
           });
         }
