@@ -84,7 +84,6 @@ export default function LearningExperienceDialog({
     validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       let flag = false;
-      console.log(values);
       try {
         const bodyFormData = new FormData();
         bodyFormData.append('Id', values.id);

@@ -36,6 +36,7 @@ import TeacherMoreMenu from 'components/_dashboard/teacher/list/TeacherMoreMenu'
 import { getListTeacherAll } from 'redux/slices/teacher';
 import TeacherDialog from 'components/_dashboard/teacher/dialog/TeacherDialog';
 import { getClassDetail } from 'redux/slices/class';
+import WorkExperienceDialog from './WorkExperienceDialog';
 // redux
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 
@@ -54,7 +55,6 @@ import HeaderBreadcrumbs from '../../../HeaderBreadcrumbs';
 
 import { Teacher } from '../../../../@types/teacher';
 import LearningExperienceDialog from './LearningExperienceDialog';
-import WorkExperienceDialog from './WorkExperienceDialog';
 
 // ----------------------------------------------------------------------
 
@@ -120,8 +120,9 @@ export default function WorkExperiencesList({ classId }: TeacherListProps) {
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const TABLE_HEAD = [
-    { id: 'degree', label: 'Chuyên ngành', alignRight: false },
-    { id: 'nameOfUniversity', label: 'Nới cấp', alignRight: false },
+    { id: 'majorName', label: 'Chuyên ngành', alignRight: false },
+    { id: 'name', label: 'Chức vụ', alignRight: false },
+    { id: 'countryName', label: 'Nơi cấp', alignRight: false },
     { id: 'fromTime', label: 'Thời gian bắt đầu', alignRight: false },
     { id: 'toTime', label: 'Thời gian kết thúc', alignRight: false },
     { id: 'Status', label: 'Trạng thái', alignRight: false }
@@ -244,7 +245,9 @@ export default function WorkExperiencesList({ classId }: TeacherListProps) {
                       const {
                         studentId,
                         countryId,
+                        countryName,
                         majorId,
+                        majorName,
                         startTime,
                         endTime,
                         workStatus,
@@ -269,8 +272,9 @@ export default function WorkExperiencesList({ classId }: TeacherListProps) {
                           <TableCell padding="checkbox">
                             {/* <Checkbox checked={isItemSelected} onClick={() => handleClick(name)} /> */}
                           </TableCell>
+                          <TableCell align="left">{majorName}</TableCell>
                           <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">Chưa làm data</TableCell>
+                          <TableCell align="left">{countryName}</TableCell>
                           <TableCell align="left">{convertUTCDateToLocalDate(startTime)}</TableCell>
                           <TableCell align="left">{convertUTCDateToLocalDate(endTime)}</TableCell>
                           {/* <TableCell align="left">

@@ -16,6 +16,7 @@ import classReducer from './slices/class';
 import countryReducer from './slices/country';
 import learningExperienceReducer from './slices/learningExperience';
 import workExperienceReducer from './slices/workExperience';
+import majorReducer from './slices/major';
 
 // ----------------------------------------------------------------------
 
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   country: countryReducer,
   learningExperience: learningExperienceReducer,
   workExperience: workExperienceReducer,
+  major: majorReducer,
   product: persistReducer(productPersistConfig, productReducer)
 });
 

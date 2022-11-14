@@ -209,7 +209,6 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
 
   useEffect(() => {
     // setEnumStatus(statusOptions.find((e) => e.id == currentGroupRole?.status) || null);
-    console.log(countryList);
     setFieldValue('cityId', countryList.find((e) => e.id == currentStudent?.cityId) || null);
   }, [currentStudent]);
 

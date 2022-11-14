@@ -12,6 +12,7 @@ import { getLearningExperience } from 'redux/slices/learningExperience';
 import { getCountryList } from 'redux/slices/country';
 import { getWorkExperience } from 'redux/slices/workExperience';
 // redux
+import { getMajorList } from 'redux/slices/major';
 import { useDispatch, useSelector, RootState } from '../../redux/store';
 
 import { getUserList } from '../../redux/slices/user';
@@ -44,6 +45,7 @@ export default function UserInformation() {
 
   const fetchData = async () => {
     await dispatch(getCountryList());
+    await dispatch(getMajorList());
     await dispatch(getLearningExperience('1'));
     await dispatch(getWorkExperience('1'));
     await manageStudent.getStudentById('1').then((response) => {

@@ -5,6 +5,11 @@ export type WorkExperience = {
   countryId: String;
   studentId: String;
   startTime: String;
+
   endTime: String;
   workStatus: String;
+  // NEW
+  majorName: String;
+  studentName: String;
+  countryName: String;
 };
