@@ -60,17 +60,31 @@ function AuthProvider({ children }: { children: ReactNode }) {
     () =>
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          const docRef = firebase.firestore().collection('users').doc(user.uid);
-          docRef
-            .get()
-            .then((doc) => {
-              if (doc.exists) {
-                setProfile(doc.data());
-              }
+          user
+            .getIdToken(/* forceRefresh */ true)
+            .then((idToken) => {
+              console.log(idToken);
+              // Send token to your backend via HTTPS
+              // ...
             })
             .catch((error) => {
-              console.error(error);
+              // Handle error
+              console.log(error);
             });
+
+          // const docRef = firebase.firestore().collection('users').doc(user.uid);
+          // docRef
+          //   .get()
+          //   .then((doc) => {
+          //     if (doc.exists) {
+          //       console.log('abc');
+          //       setProfile(doc.data());
+          //     }
+          //   })
+          //   .catch((error) => {
+          //     console.log('log');
+          //     console.error(error);
+          //   });
 
           dispatch({
             type: Types.Initial,
