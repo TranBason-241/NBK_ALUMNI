@@ -93,7 +93,7 @@ export default function MainNavbar() {
             <Logo />
           </RouterLink>
           <Label color="primary" sx={{ ml: 1 }}>
-            THPT NBK
+            THPT NGUYỄN BỈNH KHIÊM
           </Label>
           <Box sx={{ flexGrow: 1 }} />
 

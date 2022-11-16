@@ -59,7 +59,7 @@ const sidebarConfig = [
       },
       {
         title: 'Thông tin cá nhân',
-        path: PATH_DASHBOARD.blog.post,
+        path: PATH_DASHBOARD.user.profile,
         icon: ICONS.user
       }
 

@@ -44,12 +44,8 @@ export default function MyClass() {
     <Page title="Lớp của tôi | PJ School">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={9}>
+          <Grid item xs={12} md={12}>
             <AppWelcome displayName={user?.displayName} />
-          </Grid>
-
-          <Grid item xs={12} md={3}>
-            <></>
           </Grid>
 
           {classList?.map((studentClass: Class, index) => (

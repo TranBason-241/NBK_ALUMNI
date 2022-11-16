@@ -125,10 +125,10 @@ export default function LandingHero() {
               spacing={1.5}
               justifyContent={{ xs: 'center', md: 'flex-start' }}
             >
-              <motion.img variants={varFadeInRight} src="/static/home/facebook-svgrepo-com.svg" />
+              {/* <motion.img variants={varFadeInRight} src="/static/home/facebook-svgrepo-com.svg" />
               <motion.img variants={varFadeInRight} src="/static/home/website-svgrepo-com.svg" />
-              {/* <motion.img variants={varFadeInRight} src="/static/home/ic_m_material.svg" />
-              <motion.img variants={varFadeInRight} src="/static/home/ic_m_react.svg" />
+              <motion.img variants={varFadeInRight} src="/static/home/ic_m_material.svg" /> */}
+              {/* <motion.img variants={varFadeInRight} src="/static/home/ic_m_react.svg" />
               <motion.img variants={varFadeInRight} src="/static/home/ic_m_js.svg" />
               <motion.img variants={varFadeInRight} src="/static/home/ic_m_ts.svg" /> */}
             </Stack>

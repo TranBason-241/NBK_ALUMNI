@@ -146,11 +146,11 @@ function InfoDialog({ handleClose, open, teacher }: InfoDialogProps) {
                   sx={{ width: 400, height: 300, borderRadius: 3 }}
                   display="center"
                 />
-                <Grid sx={{ mt: 2 }} container justifyContent="center">
+                {/* <Grid sx={{ mt: 2 }} container justifyContent="center">
                   <Typography align="center" variant="body1" sx={{ color: 'text.secondary' }}>
                     Bí mật của cuộc sống là vấp ngã 7 lần nhưng đứng dậy 8 lần
                   </Typography>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Grid item md={8}>
                 <Box>
@@ -204,8 +204,6 @@ function InfoDialog({ handleClose, open, teacher }: InfoDialogProps) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Quay lại</Button>
-
           <Button variant="contained" onClick={handleClose}>
             Đóng
           </Button>
