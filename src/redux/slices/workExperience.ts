@@ -71,6 +71,7 @@ export function getWorkExperience(studentId: string, p_size: number, p_number: n
         if (response.status == 200) {
           dispatch(slice.actions.getWorkExperience(response.data.items));
           dispatch(slice.actions.getTotalCount(response.data.metaData.totalCount));
+          console.log(response.data.items);
         } else {
           dispatch(slice.actions.getWorkExperience([]));
         }
