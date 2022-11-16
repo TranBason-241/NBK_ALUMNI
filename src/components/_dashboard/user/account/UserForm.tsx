@@ -139,20 +139,31 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
         const bodyFormData = new FormData();
         bodyFormData.append('Id', values.id);
         bodyFormData.append('Name', values.name);
-        bodyFormData.append('DateOfBirth', values.phone);
+        bodyFormData.append('DateOfBirth', values.dateOfBirth);
         // bodyFormData.append('imageFile', imageFILE);
         bodyFormData.append('ImageUrl', values.imageUrl);
-        bodyFormData.append('Email', values.email);
         bodyFormData.append('Phone', values.phone);
+        bodyFormData.append('Email', values.email);
+        bodyFormData.append('CityName', values.cityName);
+        bodyFormData.append('CityId', values.cityId);
         bodyFormData.append('ClassId', values.classId);
         bodyFormData.append('PositionId', values.positionId);
-        bodyFormData.append('CityName', values.cityName);
-        // values.learningExperiences.forEach((element) => {
-        //   bodyFormData.append('learningExperiences', element);
+
+        // values.learningExperiences.forEach((element: any) => {
+        //   bodyFormData.append('learningExperiences', element.toString);
         // });
-        // values.workExperiences.forEach((element) => {
-        //   bodyFormData.append('workExperiences', element);
-        // });
+
+        for (let i = 0; i < values.learningExperiences.length; i++) {
+          bodyFormData.append('arr[]', values.learningExperiences[i].toString());
+        }
+
+        // for (let i = 0; i < values.learningExperiences.length; i++) {
+        //   bodyFormData.append('arr[]', values.learningExperiences[i].toString());
+        // }
+
+        values.workExperiences.forEach((element: any) => {
+          bodyFormData.append('workExperiences', element.toString);
+        });
         await manageStudent.updateStudent(bodyFormData).then((response) => {
           if (response.status == 200) {
             flag = true;

@@ -8,7 +8,7 @@ export class LearningExperienceManager {
         params: {
           StudentId: studentId,
           page_size: p_size,
-          page_number: p_number
+          page_number: p_number + 1
         }
       })
       .then((res) => res)
