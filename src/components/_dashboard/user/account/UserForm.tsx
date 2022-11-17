@@ -50,6 +50,7 @@ import { UploadAvatar } from '../../../upload';
 import { Student } from '../../../../@types/student';
 import LearningExperiencesList from './LearningExperiencesList';
 import WorkExperiencesList from './WorkExperiencesList';
+import ClassList from './ClassList';
 
 // ----------------------------------------------------------------------
 
@@ -137,6 +138,7 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
       try {
         console.log(values.name);
         const bodyFormData = new FormData();
+
         bodyFormData.append('Id', values.id);
         bodyFormData.append('Name', values.name);
         bodyFormData.append('DateOfBirth', values.dateOfBirth);
@@ -229,8 +231,9 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
             <Tab label="Thông tin cơ bản" value="General" />
-            <Tab label="Bằng cấp" value="learningExperiences" disabled={!isEdit} />
-            <Tab label="Kinh nghiệm làm viêc" value="workExperiences" disabled={!isEdit} />
+            <Tab label="Bằng cấp" value="learningExperiences" />
+            <Tab label="Kinh nghiệm làm viêc" value="workExperiences" />
+            <Tab label="Danh sách lớp" value="classList" />
             {/* <Tab label="Item Three" value="3" /> */}
           </TabList>
         </Box>
@@ -350,6 +353,9 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
         </TabPanel>
         <TabPanel value="workExperiences">
           <WorkExperiencesList />
+        </TabPanel>
+        <TabPanel value="classList">
+          <ClassList />
         </TabPanel>
       </TabContext>
     </Box>

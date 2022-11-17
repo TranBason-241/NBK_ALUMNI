@@ -4,13 +4,14 @@ import { Link as RouterLink } from 'react-router-dom';
 import trendingUpFill from '@iconify/icons-eva/trending-up-fill';
 import trendingDownFill from '@iconify/icons-eva/trending-down-fill';
 import { PATH_AUTH, PATH_DASHBOARD } from 'routes/paths';
+import { useState, useEffect } from 'react';
 // material
 import { alpha, useTheme, styled } from '@material-ui/core/styles';
 import { Box, Card, Typography, Stack, Button, Grid } from '@material-ui/core';
 // utils
-import { fNumber, fPercent } from '../../../utils/formatNumber';
-import { Class } from '../../../@types/class';
-import ClassDialog from '../user/account/ClassDialog';
+import { fNumber, fPercent } from '../../../../utils/formatNumber';
+import { Class } from '../../../../@types/class';
+import ClassDialog from '../account/ClassDialog';
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +39,8 @@ type classCardProps = {
 
 export default function ClassCard({ studentClass, index }: classCardProps) {
   const theme = useTheme();
-
+  const [open, setOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const chartOptions = {
     colors: [theme.palette.error.main],
     chart: { sparkline: { enabled: true } },
@@ -59,7 +61,12 @@ export default function ClassCard({ studentClass, index }: classCardProps) {
   };
 
   const bgColor = ['rgba(225,239,240,255)', 'rgba(255,237,188,255)', '#FFCCCC'];
-
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
   return (
     <Card
       sx={{
@@ -71,6 +78,13 @@ export default function ClassCard({ studentClass, index }: classCardProps) {
       }}
     >
       <Box sx={{ flexGrow: 1 }}>
+        <ClassDialog
+          isEdit={isEdit}
+          open={open}
+          studentClass={studentClass!}
+          handleClose={handleClose}
+          grade={index + 10}
+        />
         <Typography variant="h3">
           Lớp {index + 10} | {studentClass?.name}
         </Typography>
@@ -107,10 +121,16 @@ export default function ClassCard({ studentClass, index }: classCardProps) {
           <Grid item sx={{ mt: 2, mb: 1 }} spacing={1}>
             <Button
               variant="contained"
-              to={`${PATH_DASHBOARD.class.myClass}/${studentClass?.id}`}
-              component={RouterLink}
+              onClick={() => {
+                handleOpen();
+                if (studentClass) {
+                  setIsEdit(true);
+                } else {
+                  setIsEdit(false);
+                }
+              }}
             >
-              {!studentClass ? 'Cập nhật' : 'Xem chi tiết'}
+              {!studentClass ? 'Thêm lớp' : 'Cập nhật'}
             </Button>
           </Grid>
         </Grid>
