@@ -185,7 +185,6 @@ export default function ClassDialog({
                           getOptionLabel={(option: any) => (option ? option.name : '')}
                           onChange={(e, value: any) => {
                             setFieldValue('majorId', value);
-                            console.log(value);
                           }}
                           renderInput={(params) => (
                             <TextField
