@@ -19,27 +19,35 @@ import {
   DialogContentText,
   Grid,
   Stack,
-  TextField
+  TextField,
+  Autocomplete
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { fontStyle } from '@material-ui/system';
 import TeacherList from 'pages/dashboard/TeacherList';
 import { useSnackbar } from 'notistack5';
 import { manageLearningExperience } from '_apis_/learningExperience';
-import { dispatch } from 'redux/store';
+import { dispatch, RootState } from 'redux/store';
 import { getLearningExperience } from 'redux/slices/learningExperience';
+import { OptionStatus, statusOptions } from 'utils/constants';
+import { manageWorkExperience } from '_apis_/workExperience';
+import { getWorkExperience } from 'redux/slices/workExperience';
+import { getListClass, getListClassByYear } from 'redux/slices/class';
+import { manaClass } from '_apis_/class';
 
 //
 import { fDate } from '../../../../utils/formatTime';
 import { Teacher } from '../../../../@types/teacher';
 import { varFadeIn, varFadeInUp, MotionInView, varFadeInDown } from '../../../animate';
 import { CarouselControlsArrowsBasic2 } from '../../../carousel';
+import { Class } from '../../../../@types/class';
 
-type StudentDialogProps = {
-  experience: any;
+type ClassDialogProps = {
+  studentClass: any;
   handleClose: () => void;
   open: boolean;
   isEdit: boolean;
+  grade: number;
   //   item?: Item;
 };
 
@@ -47,68 +55,62 @@ function convertUTCDateToLocalDate(date: any) {
   const newDate = new Date(date);
   return newDate.toLocaleDateString();
 }
-export default function LearningExperienceDialog({
+export default function ClassDialog({
   handleClose,
   isEdit,
   open,
-  experience
-}: StudentDialogProps) {
+  studentClass,
+  grade
+}: ClassDialogProps) {
   const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
   // const { id, name, dateOfBirth, cityId, imageUrl, email, phone, startTime, endTime, isAlive } =
   //   teacher!;
+  const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
+  const classOption = useSelector((state: RootState) => state.class.classListOption);
   const descriptionElementRef = useRef<HTMLElement>(null);
   const { enqueueSnackbar } = useSnackbar();
-  useEffect(() => {
-    if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
-      }
-    }
-  }, [open]);
+
   const NewProductSchema = Yup.object().shape({
-    degree: Yup.string().required('Tên bằng cấp là bắt buộc'),
-    nameOfUniversity: Yup.string().required('Nơi cấp là bắt buộc')
+    name: Yup.string().required('Nơi cấp là bắt buộc')
   });
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: experience?.id || '',
-      studentId: experience?.studentId || '1',
-      countryId: experience?.countryId || 'VN',
-      degree: experience?.degree || '',
-      nameOfUniversity: experience?.nameOfUniversity || '',
-      fromTime: experience?.fromTime || '',
-      toTime: experience?.toTime || ''
+      grade: studentClass?.grade || grade,
+      classId: studentClass?.id || '',
+      year: `${studentClass?.year}` || ''
+      // year: '2010' || ''
     },
-    validationSchema: NewProductSchema,
+    // validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       let flag = false;
       try {
-        const bodyFormData = new FormData();
-        bodyFormData.append('Id', values.id);
-        bodyFormData.append('StudentId', values.studentId);
-        bodyFormData.append('CountryId', values.countryId);
-        bodyFormData.append('Degree', values.degree);
-        bodyFormData.append('NameOfUniversity', values.nameOfUniversity);
-        bodyFormData.append('FromTime', values.fromTime);
-        bodyFormData.append('ToTime', values.toTime);
+        // bodyFormData.append('Id', values.id);
         if (!isEdit) {
-          // Create
-          await manageLearningExperience.createLearningExperience(values).then((response) => {
+          const data = {
+            studentId: '1',
+            classId: values?.classId?.id.toString()
+          };
+
+          await manaClass.addClassOfStudent(data).then((response) => {
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getLearningExperience('1', 5, 0));
+              dispatch(getListClass('1'));
             }
           });
         } else {
+          const data = {
+            studentId: '1',
+            classId: values?.classId?.id.toString(),
+            positionId: '0'
+          };
           // update
-          await manageLearningExperience.updateLearningExperience(values).then((response) => {
+          await manaClass.updateClassOfStudent(data).then((response) => {
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getLearningExperience('1', 5, 0));
+              dispatch(getListClass('1'));
             }
           });
         }
@@ -124,13 +126,25 @@ export default function LearningExperienceDialog({
           });
         }
       } catch (error) {
-        console.error(error);
         setSubmitting(false);
       }
     }
   });
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
+  useEffect(() => {
+    dispatch(getListClassByYear(new Date(values?.year).getFullYear().toString(), values?.grade));
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [open, studentClass, dispatch, values.year]);
+
+  useEffect(() => {
+    setFieldValue('classId', classOption.find((e) => e.id == studentClass?.id) || null);
+  }, [studentClass, open, classOption]);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -150,47 +164,49 @@ export default function LearningExperienceDialog({
                   <Grid item xs={12} md={12}>
                     <Stack spacing={3}>
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <h2>Thêm mới bằng cấp</h2>
-                      </Stack>
-                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <TextField
-                          fullWidth
-                          label="Tên bằng cấp"
-                          {...getFieldProps('degree')}
-                          error={Boolean(touched.degree && errors.degree)}
-                          helperText={touched.degree && errors.degree}
-                        />
-                      </Stack>
-                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <TextField
-                          fullWidth
-                          label="Nơi cấp"
-                          {...getFieldProps('nameOfUniversity')}
-                          error={Boolean(touched.nameOfUniversity && errors.nameOfUniversity)}
-                          helperText={touched.nameOfUniversity && errors.nameOfUniversity}
-                        />
+                        <h2>
+                          {isEdit ? 'Chỉnh sửa lớp học của bạn' : 'Thêm thông tin về lớp học'}
+                        </h2>
+                        {/* <h1>{values?.year}</h1> */}
                       </Stack>
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <DatePicker
-                          // maxDate={new Date()}
-                          label="Thời gian bắt đầu"
-                          {...getFieldProps('fromTime')}
+                          views={['year']}
+                          maxDate={new Date()}
+                          label="Năm học"
+                          {...getFieldProps('year')}
                           onChange={(newValue: any) => {
-                            setFieldValue('fromTime', newValue);
+                            setFieldValue('year', newValue);
                           }}
                           renderInput={(params: any) => <TextField {...params} />}
                         />
-                        <DatePicker
-                          // maxDate={new Date()}
-                          label="Thời gian hoàn thành"
-                          {...getFieldProps('toTime')}
-                          onChange={(newValue: any) => {
-                            setFieldValue('toTime', newValue);
-                          }}
-                          renderInput={(params: any) => <TextField {...params} />}
-                        />
+                      </Stack>
+                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                        <TextField disabled fullWidth label="Khối" value={grade} />
                       </Stack>
 
+                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                        <Autocomplete
+                          fullWidth
+                          disablePortal
+                          clearIcon
+                          id="classId"
+                          {...getFieldProps('classId')}
+                          options={classOption}
+                          getOptionLabel={(option: any) => (option ? option.name : '')}
+                          onChange={(e, value: any) => {
+                            setFieldValue('classId', value);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Tên lớp"
+                              error={Boolean(touched.classId && errors.classId)}
+                              helperText={touched.classId && errors.classId}
+                            />
+                          )}
+                        />
+                      </Stack>
                       <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                         <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
                           {isEdit ? 'Lưu thay đổi' : 'Thêm mới'}

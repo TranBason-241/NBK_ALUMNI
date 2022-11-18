@@ -213,7 +213,7 @@ export default function WorkExperiencesList() {
               setIsEdit(false);
             }}
           >
-            Thêm mới bằng cấp
+            Thêm mới kinh nghiệm làm việc
           </Button>
         </Box>
         <Card>

@@ -11,6 +11,7 @@ import UserForm from 'components/_dashboard/user/account/UserForm';
 import { getLearningExperience } from 'redux/slices/learningExperience';
 import { getCountryList } from 'redux/slices/country';
 import { getWorkExperience } from 'redux/slices/workExperience';
+import { getListClass } from 'redux/slices/class';
 // redux
 import { getMajorList } from 'redux/slices/major';
 import { useDispatch, useSelector, RootState } from '../../redux/store';
@@ -46,6 +47,7 @@ export default function UserInformation() {
   const fetchData = async () => {
     await dispatch(getCountryList());
     await dispatch(getMajorList());
+    dispatch(getListClass('1'));
     // await dispatch(getLearningExperience('1'));
     // await dispatch(getWorkExperience('1'));
     await manageStudent.getStudentById('1').then((response) => {

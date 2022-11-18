@@ -267,6 +267,7 @@ export default function StudentSlider({ studentList }: studentSliderProps) {
             <Box
               onClick={() => {
                 setCurrentStudent(student);
+                console.log(student);
                 handleOpen();
               }}
             >
