@@ -36,5 +36,12 @@ export class StudentManager {
       .then((response) => response)
       .catch((err) => err);
   };
+
+  createStudent = (value: any) => {
+    return axios
+      .post('/api/v1/students', value)
+      .then((response) => response)
+      .catch((err) => err);
+  };
 }
 export const manageStudent = new StudentManager();

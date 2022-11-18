@@ -32,7 +32,7 @@ const SectionStyle = styled(Card)(({ theme }) => ({
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
-  maxWidth: 480,
+  // maxWidth: 480,
   margin: 'auto',
   display: 'flex',
   minHeight: '100vh',
@@ -47,23 +47,7 @@ export default function Register() {
   const { method } = useAuth();
 
   return (
-    <RootStyle title="Register | Minimal-UI">
-      <AuthLayout>
-        Bạn đã có tài khoản? &nbsp;
-        <Link underline="none" variant="subtitle2" component={RouterLink} to={PATH_AUTH.login}>
-          Đăng nhập
-        </Link>
-      </AuthLayout>
-
-      <MHidden width="mdDown">
-        <SectionStyle>
-          <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Đăng ký để truy cập vào hệ thống
-          </Typography>
-          <img alt="register" src="/static/illustrations/register_image.png" />
-        </SectionStyle>
-      </MHidden>
-
+    <RootStyle title="Đăng kí">
       <Container>
         <ContentStyle>
           <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
@@ -71,41 +55,10 @@ export default function Register() {
               <Typography variant="h4" gutterBottom>
                 Đăng ký
               </Typography>
-              {/* <Typography sx={{ color: 'text.secondary' }}>
-                Free forever. No credit card needed.
-              </Typography> */}
             </Box>
-            <Tooltip title={capitalCase(method)}>
-              <Box
-                component="img"
-                src={`/static/auth/ic_${method}.png`}
-                sx={{ width: 32, height: 32 }}
-              />
-            </Tooltip>
           </Box>
 
           <RegisterForm />
-
-          {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-            By registering, I agree to Minimal&nbsp;
-            <Link underline="always" color="text.primary" href="#">
-              Terms of Service
-            </Link>
-            &nbsp;and&nbsp;
-            <Link underline="always" color="text.primary" href="#">
-              Privacy Policy
-            </Link>
-            .
-          </Typography> */}
-
-          <MHidden width="smUp">
-            <Typography variant="subtitle2" sx={{ mt: 3, textAlign: 'center' }}>
-              Bạn đã có tài khoản?&nbsp;
-              <Link to={PATH_AUTH.login} component={RouterLink}>
-                Login
-              </Link>
-            </Typography>
-          </MHidden>
         </ContentStyle>
       </Container>
     </RootStyle>

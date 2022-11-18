@@ -3,6 +3,9 @@ import { createContext, ReactNode, useEffect, useReducer, useState } from 'react
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+import { managerLogin } from '_apis_/login';
+import { PATH_AUTH } from 'routes/paths';
 // @types
 import { ActionMap, AuthState, AuthUser, FirebaseContextType } from '../@types/authentication';
 //
@@ -53,6 +56,7 @@ const reducer = (state: AuthState, action: FirebaseActions) => {
 const AuthContext = createContext<FirebaseContextType | null>(null);
 
 function AuthProvider({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<firebase.firestore.DocumentData | undefined>();
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -63,33 +67,28 @@ function AuthProvider({ children }: { children: ReactNode }) {
           user
             .getIdToken(/* forceRefresh */ true)
             .then((idToken) => {
-              console.log(idToken);
-              // Send token to your backend via HTTPS
-              // ...
+              managerLogin.createLogin(idToken).then((response) => {
+                if (response.data.value == null) {
+                  dispatch({
+                    type: Types.Initial,
+                    payload: { isAuthenticated: true, user }
+                  });
+                } else {
+                  dispatch({
+                    type: Types.Initial,
+                    payload: { isAuthenticated: false, user }
+                  });
+                  navigate(PATH_AUTH.register);
+                }
+              });
             })
             .catch((error) => {
-              // Handle error
               console.log(error);
             });
-
-          // const docRef = firebase.firestore().collection('users').doc(user.uid);
-          // docRef
-          //   .get()
-          //   .then((doc) => {
-          //     if (doc.exists) {
-          //       console.log('abc');
-          //       setProfile(doc.data());
-          //     }
-          //   })
-          //   .catch((error) => {
-          //     console.log('log');
-          //     console.error(error);
-          //   });
-
-          dispatch({
-            type: Types.Initial,
-            payload: { isAuthenticated: true, user }
-          });
+          // dispatch({
+          //   type: Types.Initial,
+          //   payload: { isAuthenticated: true, user }
+          // });
         } else {
           dispatch({
             type: Types.Initial,
