@@ -136,7 +136,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
           params: { token: res.data.token }
         });
         const user = response.data;
-
+        console.log(response.data);
         dispatch({
           type: Types.Login,
           payload: {

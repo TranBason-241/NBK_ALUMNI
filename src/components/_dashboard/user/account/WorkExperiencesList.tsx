@@ -175,7 +175,7 @@ export default function WorkExperiencesList() {
 
   useEffect(() => {
     // dispatch(getClassDetail(classId));
-    dispatch(getWorkExperience('1', rowsPerPage, page));
+    dispatch(getWorkExperience(user?.id, rowsPerPage, page));
   }, [dispatch, rowsPerPage, page]);
 
   const emptyRows = !isLoading && !workExperienceList;

@@ -32,6 +32,7 @@ import { getLearningExperience } from 'redux/slices/learningExperience';
 import { OptionStatus, statusOptions } from 'utils/constants';
 import { manageWorkExperience } from '_apis_/workExperience';
 import { getWorkExperience } from 'redux/slices/workExperience';
+import useAuth from 'hooks/useAuth';
 
 //
 import { fDate } from '../../../../utils/formatTime';
@@ -60,6 +61,7 @@ export default function WorkExperienceDialog({
   const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
   // const { id, name, dateOfBirth, cityId, imageUrl, email, phone, startTime, endTime, isAlive } =
   //   teacher!;
+  const { user } = useAuth();
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
   const countryList = useSelector((state: RootState) => state.country.countryList);
   const majorList = useSelector((state: RootState) => state.major.majorList);
@@ -107,7 +109,7 @@ export default function WorkExperienceDialog({
             majorId: values.majorId.id.toString(),
             majorName: values.majorId.name,
             countryId: values.countryId.id,
-            studentId: values.studentId.toString(),
+            studentId: user?.id,
             studentName: values.studentName,
             countryName: values.countryId.name,
             startTime: values.startTime,
@@ -119,7 +121,7 @@ export default function WorkExperienceDialog({
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getWorkExperience('1', 5, 1));
+              dispatch(getWorkExperience(user?.id, 5, 1));
             }
           });
         } else {
@@ -141,7 +143,7 @@ export default function WorkExperienceDialog({
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getWorkExperience('1', 5, 1));
+              dispatch(getWorkExperience(user?.id, 5, 1));
             }
           });
         }

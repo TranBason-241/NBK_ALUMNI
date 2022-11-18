@@ -34,7 +34,7 @@ import { manageWorkExperience } from '_apis_/workExperience';
 import { getWorkExperience } from 'redux/slices/workExperience';
 import { getListClass, getListClassByYear } from 'redux/slices/class';
 import { manaClass } from '_apis_/class';
-
+import useAuth from 'hooks/useAuth';
 //
 import { fDate } from '../../../../utils/formatTime';
 import { Teacher } from '../../../../@types/teacher';
@@ -69,7 +69,7 @@ export default function ClassDialog({
   const classOption = useSelector((state: RootState) => state.class.classListOption);
   const descriptionElementRef = useRef<HTMLElement>(null);
   const { enqueueSnackbar } = useSnackbar();
-
+  const { user } = useAuth();
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Nơi cấp là bắt buộc')
   });
@@ -88,7 +88,7 @@ export default function ClassDialog({
         // bodyFormData.append('Id', values.id);
         if (!isEdit) {
           const data = {
-            studentId: '1',
+            studentId: user?.id,
             classId: values?.classId?.id.toString()
           };
 
@@ -96,12 +96,12 @@ export default function ClassDialog({
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getListClass('1'));
+              dispatch(getListClass(user?.id));
             }
           });
         } else {
           const data = {
-            studentId: '1',
+            studentId: user?.id,
             classId: values?.classId?.id.toString(),
             positionId: '0'
           };
@@ -110,7 +110,7 @@ export default function ClassDialog({
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getListClass('1'));
+              dispatch(getListClass(user?.id));
             }
           });
         }
