@@ -1,15 +1,14 @@
 import * as Yup from 'yup';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useReducer, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import { PATH_DASHBOARD } from 'routes/paths';
 import { useSnackbar } from 'notistack5';
-import { format } from 'date-fns';
+import moment from 'moment';
 import { useFormik, Form, FormikProvider } from 'formik';
 import closeFill from '@iconify/icons-eva/close-fill';
 import { fData } from 'utils/formatNumber';
 import { manageStudent } from '_apis_/student';
-
 // material
 import {
   Stack,
@@ -21,15 +20,17 @@ import {
   Box,
   Typography,
   Card,
-  FormHelperText
+  FormHelperText,
+  Autocomplete
 } from '@material-ui/core';
 import { LoadingButton, DatePicker } from '@material-ui/lab';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-//
+import { ActionMap, AuthState, AuthUser } from '../../../@types/authentication';
 import { MIconButton } from '../../@material-extend';
 import { UploadAvatar } from '../../upload';
+import { options } from './city';
 // ----------------------------------------------------------------------
 
 type InitialValues = {
@@ -41,41 +42,87 @@ type InitialValues = {
   imageUrl: string;
 };
 
+enum Types {
+  Initial = 'INITIALISE'
+}
+
+type FirebaseAuthPayload = {
+  [Types.Initial]: {
+    isAuthenticated: boolean;
+    user: AuthUser;
+  };
+};
+
+const initialState: AuthState = {
+  isAuthenticated: false,
+  isInitialized: false,
+  user: null
+};
+
+type FirebaseActions = ActionMap<FirebaseAuthPayload>[keyof ActionMap<FirebaseAuthPayload>];
+
+const reducer = (state: AuthState, action: FirebaseActions) => {
+  if (action.type === 'INITIALISE') {
+    const { isAuthenticated, user } = action.payload;
+    return {
+      ...state,
+      isAuthenticated,
+      isInitialized: true,
+      user
+    };
+  }
+
+  return state;
+};
+
 export default function RegisterForm() {
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { user } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [showPassword, setShowPassword] = useState(false);
   const [imageFILE, setImageFILE] = useState('');
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [city, setCity] = useState(options[0]);
 
   const RegisterSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required')
+    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    phone: Yup.string()
+      .matches(/^[0-9]+$/, 'Số điện thoại phải là 10 số')
+      .min(10, 'Số điện thoại phải là 10 số')
+      .max(10, 'Số điện thoại phải là 10 số'),
+    dob: Yup.string().required('Ngày sinh là bắt buộc').nullable(true)
   });
 
   const formik = useFormik<InitialValues>({
     initialValues: {
-      name: '',
+      name: user?.displayName || '',
       dob: null,
       cityId: '',
-      email: '',
-      phone: '',
-      imageUrl: ''
+      email: user?.email || '',
+      phone: user?.phoneNumber || '',
+      imageUrl: user?.photoURL || ''
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
         const bodyFormData = new FormData();
         bodyFormData.append('Name', values.name);
-        bodyFormData.append('DateOfBirth', format(values.dob, 'yyyy-mm-dd'));
-        bodyFormData.append('CityId', values.cityId);
+        bodyFormData.append('DateOfBirth', moment(values.dob).format('YYYY-MM-DD'));
+        bodyFormData.append('CityId', city.id.toString());
         bodyFormData.append('Email', values.email);
         bodyFormData.append('Phone', values.phone);
-        bodyFormData.append('imageFile', imageFILE);
+        if (imageFILE != null && imageFILE != '') {
+          bodyFormData.append('imageFile', imageFILE);
+        } else {
+          bodyFormData.append('imageFile', values.imageUrl);
+        }
 
         await manageStudent.createStudent(bodyFormData).then((response) => {
-          console.log(response.status);
           if (response.status == 200) {
+            dispatch({
+              type: Types.Initial,
+              payload: { isAuthenticated: true, user }
+            });
             enqueueSnackbar('Đăng kí thành công', {
               variant: 'success',
               action: (key) => (
@@ -109,7 +156,6 @@ export default function RegisterForm() {
       }
     }
   });
-
   const { errors, values, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } =
     formik;
 
@@ -179,7 +225,14 @@ export default function RegisterForm() {
                     onChange={(newValue: any) => {
                       setFieldValue('dob', newValue);
                     }}
-                    renderInput={(params: any) => <TextField {...params} />}
+                    renderInput={(params: any) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        error={Boolean(touched.dob && errors.dob)}
+                        helperText={touched.dob && errors.dob}
+                      />
+                    )}
                   />
                 </Stack>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -192,6 +245,7 @@ export default function RegisterForm() {
                   />
 
                   <TextField
+                    disabled
                     fullWidth
                     autoComplete="email"
                     type="email"
@@ -201,13 +255,14 @@ export default function RegisterForm() {
                     helperText={touched.email && errors.email}
                   />
                 </Stack>
-
-                <TextField
+                <Autocomplete
+                  value={city}
+                  onChange={(e, values: any | null) => setCity(values)}
+                  getOptionLabel={(option: any) => option.name}
+                  id="cityId"
+                  options={options}
                   fullWidth
-                  label="cityId"
-                  {...getFieldProps('cityId')}
-                  error={Boolean(touched.cityId && errors.cityId)}
-                  helperText={touched.cityId && errors.cityId}
+                  renderInput={(params) => <TextField {...params} label="Thành phố" />}
                 />
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <LoadingButton

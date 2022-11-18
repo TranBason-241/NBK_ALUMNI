@@ -85,6 +85,10 @@ function AuthProvider({ children }: { children: ReactNode }) {
             .catch((error) => {
               console.log(error);
             });
+          // dispatch({
+          //   type: Types.Initial,
+          //   payload: { isAuthenticated: true, user }
+          // });
         } else {
           dispatch({
             type: Types.Initial,
