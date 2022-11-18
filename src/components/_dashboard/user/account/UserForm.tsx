@@ -75,7 +75,7 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 type UserInfoNewFormProps = {
   isEdit: boolean;
-  currentStudent?: Student;
+  currentStudent?: any;
   reload: any;
 };
 
@@ -138,34 +138,21 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
       try {
         console.log(values.name);
         const bodyFormData = new FormData();
-
         bodyFormData.append('Id', values.id);
         bodyFormData.append('Name', values.name);
         bodyFormData.append('DateOfBirth', values.dateOfBirth);
-        // bodyFormData.append('imageFile', imageFILE);
         bodyFormData.append('ImageUrl', values.imageUrl);
+        bodyFormData.append('imageFile', imageFILE);
         bodyFormData.append('Phone', values.phone);
         bodyFormData.append('Email', values.email);
-        bodyFormData.append('CityName', values.cityName);
-        bodyFormData.append('CityId', values.cityId);
-        bodyFormData.append('ClassId', values.classId);
-        bodyFormData.append('PositionId', values.positionId);
-
+        // bodyFormData.append('CityId', values.cityId?.id);
+        bodyFormData.append('CityId', '1');
         // values.learningExperiences.forEach((element: any) => {
         //   bodyFormData.append('learningExperiences', element.toString);
-        // });
-
-        for (let i = 0; i < values.learningExperiences.length; i++) {
-          bodyFormData.append('arr[]', values.learningExperiences[i].toString());
-        }
-
+        // }
         // for (let i = 0; i < values.learningExperiences.length; i++) {
         //   bodyFormData.append('arr[]', values.learningExperiences[i].toString());
         // }
-
-        values.workExperiences.forEach((element: any) => {
-          bodyFormData.append('workExperiences', element.toString);
-        });
         await manageStudent.updateStudent(bodyFormData).then((response) => {
           if (response.status == 200) {
             flag = true;
@@ -174,23 +161,11 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
         if (flag) {
           resetForm();
           setSubmitting(false);
-          enqueueSnackbar(
-            !isEdit
-              ? translate('model.snackBar.CreateSuccess')
-              : translate('model.snackBar.CreateError'),
-            {
-              variant: 'success'
-            }
-          );
+          enqueueSnackbar('Cập nhật thành công', { variant: 'success' });
           // navigate(PATH_DASHBOARD.techInfo.information);
           reload();
         } else {
-          enqueueSnackbar(
-            !isEdit
-              ? translate('model.snackBar.UdpateSuccess')
-              : translate('model.snackBar.UpdateError'),
-            { variant: 'error' }
-          );
+          enqueueSnackbar('Cập nhật thất bại', { variant: 'error' });
         }
       } catch (error) {
         console.error(error);

@@ -13,6 +13,7 @@ type NewState = {
   isLoading: boolean;
   error: boolean;
   classList: Class[];
+  classListOption: Class[];
   class: Class;
 };
 
@@ -20,6 +21,7 @@ const initialState: NewState = {
   isLoading: false,
   error: false,
   classList: [],
+  classListOption: [],
   class: {
     id: '',
     name: '',
@@ -54,6 +56,13 @@ const slice = createSlice({
       state.classList = action.payload;
     },
 
+    // GET LIST Option
+
+    getListClassByYear(state, action) {
+      state.isLoading = false;
+      state.classListOption = action.payload;
+    },
+
     // GET ClASS BY ID
 
     getClassById(state, action) {
@@ -85,6 +94,25 @@ export function getListClass(studentId: string) {
         }
       });
     } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+export function getListClassByYear(year: string, grade: string) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      manaClass.getListClassByYear(year, grade).then((response) => {
+        if (response.status == 200) {
+          dispatch(slice.actions.getListClassByYear(response.data.items));
+          console.log(response.data.items);
+        } else {
+          dispatch(slice.actions.getListClassByYear([]));
+        }
+      });
+    } catch (error) {
+      dispatch(slice.actions.getListClassByYear([]));
       dispatch(slice.actions.hasError(error));
     }
   };

@@ -32,6 +32,8 @@ import { getLearningExperience } from 'redux/slices/learningExperience';
 import { OptionStatus, statusOptions } from 'utils/constants';
 import { manageWorkExperience } from '_apis_/workExperience';
 import { getWorkExperience } from 'redux/slices/workExperience';
+import { getListClass, getListClassByYear } from 'redux/slices/class';
+import { manaClass } from '_apis_/class';
 
 //
 import { fDate } from '../../../../utils/formatTime';
@@ -41,7 +43,7 @@ import { CarouselControlsArrowsBasic2 } from '../../../carousel';
 import { Class } from '../../../../@types/class';
 
 type ClassDialogProps = {
-  studentClass: Class;
+  studentClass: any;
   handleClose: () => void;
   open: boolean;
   isEdit: boolean;
@@ -64,28 +66,20 @@ export default function ClassDialog({
   // const { id, name, dateOfBirth, cityId, imageUrl, email, phone, startTime, endTime, isAlive } =
   //   teacher!;
   const [enumStatus, setEnumStatus] = useState<OptionStatus | null>(null);
-  const countryList = useSelector((state: RootState) => state.country.countryList);
-  const majorList = useSelector((state: RootState) => state.major.majorList);
+  const classOption = useSelector((state: RootState) => state.class.classListOption);
   const descriptionElementRef = useRef<HTMLElement>(null);
   const { enqueueSnackbar } = useSnackbar();
-  useEffect(() => {
-    // setFieldValue('countryId', countryList.find((e) => e.id == studentClass?.countryId) || null);
-    // setFieldValue('majorId', majorList.find((e) => e.id == studentClass?.majorId) || null);
-    // setEnumStatus(statusOptions.find((e) => e.id == studentClass?.status) || null);
-    if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
-      }
-    }
-  }, [open, studentClass]);
+
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required('Nơi cấp là bắt buộc')
   });
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id: studentClass?.id || ''
+      grade: studentClass?.grade || grade,
+      classId: studentClass?.id || '',
+      year: `${studentClass?.year}` || ''
+      // year: '2010' || ''
     },
     // validationSchema: NewProductSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -94,26 +88,29 @@ export default function ClassDialog({
         // bodyFormData.append('Id', values.id);
         if (!isEdit) {
           const data = {
-            name: values.id
+            studentId: '1',
+            classId: values?.classId?.id.toString()
           };
-          // Create
-          await manageWorkExperience.createWorkExperience(data).then((response) => {
+
+          await manaClass.addClassOfStudent(data).then((response) => {
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getWorkExperience('1', 5, 1));
+              dispatch(getListClass('1'));
             }
           });
         } else {
           const data = {
-            id: values.id.toString()
+            studentId: '1',
+            classId: values?.classId?.id.toString(),
+            positionId: '0'
           };
           // update
-          await manageWorkExperience.updateWorkExperience(data).then((response) => {
+          await manaClass.updateClassOfStudent(data).then((response) => {
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getWorkExperience('1', 5, 1));
+              dispatch(getListClass('1'));
             }
           });
         }
@@ -129,13 +126,25 @@ export default function ClassDialog({
           });
         }
       } catch (error) {
-        console.error(error);
         setSubmitting(false);
       }
     }
   });
   const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
     formik;
+  useEffect(() => {
+    dispatch(getListClassByYear(new Date(values?.year).getFullYear().toString(), values?.grade));
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [open, studentClass, dispatch, values.year]);
+
+  useEffect(() => {
+    setFieldValue('classId', classOption.find((e) => e.id == studentClass?.id) || null);
+  }, [studentClass, open, classOption]);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -158,15 +167,16 @@ export default function ClassDialog({
                         <h2>
                           {isEdit ? 'Chỉnh sửa lớp học của bạn' : 'Thêm thông tin về lớp học'}
                         </h2>
+                        {/* <h1>{values?.year}</h1> */}
                       </Stack>
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <DatePicker
                           views={['year']}
                           maxDate={new Date()}
                           label="Năm học"
-                          {...getFieldProps('startTime')}
+                          {...getFieldProps('year')}
                           onChange={(newValue: any) => {
-                            setFieldValue('startTime', newValue);
+                            setFieldValue('year', newValue);
                           }}
                           renderInput={(params: any) => <TextField {...params} />}
                         />
@@ -174,48 +184,25 @@ export default function ClassDialog({
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <TextField disabled fullWidth label="Khối" value={grade} />
                       </Stack>
-                      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <Autocomplete
-                          fullWidth
-                          disablePortal
-                          clearIcon
-                          id="majorId"
-                          {...getFieldProps('majorId')}
-                          options={majorList}
-                          getOptionLabel={(option: any) => (option ? option.name : '')}
-                          onChange={(e, value: any) => {
-                            setFieldValue('majorId', value);
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Chuyên ngành"
-                              error={Boolean(touched.id && errors.id)}
-                              helperText={touched.id && errors.id}
-                            />
-                          )}
-                        />
-                      </Stack>
 
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
                         <Autocomplete
                           fullWidth
                           disablePortal
                           clearIcon
-                          id="countryId"
-                          {...getFieldProps('countryId')}
-                          options={countryList}
+                          id="classId"
+                          {...getFieldProps('classId')}
+                          options={classOption}
                           getOptionLabel={(option: any) => (option ? option.name : '')}
                           onChange={(e, value: any) => {
-                            setFieldValue('countryId', value);
-                            console.log(value);
+                            setFieldValue('classId', value);
                           }}
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              label="Nơi làm việc"
-                              error={Boolean(touched.id && errors.id)}
-                              helperText={touched.id && errors.id}
+                              label="Tên lớp"
+                              error={Boolean(touched.classId && errors.classId)}
+                              helperText={touched.classId && errors.classId}
                             />
                           )}
                         />

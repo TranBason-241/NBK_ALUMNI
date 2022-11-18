@@ -114,7 +114,7 @@ export default function ClassList() {
 
   useEffect(() => {}, [dispatch]);
 
-  const listCLassGrade = ['10', '11', '13'];
+  const listCLassGrade = ['10', '11', '12'];
   function convertUTCDateToLocalDate(date: any) {
     const newDate = new Date(date);
     return newDate.toLocaleDateString();
@@ -126,7 +126,6 @@ export default function ClassList() {
           <Grid container spacing={2}>
             {listCLassGrade?.map((item: string, index: number) => {
               const a = classList.find((e: Class) => e.grade == item);
-              console.log(a);
               return (
                 <Grid key={index} item xs={4} md={4}>
                   <ClassCard studentClass={a} index={index} />
