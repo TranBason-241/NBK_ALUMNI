@@ -124,7 +124,7 @@ export default function LandingHugePackElements() {
                     color: isLight ? 'text.secondary' : 'common.white'
                   }}
                 >
-                  Tìm kiếm và thẽo dõi hoạt động của bạn bè
+                  Tìm kiếm và theo dõi hoạt động của bạn bè
                 </Typography>
               </MotionInView>
 
