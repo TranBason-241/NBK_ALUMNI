@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { useState, useCallback, useReducer, useEffect } from 'react';
 import { Icon } from '@iconify/react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { PATH_DASHBOARD } from 'routes/paths';
 import { useSnackbar } from 'notistack5';
@@ -119,19 +120,28 @@ export default function RegisterForm() {
 
         await manageStudent.createStudent(bodyFormData).then((response) => {
           if (response.status == 200) {
-            dispatch({
-              type: Types.Initial,
-              payload: { isAuthenticated: true, user }
-            });
-            enqueueSnackbar('Đăng kí thành công', {
-              variant: 'success',
-              action: (key) => (
-                <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-                  <Icon icon={closeFill} />
-                </MIconButton>
-              )
-            });
-            navigate(PATH_DASHBOARD.root);
+            axios
+              .get('/api/v1/account-info', {
+                params: { jwtToken: response.data.token }
+              })
+              .then((response) => {
+                const user = response.data;
+                dispatch({
+                  type: Types.Initial,
+                  payload: {
+                    isAuthenticated: true,
+                    user
+                  }
+                });
+                enqueueSnackbar('Đăng kí thành công', {
+                  variant: 'success',
+                  action: (key) => (
+                    <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+                      <Icon icon={closeFill} />
+                    </MIconButton>
+                  )
+                });
+              });
           } else {
             enqueueSnackbar('Đăng kí thất bại', {
               variant: 'error',
