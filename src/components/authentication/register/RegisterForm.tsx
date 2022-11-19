@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { PATH_DASHBOARD } from 'routes/paths';
+import { managerLogin } from '_apis_/login';
 import { useSnackbar } from 'notistack5';
 import moment from 'moment';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -118,31 +119,25 @@ export default function RegisterForm() {
           bodyFormData.append('imageFile', values.imageUrl);
         }
 
-        await manageStudent.createStudent(bodyFormData).then((response) => {
+        await manageStudent.createStudent(bodyFormData).then(async (response) => {
+          const firebaseToken = window.localStorage.getItem('firebaseToken');
           if (response.status == 200) {
-            axios
-              .get('/api/v1/account-info', {
-                params: { jwtToken: response.data.token }
-              })
-              .then((response) => {
-                const user = response.data;
-                dispatch({
-                  type: Types.Initial,
-                  payload: {
-                    isAuthenticated: true,
-                    user
-                  }
-                });
-                navigate(PATH_DASHBOARD.general.app);
-                enqueueSnackbar('Đăng kí thành công', {
-                  variant: 'success',
-                  action: (key) => (
-                    <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-                      <Icon icon={closeFill} />
-                    </MIconButton>
-                  )
-                });
+            if (firebaseToken != null) {
+              await managerLogin.createLogin(firebaseToken).then((responseFirebase) => {
+                if (responseFirebase.data.value == null) {
+                  loginToken(responseFirebase.data.token);
+                } else {
+                  enqueueSnackbar('Đăng kí thất bại', {
+                    variant: 'error',
+                    action: (key) => (
+                      <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+                        <Icon icon={closeFill} />
+                      </MIconButton>
+                    )
+                  });
+                }
               });
+            }
           } else {
             enqueueSnackbar('Đăng kí thất bại', {
               variant: 'error',
@@ -183,6 +178,34 @@ export default function RegisterForm() {
     },
     [setFieldValue]
   );
+  const loginToken = async (token: String) => {
+    await axios
+      .get('/api/v1/account-info', {
+        params: { jwtToken: token }
+      })
+      .then(async (responseInfo) => {
+        if (responseInfo.status == 200) {
+          const user = responseInfo.data;
+          dispatch({
+            type: Types.Initial,
+            payload: {
+              isAuthenticated: true,
+              user
+            }
+          });
+          enqueueSnackbar('Đăng kí thành công', {
+            variant: 'success',
+            action: (key) => (
+              <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+                <Icon icon={closeFill} />
+              </MIconButton>
+            )
+          });
+          navigate(PATH_DASHBOARD.class.myClass);
+          window.location.reload();
+        }
+      });
+  };
 
   return (
     <FormikProvider value={formik}>

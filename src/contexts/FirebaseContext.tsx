@@ -6,9 +6,10 @@ import 'firebase/firestore';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { managerLogin } from '_apis_/login';
-import { PATH_AUTH } from 'routes/paths';
+import { PATH_AUTH, PATH_DASHBOARD } from 'routes/paths';
 // @types
 import { ActionMap, AuthState, AuthUser, FirebaseContextType } from '../@types/authentication';
+import { setSession } from '../utils/jwt';
 //
 import { firebaseConfig } from '../config';
 
@@ -66,7 +67,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
           user
             .getIdToken(true)
             .then((idToken) => {
-              console.log(idToken);
+              localStorage.setItem('firebaseToken', idToken);
+
               managerLogin.createLogin(idToken).then((response) => {
                 if (response.data.value == null) {
                   axios
