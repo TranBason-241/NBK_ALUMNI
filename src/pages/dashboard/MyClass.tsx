@@ -47,7 +47,7 @@ export default function MyClass() {
           <Grid item xs={12} md={12}>
             <AppWelcome displayName={user?.displayName} />
           </Grid>
-          {!classList ? (
+          {classList.length > 0 ? (
             <></>
           ) : (
             <>
