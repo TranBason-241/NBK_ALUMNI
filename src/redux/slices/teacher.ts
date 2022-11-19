@@ -121,6 +121,7 @@ export function getListTeacherAll(p_size: number, p_number: number) {
         if (response.status == 200) {
           dispatch(slice.actions.getListTeacherAll(response.data.items));
           dispatch(slice.actions.getTotalCount(response.data.metaData.totalCount));
+          console.log(response.data.items);
         } else {
           dispatch(slice.actions.getListTeacherAll([]));
         }

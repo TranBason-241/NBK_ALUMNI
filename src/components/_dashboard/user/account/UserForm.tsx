@@ -51,6 +51,7 @@ import { Student } from '../../../../@types/student';
 import LearningExperiencesList from './LearningExperiencesList';
 import WorkExperiencesList from './WorkExperiencesList';
 import ClassList from './ClassList';
+import { options } from '../../../authentication/register/city';
 
 // ----------------------------------------------------------------------
 
@@ -86,6 +87,7 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
   const countryList = useSelector((state: RootState) => state.country.countryList);
   const { enqueueSnackbar } = useSnackbar();
   const [imageFILE, setImageFILE] = useState('');
+  const [city, setCity] = useState(options[0]);
   const [selectedTab, setSelectedTab] = useState('');
   const NewProductSchema = Yup.object().shape({
     name: Yup.string().required(translate('model.techInfo.validate.name')),
@@ -136,7 +138,6 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
       let flag = false;
       console.log(values);
       try {
-        console.log(values.name);
         const bodyFormData = new FormData();
         bodyFormData.append('Id', values.id);
         bodyFormData.append('Name', values.name);
@@ -146,7 +147,7 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
         bodyFormData.append('Phone', values.phone);
         bodyFormData.append('Email', values.email);
         // bodyFormData.append('CityId', values.cityId?.id);
-        bodyFormData.append('CityId', '1');
+        bodyFormData.append('CityId', city.id.toString());
         // values.learningExperiences.forEach((element: any) => {
         //   bodyFormData.append('learningExperiences', element.toString);
         // }
@@ -197,7 +198,10 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
 
   useEffect(() => {
     // setEnumStatus(statusOptions.find((e) => e.id == currentGroupRole?.status) || null);
-    setFieldValue('cityId', countryList.find((e) => e.id == currentStudent?.cityId) || null);
+    setFieldValue('cityId', options.find((e: any) => e.id == currentStudent?.cityId) || null);
+    const a = options.find((e: any) => e.id == currentStudent?.cityId);
+    setCity(a!);
+    console.log(currentStudent);
   }, [currentStudent]);
 
   return (
@@ -269,7 +273,7 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
                       </Stack>
 
                       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                        <Autocomplete
+                        {/* <Autocomplete
                           fullWidth
                           disablePortal
                           clearIcon
@@ -289,6 +293,15 @@ export default function UserForm({ isEdit, currentStudent, reload }: UserInfoNew
                               helperText={touched.cityId && errors.cityId}
                             />
                           )}
+                        /> */}
+                        <Autocomplete
+                          value={city}
+                          onChange={(e, values: any | null) => setCity(values)}
+                          getOptionLabel={(option: any) => option.name}
+                          id="cityId"
+                          options={options}
+                          fullWidth
+                          renderInput={(params) => <TextField {...params} label="Thành phố" />}
                         />
                       </Stack>
 

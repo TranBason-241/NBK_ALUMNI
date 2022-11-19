@@ -54,14 +54,15 @@ export default slice.reducer;
 // ----------------------------------------------------------------------
 
 // get list country
-export function getCountryList() {
+export function getCountryList(p_size: number, p_number: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      manageCountry.getListCountry().then((response) => {
+      manageCountry.getListCountry(p_size, p_number).then((response) => {
         // console.log(response);
         if (response.status == 200) {
           dispatch(slice.actions.getCountryList(response.data.items));
+          console.log(response.data.items);
         } else {
           dispatch(slice.actions.getCountryList([]));
         }

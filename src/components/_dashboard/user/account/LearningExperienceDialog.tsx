@@ -75,7 +75,7 @@ export default function LearningExperienceDialog({
     enableReinitialize: true,
     initialValues: {
       id: experience?.id || '',
-      studentId: experience?.studentId || '1',
+      studentId: experience?.studentId || user?.id,
       countryId: experience?.countryId || 'VN',
       degree: experience?.degree || '',
       nameOfUniversity: experience?.nameOfUniversity || '',
