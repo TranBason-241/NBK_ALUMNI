@@ -133,6 +133,7 @@ export default function RegisterForm() {
                     user
                   }
                 });
+                navigate(PATH_DASHBOARD.general.app);
                 enqueueSnackbar('Đăng kí thành công', {
                   variant: 'success',
                   action: (key) => (
