@@ -185,7 +185,7 @@ export default function AboutPerson() {
           </Typography>
           <TeacherSlider teacherList={headMasterList} />
         </MotionInView>
-        <Button
+        {/* <Button
           variant="outlined"
           color="inherit"
           size="large"
@@ -193,7 +193,7 @@ export default function AboutPerson() {
           sx={{ mb: 2, mt: 2 }}
         >
           Xem tất cả
-        </Button>
+        </Button> */}
 
         <MotionInView variants={varFadeInDown}>
           <Typography
@@ -212,7 +212,7 @@ export default function AboutPerson() {
           </Typography>
           <TeacherSlider teacherList={teacherList} />
         </MotionInView>
-        <Button
+        {/* <Button
           variant="outlined"
           color="inherit"
           size="large"
@@ -220,7 +220,7 @@ export default function AboutPerson() {
           sx={{ mb: 2, mt: 2 }}
         >
           Xem tất cả
-        </Button>
+        </Button> */}
 
         <MotionInView variants={varFadeInDown}>
           <Typography
@@ -239,7 +239,7 @@ export default function AboutPerson() {
           </Typography>
         </MotionInView>
         <StudentSlider studentList={studentList} />
-        <Button
+        {/* <Button
           variant="outlined"
           color="inherit"
           size="large"
@@ -247,7 +247,7 @@ export default function AboutPerson() {
           sx={{ mx: 'auto' }}
         >
           Xem tất cả
-        </Button>
+        </Button> */}
       </Container>
     </RootStyle>
   );

@@ -53,11 +53,11 @@ export default slice.reducer;
 // ----------------------------------------------------------------------
 
 // get list country
-export function getMajorList() {
+export function getMajorList(p_size: number, p_number: number) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      manageMajor.getListMajor().then((response) => {
+      manageMajor.getListMajor(p_size, p_number).then((response) => {
         // console.log(response);
         if (response.status == 200) {
           dispatch(slice.actions.getMajorList(response.data.items));

@@ -79,7 +79,7 @@ function TeacherCard({ teacher }: teacherCardProps) {
         <Box
           component="img"
           src={imageUrl}
-          sx={{ width: '100%', borderRadius: 1.5, height: 250 }}
+          sx={{ width: '100%', borderRadius: 1.5, height: 250, maxHeight: '100%' }}
         />
         <Box sx={{ mt: 2, mb: 1 }}>
           {[facebookFill, instagramFilled].map((social, index) => (

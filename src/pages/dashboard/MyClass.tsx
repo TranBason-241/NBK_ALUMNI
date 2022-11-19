@@ -1,5 +1,5 @@
 // material
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid, Typography } from '@material-ui/core';
 
 // hooks
 import { useEffect, useCallback, useState } from 'react';
@@ -47,7 +47,42 @@ export default function MyClass() {
           <Grid item xs={12} md={12}>
             <AppWelcome displayName={user?.displayName} />
           </Grid>
-
+          {!classList ? (
+            <></>
+          ) : (
+            <>
+              {' '}
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  pb: { xs: 1, xl: 1 },
+                  pt: 10,
+                  // maxWidth: 500,
+                  mx: 'auto',
+                  fontSize: '20px',
+                  display: 'block',
+                  width: '100%',
+                  textAlign: 'center'
+                }}
+              >
+                Chúng tôi chưa xác nhận được lớp của bạn
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  pb: { xs: 1, xl: 1 },
+                  pt: 1,
+                  width: '100%',
+                  mx: 'auto',
+                  fontSize: '20px',
+                  display: 'block',
+                  textAlign: 'center'
+                }}
+              >
+                Vui lòng cập nhật lớp học để xem thông tin này.
+              </Typography>
+            </>
+          )}
           {classList?.map((studentClass: Class, index) => (
             <Grid key={index} item xs={12} md={4}>
               <ClassCard index={index} studentClass={studentClass} />
