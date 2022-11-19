@@ -110,7 +110,6 @@ export default function TeacherList() {
   const TABLE_HEAD = [
     { id: 'name', label: 'Tên', alignRight: false },
     { id: 'address', label: 'Địa chỉ', alignRight: false },
-    { id: 'position', label: 'Chức vụ', alignRight: false },
     { id: 'Subject', label: 'Dạy môn học', alignRight: false }
     // { id: 'Status', label: 'Trạng thái', alignRight: false },
     // { id: '' }
@@ -246,7 +245,6 @@ export default function TeacherList() {
                           </TableCell> */}
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{cityName}</TableCell>
-                          <TableCell align="left">Chức vụ</TableCell>
                           <TableCell align="left">
                             {row?.subjects.length > 0 ? (
                               <>

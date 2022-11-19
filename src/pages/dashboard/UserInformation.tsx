@@ -55,7 +55,7 @@ export default function UserInformation() {
           name: response.data.name,
           dateOfBirth: response.data.dateOfBirth,
           // cityId: response.data.cityId,
-          cityId: 'AG',
+          cityId: response.data.cityId,
           imageUrl: response.data.imageUrl,
           email: response.data.email,
           phone: response.data.phone,
