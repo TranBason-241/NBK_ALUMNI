@@ -3,6 +3,7 @@ import { createContext, ReactNode, useEffect, useReducer, useState } from 'react
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { managerLogin } from '_apis_/login';
 import { PATH_AUTH } from 'routes/paths';
@@ -12,8 +13,6 @@ import { ActionMap, AuthState, AuthUser, FirebaseContextType } from '../@types/a
 import { firebaseConfig } from '../config';
 
 // ----------------------------------------------------------------------
-
-const ADMIN_EMAILS = ['demo@minimals.cc'];
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -65,14 +64,25 @@ function AuthProvider({ children }: { children: ReactNode }) {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           user
-            .getIdToken(/* forceRefresh */ true)
+            .getIdToken(true)
             .then((idToken) => {
+              console.log(idToken);
               managerLogin.createLogin(idToken).then((response) => {
                 if (response.data.value == null) {
-                  dispatch({
-                    type: Types.Initial,
-                    payload: { isAuthenticated: true, user }
-                  });
+                  axios
+                    .get('/api/v1/account-info', {
+                      params: { jwtToken: response.data.token }
+                    })
+                    .then((response) => {
+                      const user = response.data;
+                      dispatch({
+                        type: Types.Initial,
+                        payload: {
+                          isAuthenticated: true,
+                          user
+                        }
+                      });
+                    });
                 } else {
                   dispatch({
                     type: Types.Initial,
@@ -85,10 +95,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
             .catch((error) => {
               console.log(error);
             });
-          // dispatch({
-          //   type: Types.Initial,
-          //   payload: { isAuthenticated: true, user }
-          // });
         } else {
           dispatch({
             type: Types.Initial,
@@ -149,19 +155,12 @@ function AuthProvider({ children }: { children: ReactNode }) {
         ...state,
         method: 'firebase',
         user: {
-          id: auth.uid,
+          id: auth.student_id,
           email: auth.email,
-          photoURL: auth.photoURL || profile?.photoURL,
-          displayName: auth.displayName || profile?.displayName,
-          role: ADMIN_EMAILS.includes(auth.email) ? 'admin' : 'user',
-          phoneNumber: auth.phoneNumber || profile?.phoneNumber || '',
-          country: profile?.country || '',
-          address: profile?.address || '',
-          state: profile?.state || '',
-          city: profile?.city || '',
-          zipCode: profile?.zipCode || '',
-          about: profile?.about || '',
-          isPublic: profile?.isPublic || false
+          photoURL: auth.imageUrl,
+          displayName: auth.name,
+          role_id: auth.role_id,
+          phoneNumber: auth.phoneNumber || ''
         },
         login,
         register,
