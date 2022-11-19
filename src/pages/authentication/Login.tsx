@@ -19,7 +19,10 @@ import { LoginForm } from '../../components/authentication/login';
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex'
-  }
+  },
+  backgroundImage:
+    "url('https://img.freepik.com/free-vector/green-curve-frame-template-vector_53876-113965.jpg?w=2000')",
+  backgroundSize: 'cover'
 }));
 
 const SectionStyle = styled(Card)(({ theme }) => ({
