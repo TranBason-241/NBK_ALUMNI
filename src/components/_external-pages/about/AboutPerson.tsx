@@ -243,7 +243,7 @@ export default function AboutPerson() {
           variant="outlined"
           color="inherit"
           size="large"
-          endIcon={<Icon icon={roundArrowRightAlt} width={24} height={24} />}
+          endIcon={<Icon icon={roundArrowRi ghtAlt} width={24} height={24} />}
           sx={{ mx: 'auto' }}
         >
           Xem tất cả
