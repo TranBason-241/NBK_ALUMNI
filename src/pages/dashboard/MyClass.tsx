@@ -37,7 +37,7 @@ export default function MyClass() {
   const classList = useSelector((state: RootState) => state.class.classList);
 
   useEffect(() => {
-    dispatch(getListClass('1'));
+    dispatch(getListClass(user?.id));
   }, [dispatch]);
 
   return (

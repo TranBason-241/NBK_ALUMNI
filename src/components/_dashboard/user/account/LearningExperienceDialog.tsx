@@ -28,7 +28,7 @@ import { useSnackbar } from 'notistack5';
 import { manageLearningExperience } from '_apis_/learningExperience';
 import { dispatch } from 'redux/store';
 import { getLearningExperience } from 'redux/slices/learningExperience';
-
+import useAuth from 'hooks/useAuth';
 //
 import { fDate } from '../../../../utils/formatTime';
 import { Teacher } from '../../../../@types/teacher';
@@ -56,6 +56,7 @@ export default function LearningExperienceDialog({
   const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
   // const { id, name, dateOfBirth, cityId, imageUrl, email, phone, startTime, endTime, isAlive } =
   //   teacher!;
+  const { user } = useAuth();
   const descriptionElementRef = useRef<HTMLElement>(null);
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
@@ -87,7 +88,7 @@ export default function LearningExperienceDialog({
       try {
         const bodyFormData = new FormData();
         bodyFormData.append('Id', values.id);
-        bodyFormData.append('StudentId', values.studentId);
+        bodyFormData.append('StudentId', user?.id);
         bodyFormData.append('CountryId', values.countryId);
         bodyFormData.append('Degree', values.degree);
         bodyFormData.append('NameOfUniversity', values.nameOfUniversity);
@@ -99,7 +100,7 @@ export default function LearningExperienceDialog({
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getLearningExperience('1', 5, 0));
+              dispatch(getLearningExperience(user?.id, 5, 0));
             }
           });
         } else {
@@ -108,7 +109,7 @@ export default function LearningExperienceDialog({
             if (response.status == 200) {
               flag = true;
               handleClose();
-              dispatch(getLearningExperience('1', 5, 0));
+              dispatch(getLearningExperience(user?.id, 5, 0));
             }
           });
         }

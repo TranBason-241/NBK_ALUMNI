@@ -108,6 +108,7 @@ export default function LearningExperiencesList() {
   const isLoading = useSelector((state: RootState) => state.learningExperience.isLoading);
   const classDetail = useSelector((state: RootState) => state.class.class);
   const [page, setPage] = useState(0);
+
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [selected, setSelected] = useState<string[]>([]);
   const [orderBy, setOrderBy] = useState('name');
@@ -124,7 +125,6 @@ export default function LearningExperiencesList() {
     // { id: 'Status', label: 'Trạng thái', alignRight: false },
     // { id: '' }
   ];
-
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -176,7 +176,7 @@ export default function LearningExperiencesList() {
 
   useEffect(() => {
     // dispatch(getClassDetail(classId));
-    dispatch(getLearningExperience('1', rowsPerPage, page));
+    dispatch(getLearningExperience(user?.id, rowsPerPage, page));
   }, [dispatch, rowsPerPage, page]);
 
   const emptyRows = !isLoading && !learningExperienceList;
