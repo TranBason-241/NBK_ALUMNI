@@ -155,7 +155,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         ...state,
         method: 'firebase',
         user: {
-          id: auth.uid,
+          id: auth.student_id,
           email: auth.email,
           photoURL: auth.imageUrl,
           displayName: auth.name,
