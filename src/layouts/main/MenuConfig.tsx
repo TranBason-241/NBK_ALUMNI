@@ -3,6 +3,9 @@ import homeFill from '@iconify/icons-eva/home-fill';
 import fileFill from '@iconify/icons-eva/file-fill';
 import roundGrain from '@iconify/icons-ic/round-grain';
 import bookOpenFill from '@iconify/icons-eva/book-open-fill';
+import aboutUs from '@iconify/icons-eva/people-outline';
+import contact from '@iconify/icons-eva/email-outline';
+import news from '@iconify/icons-eva/browser-outline';
 // routes
 import { PATH_AUTH, PATH_DOCS, PATH_PAGE, PATH_DASHBOARD, PATH_NEW } from '../../routes/paths';
 
@@ -27,17 +30,17 @@ const menuConfig = [
   // },
   {
     title: 'Tin tức',
-    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
+    icon: <Icon icon={news} {...ICON_SIZE} />,
     path: PATH_NEW.list
   },
   {
     title: 'Giới thiệu',
-    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
+    icon: <Icon icon={aboutUs} {...ICON_SIZE} />,
     path: PATH_PAGE.about
   },
   {
     title: 'Liên hệ',
-    icon: <Icon icon={bookOpenFill} {...ICON_SIZE} />,
+    icon: <Icon icon={contact} {...ICON_SIZE} />,
     path: PATH_PAGE.contact
   }
 

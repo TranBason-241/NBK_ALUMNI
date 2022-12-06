@@ -227,8 +227,9 @@ export default function TeacherSlider({ teacherList }: teacherSliderProps) {
 
   const settings = {
     speed: 500,
-    slidesToShow: teacherList?.length > 3 ? 3 : 2,
-    centerMode: true,
+    // slidesToShow: teacherList?.length > 3 ? 3 : 2,
+    slidesToShow: 3,
+    // centerMode: true,
     centerPadding: '0 80px',
     rtl: Boolean(theme.direction === 'rtl'),
     responsive: [
@@ -259,18 +260,22 @@ export default function TeacherSlider({ teacherList }: teacherSliderProps) {
     <Box sx={{ position: 'relative', mt: 3, backgroundColor: 'grey', borderRadius: 1.5 }}>
       <InfoDialog open={open} teacher={currentTeacher!} handleClose={handleClose} />
       <Slider ref={carouselRef} {...settings}>
-        {teacherList.map((teacher: Teacher) => (
-          <MotionInView key={teacher.id} variants={varFadeIn}>
-            <Box
-              onClick={() => {
-                setCurrentTeacher(teacher);
-                handleOpen();
-              }}
-            >
-              <TeacherCard teacher={teacher} />
-            </Box>
-          </MotionInView>
-        ))}
+        {teacherList.map((teacher: Teacher, index: number) => {
+          console.log(teacher.name);
+          return (
+            <MotionInView key={teacher.id} variants={varFadeIn}>
+              <Box
+                onClick={() => {
+                  setCurrentTeacher(teacher);
+                  handleOpen();
+                }}
+              >
+                <TeacherCard teacher={teacher} />
+              </Box>
+            </MotionInView>
+            // <h1 key={index}>{index}</h1>
+          );
+        })}
       </Slider>
       <CarouselControlsArrowsBasic2
         onNext={handleNext}

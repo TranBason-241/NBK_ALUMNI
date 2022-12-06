@@ -1,7 +1,7 @@
 import { NavLink as RouterLink, useLocation, NavLinkProps } from 'react-router-dom';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Box, Button, AppBar, Toolbar, Container } from '@material-ui/core';
+import { Box, Button, AppBar, Toolbar, Container, useMediaQuery } from '@material-ui/core';
 import { PATH_AUTH } from 'routes/paths';
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop';
@@ -69,7 +69,8 @@ export default function MainNavbar() {
   const isOffset = useOffSetTop(100);
   const { pathname } = useLocation();
   const isHome = pathname === '/';
-
+  const matches = useMediaQuery('(min-width:500px)');
+  const matchesIp5 = useMediaQuery('(min-width:321px)');
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
       <ToolbarStyle
@@ -92,9 +93,25 @@ export default function MainNavbar() {
           <RouterLink to="/">
             <Logo />
           </RouterLink>
-          <Label color="primary" sx={{ ml: 1 }}>
-            THPT NGUYỄN BỈNH KHIÊM
-          </Label>
+          <>
+            {' '}
+            {matches == false ? (
+              <>
+                {matchesIp5 == false ? (
+                  <></>
+                ) : (
+                  <Label color="primary" sx={{ ml: 1, maxWidth: 135, fontSize: '8px' }}>
+                    THPT NGUYỄN BỈNH KHIÊM {matchesIp5}
+                  </Label>
+                )}
+              </>
+            ) : (
+              <Label color="primary" sx={{ ml: 1, maxWidth: 165 }}>
+                THPT NGUYỄN BỈNH KHIÊM
+              </Label>
+            )}
+          </>
+
           <Box sx={{ flexGrow: 1 }} />
 
           <MHidden width="mdDown">

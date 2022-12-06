@@ -185,15 +185,6 @@ export default function AboutPerson() {
           </Typography>
           <TeacherSlider teacherList={headMasterList} />
         </MotionInView>
-        {/* <Button
-          variant="outlined"
-          color="inherit"
-          size="large"
-          endIcon={<Icon icon={roundArrowRightAlt} width={24} height={24} />}
-          sx={{ mb: 2, mt: 2 }}
-        >
-          Xem tất cả
-        </Button> */}
 
         <MotionInView variants={varFadeInDown}>
           <Typography
